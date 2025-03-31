@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
-using Syrna.BlazoriseQuartz.PrivateMessages;
-using Syrna.BlazoriseQuartz.PrivateMessageNotifications;
 
 namespace Syrna.BlazoriseQuartz.EntityFrameworkCore
 {
@@ -12,8 +10,6 @@ namespace Syrna.BlazoriseQuartz.EntityFrameworkCore
         /* Add DbSet for each Aggregate Root here. Example:
          * public DbSet<Question> Questions { get; set; }
          */
-        public DbSet<PrivateMessage> PrivateMessages { get; set; }
-        public DbSet<PrivateMessageNotification> PrivateMessageNotifications { get; set; }
         public BlazoriseQuartzDbContext(DbContextOptions<BlazoriseQuartzDbContext> options) 
             : base(options)
         {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
 using Syrna.BlazoriseQuartz.Localization;
-using Syrna.BlazoriseQuartz.Web.Pages.BlazoriseQuartz.Components.PmNotification;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
@@ -56,20 +55,20 @@ namespace Syrna.BlazoriseQuartz.Web
                 //Configure authorization.
             });
             
-            Configure<AbpBundlingOptions>(options =>
-            {
-                options
-                    .StyleBundles
-                    .Configure(StandardBundles.Styles.Global, bundle => {
-                        bundle.AddContributors(typeof(PmNotificationStyleBundleContributor));
-                    });
+            //Configure<AbpBundlingOptions>(options =>
+            //{
+            //    options
+            //        .StyleBundles
+            //        .Configure(StandardBundles.Styles.Global, bundle => {
+            //            bundle.AddContributors(typeof(PmNotificationStyleBundleContributor));
+            //        });
                 
-                options
-                    .ScriptBundles
-                    .Configure(StandardBundles.Scripts.Global, bundle => {
-                        bundle.AddContributors(typeof(PmNotificationScriptBundleContributor));
-                    });
-            });
+            //    options
+            //        .ScriptBundles
+            //        .Configure(StandardBundles.Scripts.Global, bundle => {
+            //            bundle.AddContributors(typeof(PmNotificationScriptBundleContributor));
+            //        });
+            //});
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System.Threading.Tasks;
-using Syrna.BlazoriseQuartz.Authorization;
-using Syrna.BlazoriseQuartz.Web.Pages.BlazoriseQuartz.Components.PmNotification;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Syrna.BlazoriseQuartz.Authorization;
+using System.Threading.Tasks;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Toolbars;
 
 namespace Syrna.BlazoriseQuartz.Web
@@ -19,7 +16,7 @@ namespace Syrna.BlazoriseQuartz.Web
             if (await context.IsGrantedAsync(
                 BlazoriseQuartzPermissions.PrivateMessageNotifications.Default))
             {
-                context.Toolbar.Items.Insert(0, new ToolbarItem(typeof(PmNotificationViewComponent)));
+                //context.Toolbar.Items.Insert(0, new ToolbarItem(typeof(PmNotificationViewComponent)));
             }
         }
     }

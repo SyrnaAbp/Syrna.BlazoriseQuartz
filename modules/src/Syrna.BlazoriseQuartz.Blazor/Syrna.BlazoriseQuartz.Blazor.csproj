@@ -17,4 +17,9 @@
 		<ProjectReference Include="..\Syrna.BlazoriseQuartz.Application.Contracts\Syrna.BlazoriseQuartz.Application.Contracts.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Components\" />
+	  <Folder Include="Pages\BlazoriseQuartz\InfoModels\" />
+	</ItemGroup>
+
 </Project>

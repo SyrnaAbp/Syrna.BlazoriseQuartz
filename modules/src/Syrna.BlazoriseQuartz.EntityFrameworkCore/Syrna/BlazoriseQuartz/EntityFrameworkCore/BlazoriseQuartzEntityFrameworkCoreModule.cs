@@ -1,5 +1,3 @@
-using Syrna.BlazoriseQuartz.PrivateMessageNotifications;
-using Syrna.BlazoriseQuartz.PrivateMessages;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
@@ -19,8 +17,6 @@ namespace Syrna.BlazoriseQuartz.EntityFrameworkCore
                 /* Add custom repositories here. Example:
                  * options.AddRepository<Question, EfCoreQuestionRepository>();
                  */
-                options.AddRepository<PrivateMessage, PrivateMessageRepository>();
-                options.AddRepository<PrivateMessageNotification, PrivateMessageNotificationRepository>();
             });
         }
     }
