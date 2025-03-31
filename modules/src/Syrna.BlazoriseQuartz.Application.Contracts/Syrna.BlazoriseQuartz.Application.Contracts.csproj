@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\..\common.props" />
+	<Import Project="..\..\..\configureawait.props" />
+	<Import Project="..\..\..\packing.props" />
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<RootNamespace />
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Syrna\BlazoriseQuartz\PrivateMessages\Dtos\CreatePrivateMessageInfoModel.cs" />
+	  <Compile Remove="Syrna\BlazoriseQuartz\PrivateMessages\Dtos\PrivateMessageInfoModel.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.Ddd.Application.Contracts" />
+		<PackageReference Include="Volo.Abp.Authorization" />
+		<ProjectReference Include="..\Syrna.BlazoriseQuartz.Domain.Shared\Syrna.BlazoriseQuartz.Domain.Shared.csproj" />
+	</ItemGroup>
+
+</Project>

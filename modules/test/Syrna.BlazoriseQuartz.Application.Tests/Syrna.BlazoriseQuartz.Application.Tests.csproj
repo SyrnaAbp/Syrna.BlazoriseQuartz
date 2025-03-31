@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Syrna.BlazoriseQuartz</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Syrna.BlazoriseQuartz.Application\Syrna.BlazoriseQuartz.Application.csproj" />
+    <ProjectReference Include="..\Syrna.BlazoriseQuartz.Domain.Tests\Syrna.BlazoriseQuartz.Domain.Tests.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+  </ItemGroup>
+
+</Project>
