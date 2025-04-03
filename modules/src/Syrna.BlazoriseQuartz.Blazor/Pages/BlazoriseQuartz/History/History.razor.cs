@@ -92,15 +92,10 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
                     return (IconName.Info.ToString(), TextColor.Warning, "System Info");
             }
         }
-
+        ExecutionDetailsDialog ExecutionDetailsDialogRef;
         private async Task OnMoreDetails(ExecutionLogDto log, string title)
         {
-            var options = new ModalInstanceOptions
-            {
-                Size = ModalSize.Default
-            };
-
-            await DialogSvc.Show<ExecutionDetailsDialog>(title, p => p.Add("ExecutionLog", log), options);
+            ExecutionDetailsDialogRef.Open(log);
         }
 
         #region Filters

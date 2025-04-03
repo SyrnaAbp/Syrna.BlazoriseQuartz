@@ -1,17 +1,24 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
+using Syrna.BlazoriseQuartz.ExecutionLog.Dtos;
 using System.Threading.Tasks;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Components;
 
 public partial class ExecutionDetailsDialog
 {
-	[Inject] private IModalService ModalService { get; set; } = null!;
+    Modal modalRef;
 
-	[EditorRequired] [Parameter] public ExecutionLog.ExecutionLog ExecutionLog { get; set; } = new();
+	public ExecutionLogDto ExecutionLog { get; set; } = new();
+
+    public void Open(ExecutionLogDto executionLog)
+    {
+        ExecutionLog = executionLog;
+        modalRef.Show();
+    }
 
     protected async Task Close()
     {
-        await ModalService.Hide();
+        await modalRef.Hide();
     }
 }
