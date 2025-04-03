@@ -16,8 +16,4 @@
 		<ProjectReference Include="..\Syrna.BlazoriseQuartz.Domain\Syrna.BlazoriseQuartz.Domain.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Syrna\BlazoriseQuartz" />
-	</ItemGroup>
-
 </Project>

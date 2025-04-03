@@ -14,7 +14,7 @@ namespace Syrna.BlazoriseQuartz.Blazor
             }
 
             if (await context.IsGrantedAsync(
-                BlazoriseQuartzPermissions.PrivateMessageNotifications.Default))
+                BlazoriseQuartzPermissions.Schedules.Default))
             {
                 //context.Toolbar.Items.Insert(0, new ToolbarItem(typeof(PmNotificationViewComponent)));
             }

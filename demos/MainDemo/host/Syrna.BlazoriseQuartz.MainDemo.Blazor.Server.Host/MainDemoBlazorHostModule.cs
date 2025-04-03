@@ -37,6 +37,7 @@ using Syrna.BlazoriseQuartz.MainDemo.Localization;
 using Syrna.BlazoriseQuartz.MainDemo.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling;
+using Quartz;
 
 namespace Syrna.BlazoriseQuartz.MainDemo.Blazor.Server.Host
 {
@@ -223,6 +224,48 @@ namespace Syrna.BlazoriseQuartz.MainDemo.Blazor.Server.Host
             {
                 options.AppAssembly = typeof(MainDemoBlazorHostModule).Assembly;
             });
+
+            ConfigureQuartzServices(context);
+        }
+
+        private void ConfigureQuartzServices(ServiceConfigurationContext context)
+        {
+            var configuration = context.Services.GetConfiguration();
+            #region Configure Quartz3
+            // base configuration from appsettings.json
+            context.Services.Configure<QuartzOptions>(configuration.GetSection("Quartz"));
+
+            // if you are using persistent job store, you might want to alter some options
+            context.Services.Configure<QuartzOptions>(options =>
+            {
+                var jobStoreType = options["quartz.jobStore.type"];
+                if ((jobStoreType ?? string.Empty) == "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz")
+                {
+                    options.Scheduling.IgnoreDuplicates = true; // default: false
+                    options.Scheduling.OverWriteExistingData = true; // default: true
+                }
+
+                var dataSource = options["quartz.jobStore.dataSource"];
+                if (!string.IsNullOrEmpty(dataSource))
+                {
+                    var connectionStringName = options[$"quartz.dataSource.{dataSource}.connectionStringName"];
+                    if (!string.IsNullOrEmpty(connectionStringName))
+                    {
+                        var connStr = configuration.GetConnectionString(connectionStringName);
+                        options[$"quartz.dataSource.{dataSource}.connectionString"] = connStr;
+                    }
+                }
+            });
+            // Add the required Quartz.NET services
+            context.Services.AddQuartz();
+            // Add the Quartz.NET hosted service
+            context.Services.AddQuartzHostedService(
+                q => q.WaitForJobsToComplete = true);
+            #endregion Configure Quartz3
+
+            context.Services.AddBlazoriseQuartzUI(configuration.GetSection("BlazoriseQuartz"),
+                connectionString: configuration.GetConnectionString("Default"));
+
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

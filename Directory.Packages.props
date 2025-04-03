@@ -529,12 +529,17 @@
 		<PackageVersion Include="Blazorise.Components" Version="1.6.2" />
 		<PackageVersion Include="Blazorise.DataGrid" Version="1.6.2" />
 		<PackageVersion Include="Blazorise.Snackbar" Version="1.6.2" />
+		<PackageVersion Include="Blazorise.Charts" Version="1.6.2" />
 		
 		<PackageVersion Include="Blazorise.Bootstrap5" Version="1.6.2" />
 		<PackageVersion Include="Blazorise.Generator.Features" Version="1.6.2" />
 		<PackageVersion Include="Blazorise.Icons.FontAwesome" Version="1.6.2" />
 		<PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
 		<PackageVersion Include="System.Net.Http.Json" Version="9.0.0" />
-		
+
+		<PackageVersion Include="CronExpressionDescriptor" Version="2.39.0" />
+		<PackageVersion Include="DartSassBuilder" Version="1.1.0" />
+		<PackageVersion Include="Quartz.Extensions.Hosting" Version="3.13.0" />
+		<PackageVersion Include="EFCore.NamingConventions" Version="9.0.0" />
 	</ItemGroup>
 </Project>

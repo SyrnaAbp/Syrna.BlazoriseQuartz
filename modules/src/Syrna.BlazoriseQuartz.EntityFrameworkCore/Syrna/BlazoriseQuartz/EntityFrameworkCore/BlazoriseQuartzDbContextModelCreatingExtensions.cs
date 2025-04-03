@@ -20,6 +20,27 @@ namespace Syrna.BlazoriseQuartz.EntityFrameworkCore
 
             optionsAction?.Invoke(options);
 
+            builder.Entity<ExecutionLog.ExecutionLog>(b =>
+            {
+                b.ConfigureByConvention();
+                b.ToTable($"{options.TablePrefix}ExecutionHistory", options.Schema);
+                b.OwnsOne(l => l.ExecutionLogDetail, e =>
+                {
+                    e.ToTable($"{options.TablePrefix}ExecutionHistoryDetail", options.Schema);
+                    e.WithOwner().HasForeignKey(x => x.LogId);
+                });
+
+                b.HasIndex(l => l.RunInstanceId).IsUnique();
+
+                // for housekeeping or system log display
+                b.HasIndex(l => new { l.DateAddedUtc, l.LogType });
+
+                // joining with job
+                b.HasIndex(l => new { l.TriggerName, l.TriggerGroup, l.JobName, l.JobGroup, l.DateAddedUtc });
+
+                b.Property(e => e.LogType).HasConversion<string>();
+
+            });
         }
     }
 }

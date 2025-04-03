@@ -24,120 +24,85 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Syrna.BlazoriseQuartz.PrivateMessageNotifications.PrivateMessageNotification", b =>
+            modelBuilder.Entity("Syrna.BlazoriseQuartz.ExecutionLog.ExecutionLog", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)")
-                        .HasColumnName("ConcurrencyStamp");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("ExtraProperties")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ExtraProperties");
+                    b.Property<DateTimeOffset>("DateAddedUtc")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("PrivateMessageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TenantId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("TenantId");
-
-                    b.Property<string>("TitlePreview")
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(8000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTimeOffset?>("FireTimeUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool?>("IsException")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsSuccess")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsVetoed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("JobGroup")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("JobName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<TimeSpan?>("JobRunTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("LogType")
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Result")
+                        .HasMaxLength(8000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RetryCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReturnCode")
+                        .HasMaxLength(28)
+                        .HasColumnType("nvarchar(28)");
+
+                    b.Property<string>("RunInstanceId")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTimeOffset?>("ScheduleFireTimeUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TriggerGroup")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("TriggerName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PrivateMessageId");
+                    b.HasIndex("RunInstanceId")
+                        .IsUnique()
+                        .HasFilter("[RunInstanceId] IS NOT NULL");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("DateAddedUtc", "LogType");
 
-                    b.ToTable("PmPrivateMessageNotifications", (string)null);
-                });
+                    b.HasIndex("TriggerName", "TriggerGroup", "JobName", "JobGroup", "DateAddedUtc");
 
-            modelBuilder.Entity("Syrna.BlazoriseQuartz.PrivateMessages.PrivateMessage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)")
-                        .HasColumnName("ConcurrencyStamp");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("DeletionTime");
-
-                    b.Property<string>("ExtraProperties")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ExtraProperties");
-
-                    b.Property<Guid?>("FromUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("LastModifierId");
-
-                    b.Property<DateTime?>("ReadTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("TenantId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("TenantId");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ToUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FromUserId");
-
-                    b.HasIndex("ToUserId");
-
-                    b.ToTable("PmPrivateMessages", (string)null);
+                    b.ToTable("BqzExecutionHistory", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
@@ -1835,6 +1800,37 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
                     b.HasKey("TenantId", "Name");
 
                     b.ToTable("AbpTenantConnectionStrings", (string)null);
+                });
+
+            modelBuilder.Entity("Syrna.BlazoriseQuartz.ExecutionLog.ExecutionLog", b =>
+                {
+                    b.OwnsOne("Syrna.BlazoriseQuartz.ExecutionLog.ExecutionLogDetail", "ExecutionLogDetail", b1 =>
+                        {
+                            b1.Property<long>("LogId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<int?>("ErrorCode")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("ErrorHelpLink")
+                                .HasMaxLength(1000)
+                                .HasColumnType("nvarchar(1000)");
+
+                            b1.Property<string>("ErrorStackTrace")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ExecutionDetails")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("LogId");
+
+                            b1.ToTable("BqzExecutionHistoryDetail", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("LogId");
+                        });
+
+                    b.Navigation("ExecutionLogDetail");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>

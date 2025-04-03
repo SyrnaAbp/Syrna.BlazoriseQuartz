@@ -11,15 +11,15 @@
 	<ItemGroup>
 		<PackageReference Include="Volo.Abp.AutoMapper" />
 		<PackageReference Include="Volo.Abp.AspNetCore.Components.Web.Theming" />
+		<PackageReference Include="DartSassBuilder" />
+		<PackageReference Include="Blazorise.Charts" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Syrna.BlazoriseQuartz.Application.Contracts\Syrna.BlazoriseQuartz.Application.Contracts.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Components\" />
-	  <Folder Include="Pages\BlazoriseQuartz\InfoModels\" />
+		<ProjectReference Include="..\Syrna.BlazoriseQuartz.Domain\Syrna.BlazoriseQuartz.Domain.csproj" />
+		<ProjectReference Include="..\Syrna.BlazoriseQuartz.Jobs.Abstractions\Syrna.BlazoriseQuartz.Jobs.Abstractions.csproj" />
+		<ProjectReference Include="..\Syrna.BlazoriseQuartz.Jobs\Syrna.BlazoriseQuartz.Jobs.csproj" />
 	</ItemGroup>
 
 </Project>

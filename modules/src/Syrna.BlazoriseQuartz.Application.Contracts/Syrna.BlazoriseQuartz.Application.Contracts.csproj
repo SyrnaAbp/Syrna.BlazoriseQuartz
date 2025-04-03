@@ -12,11 +12,11 @@
 	<ItemGroup>
 		<PackageReference Include="Volo.Abp.Ddd.Application.Contracts" />
 		<PackageReference Include="Volo.Abp.Authorization" />
-		<ProjectReference Include="..\Syrna.BlazoriseQuartz.Domain.Shared\Syrna.BlazoriseQuartz.Domain.Shared.csproj" />
+		<PackageReference Include="Quartz" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Syrna\BlazoriseQuartz\Users\Dtos\" />
+		<ProjectReference Include="..\Syrna.BlazoriseQuartz.Domain.Shared\Syrna.BlazoriseQuartz.Domain.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

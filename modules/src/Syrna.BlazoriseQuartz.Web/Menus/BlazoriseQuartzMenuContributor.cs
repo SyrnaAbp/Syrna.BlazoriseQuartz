@@ -20,10 +20,10 @@ public class BlazoriseQuartzMenuContributor : IMenuContributor
         var l = context.GetLocalizer<BlazoriseQuartzResource>();
         //Add main menu items.
 
-        if (await context.IsGrantedAsync(BlazoriseQuartzPermissions.PrivateMessages.Default))
+        if (await context.IsGrantedAsync(BlazoriseQuartzPermissions.Schedules.Default))
         {
             context.Menu.GetAdministration().AddItem(new ApplicationMenuItem(BlazoriseQuartzMenus.Prefix,
-                displayName: l["Menu:PrivateMessage"], "~/BlazoriseQuartz/PrivateMessages/PrivateMessage", icon: "fa fa-messages"));
+                displayName: l["Menu:Schedules"], "~/BlazoriseQuartz/Schedules/Schedules", icon: "fa fa-clock"));
         }
     }
 }

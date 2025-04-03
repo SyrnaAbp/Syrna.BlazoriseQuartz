@@ -10,13 +10,15 @@ namespace Syrna.BlazoriseQuartz.Authorization
         {
             var moduleGroup = context.AddGroup(BlazoriseQuartzPermissions.GroupName, L("Permission:BlazoriseQuartz"));
             
-            var privateMessages = moduleGroup.AddPermission(BlazoriseQuartzPermissions.PrivateMessages.Default, L("Permission:PrivateMessage"));
-            privateMessages.AddChild(BlazoriseQuartzPermissions.PrivateMessages.Create, L("Permission:Create"));
-            privateMessages.AddChild(BlazoriseQuartzPermissions.PrivateMessages.SetRead, L("Permission:SetRead"));
-            privateMessages.AddChild(BlazoriseQuartzPermissions.PrivateMessages.Delete, L("Permission:Delete"));
+            var schedulePermissions = moduleGroup.AddPermission(BlazoriseQuartzPermissions.Schedules.Default, L("Permission:Schedules"));
+            schedulePermissions.AddChild(BlazoriseQuartzPermissions.Schedules.Create, L("Permission:Schedules.Create"));
+            schedulePermissions.AddChild(BlazoriseQuartzPermissions.Schedules.Update, L("Permission:Schedules.Update"));
+            schedulePermissions.AddChild(BlazoriseQuartzPermissions.Schedules.Delete, L("Permission:Schedules.Delete"));
             
-            var privateMessageNotifications = moduleGroup.AddPermission(BlazoriseQuartzPermissions.PrivateMessageNotifications.Default, L("Permission:PrivateMessageNotification"));
-            privateMessageNotifications.AddChild(BlazoriseQuartzPermissions.PrivateMessageNotifications.Delete, L("Permission:Delete"));
+            var historyPermissions = moduleGroup.AddPermission(BlazoriseQuartzPermissions.History.Default, L("Permission:History"));
+            historyPermissions.AddChild(BlazoriseQuartzPermissions.History.Delete, L("Permission:History.Delete"));
+
+            var overviewPermissions = moduleGroup.AddPermission(BlazoriseQuartzPermissions.Overview.Default, L("Permission:Overview"));
         }
 
         private static LocalizableString L(string name)

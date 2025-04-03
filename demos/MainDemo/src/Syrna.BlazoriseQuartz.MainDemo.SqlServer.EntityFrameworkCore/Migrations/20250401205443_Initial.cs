@@ -57,6 +57,7 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
                     RegexDescription = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ValueType = table.Column<int>(type: "int", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
                 },
@@ -222,6 +223,7 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
                     IsStatic = table.Column<bool>(type: "bit", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     EntityVersion = table.Column<int>(type: "int", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
                 },
@@ -392,6 +394,35 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BqzExecutionHistory",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RunInstanceId = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    LogType = table.Column<string>(type: "varchar(20)", nullable: false),
+                    JobName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    JobGroup = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    TriggerName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    TriggerGroup = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ScheduleFireTimeUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    FireTimeUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    JobRunTime = table.Column<TimeSpan>(type: "time", nullable: true),
+                    RetryCount = table.Column<int>(type: "int", nullable: true),
+                    Result = table.Column<string>(type: "nvarchar(max)", maxLength: 8000, nullable: true),
+                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", maxLength: 8000, nullable: true),
+                    IsVetoed = table.Column<bool>(type: "bit", nullable: true),
+                    IsException = table.Column<bool>(type: "bit", nullable: true),
+                    IsSuccess = table.Column<bool>(type: "bit", nullable: true),
+                    ReturnCode = table.Column<string>(type: "nvarchar(28)", maxLength: 28, nullable: true),
+                    DateAddedUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BqzExecutionHistory", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OpenIddictApplications",
                 columns: table => new
                 {
@@ -452,49 +483,6 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OpenIddictScopes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PmPrivateMessageNotifications",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PrivateMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TitlePreview = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PmPrivateMessageNotifications", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PmPrivateMessages",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    FromUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ToUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReadTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PmPrivateMessages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -725,6 +713,27 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
                         name: "FK_AbpUserTokens_AbpUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AbpUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BqzExecutionHistoryDetail",
+                columns: table => new
+                {
+                    LogId = table.Column<long>(type: "bigint", nullable: false),
+                    ExecutionDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ErrorStackTrace = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ErrorCode = table.Column<int>(type: "int", nullable: true),
+                    ErrorHelpLink = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BqzExecutionHistoryDetail", x => x.LogId);
+                    table.ForeignKey(
+                        name: "FK_BqzExecutionHistoryDetail_BqzExecutionHistory_LogId",
+                        column: x => x.LogId,
+                        principalTable: "BqzExecutionHistory",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1025,6 +1034,23 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
                 column: "UserName");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BqzExecutionHistory_DateAddedUtc_LogType",
+                table: "BqzExecutionHistory",
+                columns: new[] { "DateAddedUtc", "LogType" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BqzExecutionHistory_RunInstanceId",
+                table: "BqzExecutionHistory",
+                column: "RunInstanceId",
+                unique: true,
+                filter: "[RunInstanceId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BqzExecutionHistory_TriggerName_TriggerGroup_JobName_JobGroup_DateAddedUtc",
+                table: "BqzExecutionHistory",
+                columns: new[] { "TriggerName", "TriggerGroup", "JobName", "JobGroup", "DateAddedUtc" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictApplications_ClientId",
                 table: "OpenIddictApplications",
                 column: "ClientId");
@@ -1053,26 +1079,6 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
                 name: "IX_OpenIddictTokens_ReferenceId",
                 table: "OpenIddictTokens",
                 column: "ReferenceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PmPrivateMessageNotifications_PrivateMessageId",
-                table: "PmPrivateMessageNotifications",
-                column: "PrivateMessageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PmPrivateMessageNotifications_UserId",
-                table: "PmPrivateMessageNotifications",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PmPrivateMessages_FromUserId",
-                table: "PmPrivateMessages",
-                column: "FromUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PmPrivateMessages_ToUserId",
-                table: "PmPrivateMessages",
-                column: "ToUserId");
         }
 
         /// <inheritdoc />
@@ -1148,16 +1154,13 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
                 name: "AbpUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BqzExecutionHistoryDetail");
+
+            migrationBuilder.DropTable(
                 name: "OpenIddictScopes");
 
             migrationBuilder.DropTable(
                 name: "OpenIddictTokens");
-
-            migrationBuilder.DropTable(
-                name: "PmPrivateMessageNotifications");
-
-            migrationBuilder.DropTable(
-                name: "PmPrivateMessages");
 
             migrationBuilder.DropTable(
                 name: "AbpEntityChanges");
@@ -1173,6 +1176,9 @@ namespace Syrna.BlazoriseQuartz.MainDemo.SqlServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "AbpUsers");
+
+            migrationBuilder.DropTable(
+                name: "BqzExecutionHistory");
 
             migrationBuilder.DropTable(
                 name: "OpenIddictAuthorizations");

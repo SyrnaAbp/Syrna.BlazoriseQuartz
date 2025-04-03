@@ -2,10 +2,12 @@ namespace Syrna.BlazoriseQuartz.MainDemo.Blazor.Server.Host.Menus
 {
     public class MainDemoMenus
     {
-        private const string Prefix = "Syrna.BlazoriseQuartz";
+        public const string Prefix = "Syrna.BlazoriseQuartz";
 
         //Add your menu items here...
 
-        public const string MenuItem = Prefix + ".MenuItem";
+        public const string Overview = Prefix + ".Overview";
+        public const string Schedules = Prefix + ".Schedules";
+        public const string History = Prefix + ".History";
     }
 }

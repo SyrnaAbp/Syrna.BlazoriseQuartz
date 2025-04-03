@@ -10,6 +10,7 @@ namespace Syrna.BlazoriseQuartz.EntityFrameworkCore
         /* Add DbSet for each Aggregate Root here. Example:
          * public DbSet<Question> Questions { get; set; }
          */
+        public DbSet<ExecutionLog.ExecutionLog> ExecutionLogs { get; set; } = null!;
         public BlazoriseQuartzDbContext(DbContextOptions<BlazoriseQuartzDbContext> options) 
             : base(options)
         {

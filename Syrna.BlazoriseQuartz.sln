@@ -105,6 +105,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syrna.BlazoriseQuartz.MainD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syrna.BlazoriseQuartz.Jobs.Abstractions", "modules\src\Syrna.BlazoriseQuartz.Jobs.Abstractions\Syrna.BlazoriseQuartz.Jobs.Abstractions.csproj", "{0AA047A6-BEDD-2270-3B15-8FF23990D6A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syrna.BlazoriseQuartz.Jobs", "modules\src\Syrna.BlazoriseQuartz.Jobs\Syrna.BlazoriseQuartz.Jobs.csproj", "{152E119E-BACE-E333-CE51-329A3660CDF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -247,6 +249,10 @@ Global
 		{0AA047A6-BEDD-2270-3B15-8FF23990D6A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AA047A6-BEDD-2270-3B15-8FF23990D6A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AA047A6-BEDD-2270-3B15-8FF23990D6A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{152E119E-BACE-E333-CE51-329A3660CDF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{152E119E-BACE-E333-CE51-329A3660CDF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{152E119E-BACE-E333-CE51-329A3660CDF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{152E119E-BACE-E333-CE51-329A3660CDF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -291,6 +297,7 @@ Global
 		{DFF4A148-E74F-4ADD-BB21-9F2B0754632C} = {F4EB94DD-4501-47C9-8BCF-2CE1A16C65BD}
 		{3DD4DB43-0C8B-41EB-B5E1-09F8DF4E8835} = {E400416D-2895-4512-9D17-90681EEC7E0A}
 		{0AA047A6-BEDD-2270-3B15-8FF23990D6A4} = {649A3FFA-182F-4E56-9717-E6A9A2BEC545}
+		{152E119E-BACE-E333-CE51-329A3660CDF3} = {649A3FFA-182F-4E56-9717-E6A9A2BEC545}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4324B3B4-B60B-4E3C-91D8-59576B4E26DD}
