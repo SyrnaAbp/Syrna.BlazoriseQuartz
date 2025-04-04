@@ -10,6 +10,15 @@
     "Permission:Schedules.Delete": "Sil",
     "Menu:Schedules": "Çalıştırma Planı",
     "Menu:History": "Çalıştırma Geçmişi",
-    "Menu:Overview": "Gözlem"
+    "Menu:Overview": "Gözlem",
+
+    "ExecutionDetailsDialog": "İşlem Detayları",
+    "ReturnCode": "İşlem Kodu",
+    "Result": "Sonuç",
+    "ExecutionDetails": "İşlem Detayları",
+    "ErrorMessage": "Hata Mesajı",
+    "ErrorStackTrace": "Yığın İzleme",
+    "FireTimeUtc": "İşlem Zamanı",
+    "DateAddedUtc": "Log Zamanı"
   }
 }

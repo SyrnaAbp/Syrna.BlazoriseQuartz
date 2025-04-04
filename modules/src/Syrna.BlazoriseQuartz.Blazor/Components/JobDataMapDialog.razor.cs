@@ -1,28 +1,35 @@
 using Blazorise;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
+using Quartz;
+using Syrna.BlazoriseQuartz.Localization;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Components;
 
-public partial class JobDataMapDialog : ComponentBase
+public partial class JobDataMapDialog
 {
-    [Inject] private IMessageService DialogSvc { get; set; } = null!;
-	[Inject] public IModalService ModalService { get; set; } = null!;
+    [Inject]
+    protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
 
-	[Parameter]
-    [EditorRequired]
     public IDictionary<string, object> JobDataMap { get; set; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-    [Parameter] public DataMapItemModel DataMapItem { get; set; } = new();
+    public DataMapItemModel DataMapItem { get; set; } = new();
 
-    [Parameter] public bool IsEditMode { get; set; }
+    public bool IsEditMode { get; set; }
 
-    [Parameter] public Func<DataMapItemModel, Task>? Save { get; set; }
+    public Func<DataMapItemModel, Task> Save { get; set; }
 
     private string Value { get; set; }
     private Validations _validations = null!;
+    Modal modalRef;
+
+    public JobDataMapDialog()
+    {
+        LocalizationResource = typeof(BlazoriseQuartzResource);
+    }
 
     /// <summary>
     /// DataMapType -> Description
@@ -32,7 +39,7 @@ public partial class JobDataMapDialog : ComponentBase
     protected override void OnInitialized()
     {
         // initialize available data types
-        foreach(var mapType in Enum.GetValues<DataMapType>())
+        foreach (var mapType in Enum.GetValues<DataMapType>())
         {
             if (mapType == DataMapType.Object)
             {
@@ -43,7 +50,7 @@ public partial class JobDataMapDialog : ComponentBase
         var currentMapType = DataMapItem.OriginalKeyValue?.GetDataMapType();
         if (currentMapType is DataMapType.Object)
         {
-            AvailableDataMapTypes.Add(currentMapType.Value, 
+            AvailableDataMapTypes.Add(currentMapType.Value,
                 DataMapItem.OriginalKeyValue?.GetDataMapTypeDescription() ?? string.Empty);
         }
 
@@ -56,7 +63,7 @@ public partial class JobDataMapDialog : ComponentBase
         if (string.IsNullOrEmpty(key))
         {
             e.ErrorText = "Key is required";
-            e.Status= ValidationStatus.Error;
+            e.Status = ValidationStatus.Error;
         }
 
         // validate then add to dictionary
@@ -71,8 +78,8 @@ public partial class JobDataMapDialog : ComponentBase
 
     private async Task OnSave()
     {
-        var isValid=await _validations.ValidateAll();
-        
+        var isValid = await _validations.ValidateAll();
+
         if (!isValid)
             return;
 
@@ -83,17 +90,36 @@ public partial class JobDataMapDialog : ComponentBase
         }
         catch (Exception ex)
         {
-            await DialogSvc.Error(
-                "Error", 
-                $"Invalid value. {ex.Message}");
-            return;
+            await HandleErrorAsync(ex);
+            //await DialogSvc.Error(
+            //    "Error",
+            //    $"Invalid value. {ex.Message}");
+            //return;
         }
-        
-        await ModalService.Hide();
+
+        await modalRef.Hide();
+    }
+
+    public async Task OpenDialog(IDictionary<string, object> jobDataMap, DataMapItemModel dataMapItem, Func<DataMapItemModel, Task> save, bool isEditMode = false)
+    {
+        DataMapItem = dataMapItem;
+        JobDataMap = jobDataMap;
+        IsEditMode = isEditMode;
+        Save = save;
+        await modalRef.Show();
     }
 
     protected async Task OnCancel()
     {
-		await ModalService.Hide();
-	}
+        await modalRef.Hide();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            modalRef?.Dispose();
+        }
+        base.Dispose(disposing);
+    }
 }

@@ -18,19 +18,17 @@ using Syrna.BlazoriseQuartz.Jobs.Abstractions;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 {
-    public partial class Schedules : ComponentBase, IDisposable
+    public partial class Schedules : IDisposable
     {
         [Inject] private ISchedulerAppService SchedulerSvc { get; set; } = null!;
         [Inject] private ISchedulerListenerService SchedulerListenerSvc { get; set; } = null!;
         [Inject] private IExecutionLogAppService ExecutionLogSvc { get; set; } = null!;
         [Inject] private IModalService DialogSvc { get; set; } = null!;
         [Inject] private IMessageService MessageSvc { get; set; } = null!;
-        [Inject] private ILogger<Schedules> Logger { get; set; } = null!;
-        [Inject] private INotificationService Snackbar { get; set; } = null!;
 
         private ObservableCollection<ScheduleModel> ScheduledJobs { get; set; } = new();
         private string _searchJobKeyword;
-        private DataGrid<ScheduleModel> _scheduleDataGrid=null!;
+        private DataGrid<ScheduleModel> _scheduleDataGrid = null!;
 
         private bool _openFilter;
 
@@ -77,25 +75,25 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 
         static string GetTooltipText(ScheduleModel context)
         {
-	        var str = "<div style='max-width: 220px; overflow-wrap: break-word;'>";
-	        if (!string.IsNullOrEmpty(context.ExceptionMessage))
-		        str += "Job has error." + context.ExceptionMessage;
-	        else
-		        str += "Job has error.";
-	        str+="</div>";
-	        return str;
+            var str = "<div style='max-width: 220px; overflow-wrap: break-word;'>";
+            if (!string.IsNullOrEmpty(context.ExceptionMessage))
+                str += "Job has error." + context.ExceptionMessage;
+            else
+                str += "Job has error.";
+            str += "</div>";
+            return str;
         }
 
         static string ExceptionMessageToolTipText(ScheduleModel context) =>
-	        $"<div style='max-width: 220px; overflow-wrap: break-word;'>{context.ExceptionMessage}</div>";
+            $"<div style='max-width: 220px; overflow-wrap: break-word;'>{context.ExceptionMessage}</div>";
 
         static string TriggerDetailToolTipText(ScheduleModel context) =>
-	        $"<div style='max-width: 220px; overflow-wrap: break-word;'>{context.TriggerDetail?.ToSummaryString()}</div>";
+            $"<div style='max-width: 220px; overflow-wrap: break-word;'>{context.TriggerDetail?.ToSummaryString()}</div>";
 
         protected override async Task OnInitializedAsync()
         {
             RegisterEventListeners();
-            await RefreshJobs();
+            //await RefreshJobs();
         }
 
         private void UnRegisterEventListeners()
@@ -190,7 +188,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 }
                 catch (Exception ex)
                 {
-                    await Snackbar.Warning($"Cannot update trigger status. Found more than one schedule with trigger {triggerKey}");
+                    await Notify.Warn($"Cannot update trigger status. Found more than one schedule with trigger {triggerKey}");
                     Logger.LogWarning(ex, "Cannot update trigger status. Found more than one schedule with trigger {triggerKey}", triggerKey);
                     return;
                 }
@@ -357,58 +355,61 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 
         private async Task NewSchedule(JobDetailModel JobDetail, TriggerDetailModel TriggerDetail)
         {
-			// create schedule
-			try
-			{
-				await SchedulerSvc.CreateSchedule(JobDetail, TriggerDetail);
-			}
-			catch (Exception ex)
-			{
-				await Snackbar.Error($"Failed to create new schedule. {ex.Message}");
-				Logger.LogError(ex, "Failed to create new schedule.");
-				// TODO show schedule dialog again?
-			}
-		}
-
-		private async Task OnNewSchedule()
+            // create schedule
+            try
+            {
+                await SchedulerSvc.CreateSchedule(JobDetail, TriggerDetail);
+            }
+            catch (Exception ex)
+            {
+                await Notify.Error($"Failed to create new schedule. {ex.Message}");
+                Logger.LogError(ex, "Failed to create new schedule.");
+                // TODO show schedule dialog again?
+            }
+        }
+        ScheduleDialog ScheduleDialogRef;
+        private async Task OnNewSchedule()
         {
-            var options = new ModalInstanceOptions
-            {
-                Size = ModalSize.Large
-            };
-            await DialogSvc.Show<ScheduleDialog>("Create Schedule Job", p =>
-            {
-                p.Add("IsNew", true);
-				//p.Add("Save", (Delegate)NewSchedule);
-			}, options);
+            //         var options = new ModalInstanceOptions
+            //         {
+            //             Size = ModalSize.Large
+            //         };
+            //         await DialogSvc.Show<ScheduleDialog>("Create Schedule Job", p =>
+            //         {
+            //             p.Add("IsNew", true);
+            //	//p.Add("Save", (Delegate)NewSchedule);
+            //}, options);
+            await Notify.Error("Cannot edit schedule. Check if job still exists.");
+            JobDetailModel jobDetail = new JobDetailModel();
+            await ScheduleDialogRef.OpenDialog(jobDetail,true);
         }
 
         private async Task UpdateSchedule(JobDetailModel JobDetail, TriggerDetailModel TriggerDetail, Key JobKey, Key TriggerKey)
         {
-			try
-			{
-				await SchedulerSvc.UpdateSchedule(JobKey, TriggerKey, JobDetail, TriggerDetail);
-			}
-			catch (Exception ex)
-			{
-				await Snackbar.Error($"Failed to update schedule. {ex.Message}");
-				Logger.LogError(ex, "Failed to update schedule.");
-				// TODO display the dialog again?
-			}
-		}
+            try
+            {
+                await SchedulerSvc.UpdateSchedule(JobKey, TriggerKey, JobDetail, TriggerDetail);
+            }
+            catch (Exception ex)
+            {
+                await Notify.Error($"Failed to update schedule. {ex.Message}");
+                Logger.LogError(ex, "Failed to update schedule.");
+                // TODO display the dialog again?
+            }
+        }
 
-		private async Task OnEditScheduleJob(ScheduleModel model)
+        private async Task OnEditScheduleJob(ScheduleModel model)
         {
             if (model.JobName == null)
             {
-                await Snackbar.Error("Cannot edit schedule. Check if job still exists.");
+                await Notify.Error("Cannot edit schedule. Check if job still exists.");
                 return;
             }
             var currentJobDetail = await SchedulerSvc.GetJobDetail(model.JobName, model.JobGroup);
 
             if (currentJobDetail == null)
             {
-                await Snackbar.Error("Cannot edit schedule. Check if job still exists.");
+                await Notify.Error("Cannot edit schedule. Check if job still exists.");
                 return;
             }
             var origJobKey = new Key(currentJobDetail.Name, currentJobDetail.Group);
@@ -447,7 +448,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         {
             if (model.TriggerName == null)
             {
-                await Snackbar.Error("Cannot resume schedule. Trigger name is null.");
+                await Notify.Error("Cannot resume schedule. Trigger name is null.");
                 return;
             }
 
@@ -458,7 +459,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         {
             if (model.TriggerName == null)
             {
-                await Snackbar.Error("Cannot pause schedule. Trigger name is null.");
+                await Notify.Error("Cannot pause schedule. Trigger name is null.");
                 return;
             }
 
@@ -491,11 +492,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 
                 if (!success)
                 {
-                    await Snackbar.Error($"Failed to delete schedule '{model.JobName}'");
+                    await Notify.Error($"Failed to delete schedule '{model.JobName}'");
                 }
                 else
                 {
-                    await Snackbar.Info("Deleted schedule");
+                    await Notify.Info("Deleted schedule");
                 }
             }
         }
@@ -503,14 +504,14 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         {
             if (model.JobName == null)
             {
-                await Snackbar.Error("Cannot clone schedule. Check if job still exists.");
+                await Notify.Error("Cannot clone schedule. Check if job still exists.");
                 return;
             }
             var currentJobDetail = await SchedulerSvc.GetJobDetail(model.JobName, model.JobGroup);
 
             if (currentJobDetail == null)
             {
-                await Snackbar.Error("Cannot clone schedule. Check if job still exists.");
+                await Notify.Error("Cannot clone schedule. Check if job still exists.");
                 return;
             }
 
@@ -537,9 +538,9 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 p.Add("JobDetail", currentJobDetail);
                 p.Add("TriggerDetail", currentTriggerModel ?? new());
                 p.Add("IsNew", true);
-			}, options);
+            }, options);
         }
-
+        HistoryDialog HistoryDialogRef;
         private async Task OnJobHistory(ScheduleModel model)
         {
             if (model.JobName == null)
@@ -547,24 +548,25 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 // not possible?
                 return;
             }
-            var options = new ModalInstanceOptions
-            {
-                Size = ModalSize.Default
-            };
+            //var options = new ModalInstanceOptions
+            //{
+            //    Size = ModalSize.Default
+            //};
 
-            await DialogSvc.Show<HistoryDialog>("Execution History", p =>
-            {
-                p.Add("JobKey", new Key(model.JobName, model.JobGroup));
-                p.Add("TriggerKey", model.TriggerName != null ?
-                    new Key(model.TriggerName, model.TriggerGroup ?? Constants.DEFAULT_GROUP) : null);
-            }, options);
+            //await DialogSvc.Show<HistoryDialog>("Execution History", p =>
+            //{
+            //    p.Add("JobKey", new Key(model.JobName, model.JobGroup));
+            //    p.Add("TriggerKey", model.TriggerName != null ?
+            //        new Key(model.TriggerName, model.TriggerGroup ?? Constants.DEFAULT_GROUP) : null);
+            //}, options);
+            await HistoryDialogRef.OpenModalAsync(new Key(model.JobName, model.JobGroup), model.TriggerName != null ? new Key(model.TriggerName, model.TriggerGroup ?? Constants.DEFAULT_GROUP) : null);
         }
 
         private async Task OnTriggerNow(ScheduleModel model)
         {
             if (model.JobName == null)
             {
-                await Snackbar.Error("Cannot add trigger. Check if job still exists.");
+                await Notify.Error("Cannot add trigger. Check if job still exists.");
                 return;
             }
 
@@ -575,21 +577,22 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         {
             if (model.JobName == null)
             {
-                await Snackbar.Error("Cannot add trigger. Check if job still exists.");
+                await Notify.Error("Cannot add trigger. Check if job still exists.");
                 return;
             }
             var currentJobDetail = await SchedulerSvc.GetJobDetail(model.JobName, model.JobGroup);
 
-            var options = new ModalInstanceOptions
-            {
-                Size = ModalSize.Default
-            };
-            await DialogSvc.Show<ScheduleDialog>("Add New Trigger", p =>
-            {
-                p.Add("JobDetail", currentJobDetail);
-                p.Add("IsReadOnlyJobDetail", true);
-                p.Add("SelectedTab", ScheduleDialogTab.Trigger);
-            }, options);
+            //var options = new ModalInstanceOptions
+            //{
+            //    Size = ModalSize.Default
+            //};
+            //await DialogSvc.Show<ScheduleDialog>("Add New Trigger", p =>
+            //{
+            //    p.Add("JobDetail", currentJobDetail);
+            //    p.Add("IsReadOnlyJobDetail", true);
+            //    p.Add("SelectedTab", ScheduleDialogTab.Trigger);
+            //}, options);
+            await ScheduleDialogRef.OpenDialog(currentJobDetail);
         }
 
         private async Task OnDeleteSelectedScheduleJobs()
@@ -634,7 +637,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             if (results == null)
             {
                 await RefreshJobs();
-                await Snackbar.Error("Failed to delete schedules");
+                await Notify.Error("Failed to delete schedules");
             }
             else
             {
@@ -643,17 +646,17 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 
                 if (skipCount > 0)
                 {
-                    await Snackbar.Info($"Deleted {deletedCount} schedule(s). Skip {skipCount} executing schedule(s)");
+                    await Notify.Info($"Deleted {deletedCount} schedule(s). Skip {skipCount} executing schedule(s)");
                 }
                 else
                 {
-                    await Snackbar.Info($"Deleted {deletedCount} schedule(s)");
+                    await Notify.Info($"Deleted {deletedCount} schedule(s)");
                 }
 
                 if (notDeletedCount > 0)
                 {
                     await RefreshJobs();
-                    await Snackbar.Warning($"Failed to deleted {notDeletedCount} schedule(s)");
+                    await Notify.Warn($"Failed to deleted {notDeletedCount} schedule(s)");
                 }
             }
         }

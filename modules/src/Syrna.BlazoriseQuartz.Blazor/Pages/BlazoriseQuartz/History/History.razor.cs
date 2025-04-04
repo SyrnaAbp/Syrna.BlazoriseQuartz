@@ -12,9 +12,8 @@ using System.Threading.Tasks;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
 {
-    public partial class History : ComponentBase
+    public partial class History 
     {
-        [Inject] private IModalService DialogSvc { get; set; } = null!;
         [Inject] IExecutionLogAppService LogSvc { get; set; } = null!;
 
         private PagedList<ExecutionLogDto> pagedData;
@@ -72,30 +71,31 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
             await table.ReadData.InvokeAsync();
         }
 
-        private static (string, TextColor, string) GetLogIconAndColor(ExecutionLogDto log)
+        private static (IconName, TextColor, string) GetLogIconAndColor(ExecutionLogDto log)
         {
             if (log.IsException ?? log.IsSuccess.HasValue && !log.IsSuccess.Value)
-                return (IconName.ExclamationCircle.ToString(), TextColor.Danger, "Error");
+                return (IconName.ExclamationCircle, TextColor.Danger, "Error");
 
             switch (log.LogType)
             {
                 case LogType.ScheduleJob:
                     if (log.IsVetoed ?? false)
-                        return (IconName.InfoCircle.ToString(), TextColor.Warning, "Vetoed");
+                        return (IconName.InfoCircle, TextColor.Warning, "Vetoed");
 
                     return log.IsSuccess is null ?
 	                    // still running
-	                    (IconName.Palette.ToString(), TextColor.Secondary, "Executing") : (IconName.Check.ToString(), TextColor.Info, "Success");
+	                    (IconName.Palette, TextColor.Secondary, "Executing") : (IconName.Check, TextColor.Info, "Success");
                 case LogType.Trigger:
-                    return (IconName.Alert.ToString(), TextColor.Warning, "Trigger");
+                    return (IconName.Alert, TextColor.Warning, "Trigger");
                 default:
-                    return (IconName.Info.ToString(), TextColor.Warning, "System Info");
+                    return (IconName.Info, TextColor.Warning, "System Info");
             }
         }
+
         ExecutionDetailsDialog ExecutionDetailsDialogRef;
         private async Task OnMoreDetails(ExecutionLogDto log, string title)
         {
-            ExecutionDetailsDialogRef.Open(log);
+            await ExecutionDetailsDialogRef.OpenModalAsync(log);
         }
 
         #region Filters

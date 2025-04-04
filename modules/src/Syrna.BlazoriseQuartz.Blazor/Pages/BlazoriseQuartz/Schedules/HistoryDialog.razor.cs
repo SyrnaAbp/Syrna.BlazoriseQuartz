@@ -11,18 +11,14 @@ using System.Threading.Tasks;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules;
 
-public partial class HistoryDialog : ComponentBase
+public partial class HistoryDialog 
 {
-	[Inject] public IModalService ModalService { get; set; } = null!;
-	[Inject] private IModalService DialogSvc { get; set; } = null!;
     [Inject] private IExecutionLogAppService LogSvc { get; set; } = null!;
 
     [EditorRequired]
-    [Parameter]
     public Key JobKey { get; set; } = null!;
 
     [EditorRequired]
-    [Parameter]
     public Key TriggerKey { get; set; }
 
     private ObservableCollection<ExecutionLogDto> ExecutionLogs { get; } = new();
@@ -30,15 +26,19 @@ public partial class HistoryDialog : ComponentBase
 
     private PageMetadata _lastPageMeta;
     private long _firstLogId;
+    Modal modalRef;
+
+    public async Task OpenModalAsync(Key jobKey, Key triggerKey)
+    {
+        JobKey = jobKey;
+        TriggerKey = triggerKey;
+        await modalRef.Show();
+        await OnRefreshHistory();
+    }
 
     protected async Task Close()
     {
-        await ModalService.Hide();
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await OnRefreshHistory();
+        await modalRef.Hide();
     }
 
     private async Task GetMoreLogs()
@@ -79,14 +79,16 @@ public partial class HistoryDialog : ComponentBase
         await GetMoreLogs();
     }
 
+    ExecutionDetailsDialog ExecutionDetailsDialogRef;
     private async Task OnMoreDetails(ExecutionLogDto log, string title)
     {
-        var options = new ModalInstanceOptions
-        {
-            Size = ModalSize.Default
-        };
+        //var options = new ModalInstanceOptions
+        //{
+        //    Size = ModalSize.Default
+        //};
 
-        await DialogSvc.Show<ExecutionDetailsDialog>(title, p => p.Add("ExecutionLog", log), options);
+        //await DialogSvc.Show<ExecutionDetailsDialog>(title, p => p.Add("ExecutionLog", log), options);
+        await ExecutionDetailsDialogRef.OpenModalAsync(log);
     }
 
     private static string GetExecutionTime(ExecutionLogDto log)

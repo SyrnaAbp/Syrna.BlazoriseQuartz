@@ -10,6 +10,15 @@
     "Permission:Schedules.Delete": "Delete",
     "Menu:Schedules": "Schedules",
     "Menu:History": "History",
-    "Menu:Overview": "Overview"
+    "Menu:Overview": "Overview",
+
+    "ExecutionDetailsDialog": "Execution Details",
+    "ReturnCode": "Return Code",
+    "Result": "Result",
+    "ExecutionDetails": "Execution Details",
+    "ErrorMessage": "Error Message",
+    "ErrorStackTrace": "Stack Trace",
+    "FireTimeUtc": "Trigger Time",
+    "DateAddedUtc": "Log Time"
   }
 }

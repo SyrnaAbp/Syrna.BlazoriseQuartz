@@ -3,7 +3,10 @@
 @using Syrna.BlazoriseQuartz.Blazor.Services
 @using Syrna.BlazoriseQuartz.ExecutionLog.Dtos
 @using Syrna.BlazoriseQuartz.Blazor.Components
+@using Syrna.BlazoriseQuartz.Localization
 
+@inject AbpBlazorMessageLocalizerHelper<BlazoriseQuartzResource> LH
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
 <PageTitle>History</PageTitle>
 
 <Offcanvas @bind-Visible="@_openFilter" Placement="Placement.End">

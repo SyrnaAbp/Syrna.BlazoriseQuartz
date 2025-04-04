@@ -15,7 +15,7 @@ using Syrna.BlazoriseQuartz.ExecutionLog;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 {
-	public partial class Overview : ComponentBase, IDisposable
+	public partial class Overview : IDisposable
 	{
 		const string UptimeKey = "Uptime";
 		const string StatusKey = "Status";
@@ -25,13 +25,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 		const string SHUTDOWN = "Shutdown";
 
 		static double[] EmptyData = { 0 };
-		//static string[] EmptyLabel = [$"{JobExecutionStatus.Success} (0)"];
 
 		[Inject] private IModalService DialogSvc { get; set; } = null!;
 		[Inject] IExecutionLogAppService LogSvc { get; set; } = null!;
 		[Inject] ISchedulerAppService SchSvc { get; set; } = null!;
 		[Inject] ISchedulerListenerService SchLisSvc { get; set; } = null!;
-		[Inject] private INotificationService Snackbar { get; set; } = null!;
 
 		private DataGrid<ExecutionLogDto> table = null!;
 		private ExecutionLogFilter _errorExecutionLogFilter = new ExecutionLogFilter
@@ -39,7 +37,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 			ErrorOnly = true,
 			LogTypes = new HashSet<LogType> { LogType.ScheduleJob },
 		};
-		private PageMetadata errorLogPage = new PageMetadata(0, 10);
+
 		private DateTimeOffset? RunningSince;
 
 		private PagedList<ExecutionLogDto> ErrorLogPagedList;
@@ -96,7 +94,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 			}
 		};
 
-		Chart<double>? allTimeChart = null!;
+		Chart<double> allTimeChart = null!;
 
 		private async Task HandleAllTimeChartRedraw()
 		{
@@ -110,7 +108,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 			return new()
 			{
 				Label = "# All Times",
-				Data = AllTimeLogData.ToList(),
+				Data = [.. AllTimeLogData],
 				BackgroundColor = backgroundColors,
 				BorderColor = borderColors,
 				BorderWidth = 1
@@ -150,7 +148,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 			return new()
 			{
 				Label = "# Yesterday",
-				Data = YesterdaysLogData.ToList(),
+				Data = [.. YesterdaysLogData],
 				BackgroundColor = backgroundColors,
 				BorderColor = borderColors,
 				BorderWidth = 1
@@ -173,7 +171,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 		#endregion charts
 
 		#region Refresh timer
-		private Timer? _refreshTimer;
+		private Timer _refreshTimer;
 		private const int REFRESH_IN_MS = 10000;
 		private bool AutoRefresh = true;
 		#endregion Refresh timer
@@ -243,7 +241,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 		{
 			await InvokeAsync(async () =>
 			{
-				await Snackbar.Info("Scheduler started");
+				await Notify.Info("Scheduler started");
 				await LoadInfo();
 				IsStartStandbyDisabled = false;
 				StartAutoRefresh();
@@ -256,7 +254,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 		{
 			await InvokeAsync(async () =>
 			{
-				await Snackbar.Info("Scheduler was shutdown");
+				await Notify.Info("Scheduler was shutdown");
 				await LoadInfo();
 				StopAutoRefresh();
 
@@ -268,7 +266,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 		{
 			await InvokeAsync(async () =>
 			{
-				await Snackbar.Info("Scheduler in standby mode");
+				await Notify.Info("Scheduler in standby mode");
 				await LoadInfo();
 				StopAutoRefresh();
 
@@ -462,15 +460,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 			SchedulerInfo.Add("Thread Pool Type", metadata.ThreadPoolType);
 		}
 
-		private async Task OnMoreDetails(ExecutionLogDto log, string title)
+		ExecutionDetailsDialog ExecutionDetailsDialogRef;
+        private async Task OnMoreDetails(ExecutionLogDto log, string title)
 		{
-			var options = new ModalInstanceOptions
-			{
-				Size = ModalSize.Default
-			};
-
-			await DialogSvc.Show<ExecutionDetailsDialog>(title, parameters => parameters.Add("ExecutionLog", log), options);
-		}
+			await ExecutionDetailsDialogRef.OpenModalAsync(log);
+        }
 
 		public void Dispose()
 		{
@@ -499,11 +493,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 			try
 			{
 				await SchSvc.PauseAllSchedules();
-				await Snackbar.Info("Paused all schedules");
+				await Notify.Info("Paused all schedules");
 			}
 			catch (Exception ex)
 			{
-				await Snackbar.Error($"Error pausing all schedules. {ex.Message}");
+				await Notify.Error($"Error pausing all schedules. {ex.Message}");
 			}
 		}
 
@@ -512,11 +506,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Overview
 			try
 			{
 				await SchSvc.ResumeAllSchedules();
-				await Snackbar.Info("Resumed all schedules");
+				await Notify.Info("Resumed all schedules");
 			}
 			catch (Exception ex)
 			{
-				await Snackbar.Error($"Error resuming all schedules. {ex.Message}");
+				await Notify.Error($"Error resuming all schedules. {ex.Message}");
 			}
 		}
 		#endregion Action buttons

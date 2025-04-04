@@ -4,6 +4,9 @@
 @using Syrna.BlazoriseQuartz.Blazor.Components
 @using Syrna.BlazoriseQuartz.Blazor.Services
 @using Syrna.BlazoriseQuartz.ExecutionLog.Dtos
+@using Syrna.BlazoriseQuartz.Localization
+@inject AbpBlazorMessageLocalizerHelper<BlazoriseQuartzResource> LH
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
 <PageTitle>Overview</PageTitle>
 <div>
     <Bar Breakpoint="Breakpoint.Desktop" Background="Background.Light" Shadow="Shadow.Remove" ThemeContrast="ThemeContrast.Light">
@@ -219,3 +222,4 @@
         </Column>
     </Grid>
 </div>
+<ExecutionDetailsDialog @ref="ExecutionDetailsDialogRef"></ExecutionDetailsDialog>

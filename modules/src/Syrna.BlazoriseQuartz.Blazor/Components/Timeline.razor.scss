@@ -54,7 +54,7 @@
         height: 100%;
         position: absolute;
         width: 2px;
-        background: var(--info-light);
+        background: var(--bs-info);
     }
 
     &.timeline-align-start {
@@ -195,7 +195,7 @@
         height: 2px;
         position: absolute;
         width: 100%;
-        background: var(--info-light);
+        background: var(--bs-info);
     }
 
     &.timeline-align-start {
@@ -305,7 +305,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--success-light);
+    background: var(--bs-success);
     border-radius: 50%;
     left: calc(50% - 19px);
 
@@ -351,13 +351,13 @@
         }
 
         &.timeline-dot-default {
-            background-color: var(--light-light);
+            background-color: var(--bs-light);
         }
 
         @each $color in $theme-colors {
             &.timeline-dot-#{$color} {
-                color: var(--#{$color}-dark);
-                background-color: var(--#{$color});
+                color: var(--bs-#{$color}-dark);
+                background-color: var(--bs-#{$color});
             }
         }
     }
@@ -382,14 +382,14 @@
                 position: absolute;
                 border-top: 16px solid transparent;
                 border-bottom: 16px solid transparent;
-                border-right: 16px solid var(--success-light);
+                border-right: 16px solid var(--bs-success);
                 top: calc(50% - 16px);
             }
 
             &.paper-outlined {
                 &::before {
                     top: calc(50% - 16px);
-                    border-right-color: var(--dark-light);
+                    border-right-color: var(--bs-dark);
                 }
             }
         }

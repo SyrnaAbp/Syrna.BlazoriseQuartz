@@ -1,7 +1,10 @@
 ﻿@page "/schedules"
 @using Blazorise.DataGrid
 @using Syrna.BlazoriseQuartz.Blazor.Components
+@using Syrna.BlazoriseQuartz.Localization
 
+@inject AbpBlazorMessageLocalizerHelper<BlazoriseQuartzResource> LH
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
 <PageTitle>Schedules</PageTitle>
 
 <Offcanvas @bind-Visible="@_openFilter" Placement="Placement.End">
@@ -313,3 +316,5 @@
         </DataGridColumn>
     </DataGridColumns>
 </DataGrid>
+<ScheduleDialog @ref="ScheduleDialogRef"></ScheduleDialog>
+<HistoryDialog @ref="HistoryDialogRef"></HistoryDialog>
