@@ -1,4 +1,7 @@
 ﻿@using Blazorise.Components
+@using Syrna.BlazoriseQuartz.Localization
+@inject AbpBlazorMessageLocalizerHelper<BlazoriseQuartzResource> LH
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
 <EnumSwitch T="TriggerType" ExcludedValues="ExcludedTriggerTypeChoices"
             @bind-Value="TriggerDetail.TriggerType"
             ValueIcons="TriggerTypeIcons" />
@@ -197,7 +200,7 @@
                                                       Placeholder="Search..."
                                                       Filter="AutocompleteFilter.Contains"
                                                       >
-                                            <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                                            <NotFoundContent>@string.Format(L["NotFoundContent"],context)</NotFoundContent>
                                             <ItemContent>
                                                 <Paragraph Margin="Margin.Is2.FromBottom">@context.Text</Paragraph>
                                             </ItemContent>

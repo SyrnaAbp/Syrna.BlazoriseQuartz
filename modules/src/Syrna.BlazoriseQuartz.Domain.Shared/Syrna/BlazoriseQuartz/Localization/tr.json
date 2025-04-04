@@ -1,6 +1,36 @@
 {
   "culture": "tr",
   "texts": {
+    "Back": "Geri",
+    "Cancel": "Vazgeç",
+    "Next": "İleri",
+    "Save": "Kaydet",
+    "Close": "Kapat",
+    "SearchPlaceHolder": "Ara...",
+
+    "ScheduleDialogNew": "Yeni Çalıştırma Planı",
+    "ScheduleDialogEdit": "Çalıştırma Planını Düzenle",
+
+    "JobDataMapDialogNew": "Yeni Parametre",
+    "JobDataMapDialogEdit": "Parametreyi Düzenle",
+    "JobDataMap:Key": "Adı",
+    "JobDataMap:Type": "Tipi",
+    "JobDataMap:Value": "Değeri",
+
+    "JobDetail": "İş Detayları",
+    "JobDetail:Name": "İş Adı",
+    "JobDetail:Group": "İş Grubu",
+    "JobDetail:Class": "İş Sınıfı",
+    "JobDetail:Description": "İş Açıklaması",
+    "JobDetail:IsDurable": "Tetikleme bittikten sonra işi kaldırmayın",
+    "JobDetail:IsDurable:Tooltip": "İşaretlendiğinde, tetik bittikten sonra iş zamanlayıcıda kalacaktır",
+
+    "Error:JobNameAlreadyInUsed": "Zaten kullanılmış iş adı. Lütfen başka bir isim veya grup seçin.",
+    "Error:SelectOneValue": "Bir değer seçin!",
+    "NotFoundContent": "Üzgünüz... {0} için değer bulamadık! :(",
+
+    "TriggerDetail": "Tetikleyici Detayları",
+
     "Menu:BlazoriseQuartz": "Blazorise Quartz",
     "Permission:Schedules": "Çalıştırma Planı",
     "Permission:History": "Çalıştırma Geçmişi",
@@ -13,12 +43,12 @@
     "Menu:Overview": "Gözlem",
 
     "ExecutionDetailsDialog": "İşlem Detayları",
-    "ReturnCode": "İşlem Kodu",
-    "Result": "Sonuç",
-    "ExecutionDetails": "İşlem Detayları",
-    "ErrorMessage": "Hata Mesajı",
-    "ErrorStackTrace": "Yığın İzleme",
-    "FireTimeUtc": "İşlem Zamanı",
-    "DateAddedUtc": "Log Zamanı"
+    "ExecutionLog:ReturnCode": "İşlem Kodu",
+    "ExecutionLog:Result": "Sonuç",
+    "ExecutionLog:ExecutionDetails": "İşlem Detayları",
+    "ExecutionLog:ErrorMessage": "Hata Mesajı",
+    "ExecutionLog:ErrorStackTrace": "Yığın İzleme",
+    "ExecutionLog:FireTimeUtc": "İşlem Zamanı",
+    "ExecutionLog:DateAddedUtc": "Log Zamanı"
   }
 }

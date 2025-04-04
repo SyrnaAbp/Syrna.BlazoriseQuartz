@@ -1,20 +1,19 @@
-﻿using Blazorise;
-using Blazorise.DataGrid;
+﻿using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Quartz;
-using Syrna.BlazoriseQuartz;
 using Syrna.BlazoriseQuartz.Blazor.Components;
 using Syrna.BlazoriseQuartz.Blazor.Services;
 using Syrna.BlazoriseQuartz.Events;
 using Syrna.BlazoriseQuartz.ExecutionLog;
+using Syrna.BlazoriseQuartz.Jobs.Abstractions;
 using Syrna.BlazoriseQuartz.Scheduler;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Syrna.BlazoriseQuartz.Jobs.Abstractions;
+using Volo.Abp.AspNetCore.Components.Messages;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 {
@@ -23,8 +22,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         [Inject] private ISchedulerAppService SchedulerSvc { get; set; } = null!;
         [Inject] private ISchedulerListenerService SchedulerListenerSvc { get; set; } = null!;
         [Inject] private IExecutionLogAppService ExecutionLogSvc { get; set; } = null!;
-        [Inject] private IModalService DialogSvc { get; set; } = null!;
-        [Inject] private IMessageService MessageSvc { get; set; } = null!;
+        [Inject] protected IUiMessageService UiMessageService { get; set; } = default!;
 
         private ObservableCollection<ScheduleModel> ScheduledJobs { get; set; } = new();
         private string _searchJobKeyword;
@@ -93,7 +91,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         protected override async Task OnInitializedAsync()
         {
             RegisterEventListeners();
-            //await RefreshJobs();
+            await RefreshJobs();
         }
 
         private void UnRegisterEventListeners()
@@ -379,9 +377,9 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             //             p.Add("IsNew", true);
             //	//p.Add("Save", (Delegate)NewSchedule);
             //}, options);
-            await Notify.Error("Cannot edit schedule. Check if job still exists.");
             JobDetailModel jobDetail = new JobDetailModel();
-            await ScheduleDialogRef.OpenDialog(jobDetail,true);
+            TriggerDetailModel triggerDetail = new TriggerDetailModel();
+            await ScheduleDialogRef.OpenDialog(jobDetail, triggerDetail, true);
         }
 
         private async Task UpdateSchedule(JobDetailModel JobDetail, TriggerDetailModel TriggerDetail, Key JobKey, Key TriggerKey)
@@ -429,19 +427,20 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 }
             }
 
-            var options = new ModalInstanceOptions
-            {
-                Size = ModalSize.Large
-            };
+            //var options = new ModalInstanceOptions
+            //{
+            //    Size = ModalSize.Large
+            //};
 
-            await DialogSvc.Show<ScheduleDialog>("Edit Schedule Job", p =>
-            {
-                p.Add("JobDetail", currentJobDetail);
-                p.Add("TriggerDetail", currentTriggerModel ?? new TriggerDetailModel());
-                p.Add("JobKey", origJobKey);
-                p.Add("TriggerKey", origTriggerKey);
-                p.Add("IsNew", false);
-            }, options);
+            //await DialogSvc.Show<ScheduleDialog>("Edit Schedule Job", p =>
+            //{
+            //    p.Add("JobDetail", currentJobDetail);
+            //    p.Add("TriggerDetail", currentTriggerModel ?? new TriggerDetailModel());
+            //    p.Add("JobKey", origJobKey);
+            //    p.Add("TriggerKey", origTriggerKey);
+            //    p.Add("IsNew", false);
+            //}, options);
+            await ScheduleDialogRef.OpenDialog(currentJobDetail, currentTriggerModel ?? new TriggerDetailModel(), false);
         }
 
         private async Task OnResumeScheduleJob(ScheduleModel model)
@@ -475,7 +474,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             else
             {
                 // confirm delete
-                bool? yes = await MessageSvc.Confirm(
+                bool? yes = await UiMessageService.Confirm(
                     "Confirm Delete",
                     $"Do you want to delete this schedule?",
                     o =>
@@ -529,16 +528,17 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 
             currentJobDetail.Name = string.Empty;
 
-            var options = new ModalInstanceOptions
-            {
-                Size = ModalSize.Large
-            };
-            await DialogSvc.Show<ScheduleDialog>("Create Schedule Job", p =>
-            {
-                p.Add("JobDetail", currentJobDetail);
-                p.Add("TriggerDetail", currentTriggerModel ?? new());
-                p.Add("IsNew", true);
-            }, options);
+            //var options = new ModalInstanceOptions
+            //{
+            //    Size = ModalSize.Large
+            //};
+            //await DialogSvc.Show<ScheduleDialog>("Create Schedule Job", p =>
+            //{
+            //    p.Add("JobDetail", currentJobDetail);
+            //    p.Add("TriggerDetail", currentTriggerModel ?? new());
+            //    p.Add("IsNew", true);
+            //}, options);
+            await ScheduleDialogRef.OpenDialog(currentJobDetail, currentTriggerModel ?? new(), true);
         }
         HistoryDialog HistoryDialogRef;
         private async Task OnJobHistory(ScheduleModel model)
@@ -592,7 +592,8 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             //    p.Add("IsReadOnlyJobDetail", true);
             //    p.Add("SelectedTab", ScheduleDialogTab.Trigger);
             //}, options);
-            await ScheduleDialogRef.OpenDialog(currentJobDetail);
+            TriggerDetailModel triggerDetail = new TriggerDetailModel();
+            await ScheduleDialogRef.OpenDialog(currentJobDetail, triggerDetail);
         }
 
         private async Task OnDeleteSelectedScheduleJobs()
@@ -606,7 +607,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 return;
 
             // confirm delete
-            bool? yes = await MessageSvc.Confirm(
+            bool? yes = await UiMessageService.Confirm(
                 "Confirm Delete",
                 $"Do you want to delete selected {selectedItems.Count} schedules?",
                 o =>

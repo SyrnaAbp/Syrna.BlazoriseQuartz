@@ -1,8 +1,9 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Localization;
 using Syrna.BlazoriseQuartz.Blazor.Services;
 using Syrna.BlazoriseQuartz.Jobs.Abstractions;
+using Syrna.BlazoriseQuartz.Localization;
 using Syrna.BlazoriseQuartz.Scheduler;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,11 @@ using System.Threading.Tasks;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Components
 {
-	public partial class BlazoriseJob : ComponentBase
+	public partial class BlazoriseJob
 	{
-		[Inject] private ISchedulerDefinitionService SchedulerDefSvc { get; set; } = null!;
+        [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
+        [Inject] private ISchedulerDefinitionService SchedulerDefSvc { get; set; } = null!;
 		[Inject] private ISchedulerAppService SchedulerSvc { get; set; } = null!;
-		[Inject] private IModalService DialogSvc { get; set; } = null!;
-		[Inject] private ILogger<BlazoriseJob> Logger { get; set; } = null!;
 		[Inject] private IJobUIProvider JobUIProvider { get; set; } = null!;
 
 		[Parameter]
@@ -32,12 +32,17 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 		private Key OriginalJobKey = new(string.Empty, "No Group");
 
 		private IEnumerable<Type> AvailableJobTypes = Enumerable.Empty<Type>();
-		private IEnumerable<SelectListItem>? ExistingJobGroups;
+		private IEnumerable<SelectListItem> ExistingJobGroups;
 		private Validations _validations = null!;
-		private Type? JobUIType = null;
+		private Type JobUIType = null;
 		private Dictionary<string, object> JobUITypeParameters = new();
 		private DynamicComponent _jobUIComponent;
 
+        public BlazoriseJob()
+        {
+            LocalizationResource = typeof(BlazoriseQuartzResource);
+        }
+        
 		protected override async Task OnInitializedAsync()
 		{
 			var types = SchedulerDefSvc.GetJobTypes();
@@ -60,23 +65,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 				ExistingJobGroups = (await SchedulerSvc.GetJobGroups()).Select(s => new SelectListItem(s, s));
 			}
 		}
-
-		//private async Task<IEnumerable<string>> SearchJobGroup(string value, CancellationToken cancellationToken)
-		//{
-		//    await GetJobGroups();
-
-		//    if (string.IsNullOrEmpty(value))
-		//        return ExistingJobGroups;
-
-		//    var matches = ExistingJobGroups
-		//        .Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))
-		//        .ToList();
-
-		//    if (matches.All(x => x != value))
-		//        matches.Add(value);
-
-		//    return matches;
-		//}
 
 		private void OnSetIsValid(ValidationsStatusChangedEventArgs eventArgs)
 		{
@@ -158,6 +146,15 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 				JobUIType = jobUiType;
 			}
 		}
-	}
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                //
+            }
+            base.Dispose(disposing);
+        }
+    }
 }
 

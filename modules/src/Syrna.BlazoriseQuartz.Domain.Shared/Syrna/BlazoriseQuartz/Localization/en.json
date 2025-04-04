@@ -1,6 +1,36 @@
 {
   "culture": "en",
   "texts": {
+    "Back": "Back",
+    "Cancel": "Cancel",
+    "Next": "Next",
+    "Save": "Save",
+    "Close": "Close",
+    "SearchPlaceHolder": "Search...",
+
+    "ScheduleDialogNew": "New Schedule",
+    "ScheduleDialogEdit": "Edit Schedule",
+
+    "JobDataMapDialogNew": "New Job Data Map",
+    "JobDataMapDialogEdit": "Edit Job Data MAp",
+    "JobDataMap:Key": "Key",
+    "JobDataMap:Type": "Type",
+    "JobDataMap:Value": "Value",
+
+    "JobDetail": "Job Detail",
+    "JobDetail:Name": "Job Name",
+    "JobDetail:Group": "Job Group",
+    "JobDetail:Class": "Job Class",
+    "JobDetail:Description": "Job Description",
+    "JobDetail:IsDurable": "Do not remove job after trigger ends",
+    "JobDetail:IsDurable:Tooltip": "When checked, job will remain in scheduler after trigger ends",
+
+    "Error:JobNameAlreadyInUsed": "Job name already in used. Please choose another name or group.",
+    "Error:SelectOneValue": "Select one value!",
+    "NotFoundContent": "Sorry... {0} was not found! :(",
+
+    "TriggerDetail": "Trigger Detail",
+
     "Menu:BlazoriseQuartz": "Blazorise Quartz",
     "Permission:Schedules": "Schedules",
     "Permission:History": "History",
@@ -13,12 +43,12 @@
     "Menu:Overview": "Overview",
 
     "ExecutionDetailsDialog": "Execution Details",
-    "ReturnCode": "Return Code",
-    "Result": "Result",
-    "ExecutionDetails": "Execution Details",
-    "ErrorMessage": "Error Message",
-    "ErrorStackTrace": "Stack Trace",
-    "FireTimeUtc": "Trigger Time",
-    "DateAddedUtc": "Log Time"
+    "ExecutionLog:ReturnCode": "Return Code",
+    "ExecutionLog:Result": "Result",
+    "ExecutionLog:ExecutionDetails": "Execution Details",
+    "ExecutionLog:ErrorMessage": "Error message",
+    "ExecutionLog:ErrorStackTrace": "Stack Trace",
+    "ExecutionLog:FireTimeUtc": "Fire Time",
+    "ExecutionLog:DateAddedUtc": "Log Time"
   }
 }

@@ -10,7 +10,7 @@
             </ModalHeader>
             <ModalBody>
                 <Field>
-                    <FieldLabel>@(ExecutionLog.FireTimeUtc.HasValue ? @L["FireTimeUtc"] : @L["DateAddedUtc"])</FieldLabel>
+                    <FieldLabel>@(ExecutionLog.FireTimeUtc.HasValue ? @L["ExecutionLog:FireTimeUtc"] : @L["ExecutionLog:DateAddedUtc"])</FieldLabel>
                     <FieldBody>
                         <TextEdit ReadOnly="true"
                                   Margin="Margin.Is0"
@@ -21,7 +21,7 @@
                 @if (ExecutionLog.ReturnCode != null)
                 {
                     <Field>
-                        <FieldLabel>@L["ReturnCode"]</FieldLabel>
+                        <FieldLabel>@L["ExecutionLog:ReturnCode"]</FieldLabel>
                         <FieldBody>
                             <MemoEdit ReadOnly="true"
                                       Margin="Margin.Is0"
@@ -33,7 +33,7 @@
                 @if (ExecutionLog.Result != null)
                 {
                     <Field>
-                        <FieldLabel>@L["Result"]</FieldLabel>
+                        <FieldLabel>@L["ExecutionLog:Result"]</FieldLabel>
                         <FieldBody>
                             <MemoEdit ReadOnly="true"
                                       Margin="Margin.Is0"
@@ -45,7 +45,7 @@
                 @if (ExecutionLog.ExecutionLogDetail?.ExecutionDetails != null)
                 {
                     <Field>
-                        <FieldLabel>@L["ExecutionDetails"]</FieldLabel>
+                        <FieldLabel>@L["ExecutionLog:ExecutionDetails"]</FieldLabel>
                         <FieldBody>
                             <MemoEdit ReadOnly="true"
                                       Margin="Margin.Is0"
@@ -57,7 +57,7 @@
                 @if (ExecutionLog.ErrorMessage != null)
                 {
                     <Field>
-                        <FieldLabel>@L["ErrorMessage"]</FieldLabel>
+                        <FieldLabel>@L["ExecutionLog:ErrorMessage"]</FieldLabel>
                         <FieldBody>
                             <MemoEdit ReadOnly="true"
                                       Margin="Margin.Is0"
@@ -68,7 +68,7 @@
                 @if (ExecutionLog.ExecutionLogDetail?.ErrorStackTrace != null)
                 {
                     <Field>
-                        <FieldLabel>@L["ErrorStackTrace"]</FieldLabel>
+                        <FieldLabel>@L["ExecutionLog:ErrorStackTrace"]</FieldLabel>
                         <FieldBody>
                             <MemoEdit ReadOnly="true"
                                       Margin="Margin.Is0"
@@ -94,7 +94,7 @@
                 }
             </ModalBody>
             <ModalFooter>
-                <Button Clicked="Close">Close</Button>
+                <Button Color="Color.Primary" Clicked="Close">@L["Close"]</Button>
             </ModalFooter>
         </Form>
     </ModalContent>

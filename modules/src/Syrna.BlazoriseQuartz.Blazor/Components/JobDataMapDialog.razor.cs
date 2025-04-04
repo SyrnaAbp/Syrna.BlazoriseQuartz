@@ -1,7 +1,6 @@
 using Blazorise;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-using Quartz;
 using Syrna.BlazoriseQuartz.Localization;
 using System;
 using System.Collections.Generic;
@@ -91,16 +90,12 @@ public partial class JobDataMapDialog
         catch (Exception ex)
         {
             await HandleErrorAsync(ex);
-            //await DialogSvc.Error(
-            //    "Error",
-            //    $"Invalid value. {ex.Message}");
-            //return;
         }
 
         await modalRef.Hide();
     }
 
-    public async Task OpenDialog(IDictionary<string, object> jobDataMap, DataMapItemModel dataMapItem, Func<DataMapItemModel, Task> save, bool isEditMode = false)
+    public async Task OpenModalAsync(IDictionary<string, object> jobDataMap, DataMapItemModel dataMapItem, Func<DataMapItemModel, Task> save, bool isEditMode = false)
     {
         DataMapItem = dataMapItem;
         JobDataMap = jobDataMap;

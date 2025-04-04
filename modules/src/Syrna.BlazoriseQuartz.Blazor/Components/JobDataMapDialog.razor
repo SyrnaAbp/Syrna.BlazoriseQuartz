@@ -2,17 +2,20 @@
 @inject AbpBlazorMessageLocalizerHelper<BlazoriseQuartzResource> LH
 @inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
 <Modal @ref="modalRef">
-    <ModalContent Size="ModalSize.Small">
+    <ModalContent Size="ModalSize.Default">
+        <ModalHeader>
+            <ModalTitle>@(IsEditMode ? L["JobDataMapDialogEdit"] : L["JobDataMapDialogNew"])</ModalTitle>
+            <CloseButton Clicked="OnCancel" />
+        </ModalHeader>
         <Form>
             <ModalBody>
                 <Validations @ref="_validations">
                     <Validation Validator="@ValidateKey">
                         <Field>
-                            <FieldLabel RequiredIndicator="true">Key</FieldLabel>
+                            <FieldLabel RequiredIndicator="true">@L["JobDataMap:Key"]</FieldLabel>
                             <TextEdit @bind-Text="DataMapItem.Key" Autofocus="true"
                                       ReadOnly="IsEditMode"
-                                      Margin="Margin.Is0"
-                                      Class="mb-3">
+                                      Margin="Margin.Is0">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -22,9 +25,8 @@
 
                     <Validation Validator="ValidationRule.IsSelected">
                         <Field>
-                            <FieldLabel RequiredIndicator="true">Type</FieldLabel>
+                            <FieldLabel RequiredIndicator="true">@L["JobDataMap:Type"]</FieldLabel>
                             <Select TValue="DataMapType?"
-                                    Class="mb-3"
                                     @bind-SelectedValue="DataMapItem.Type"
                                     Margin="Margin.Is0">
                                 <ChildContent>
@@ -34,7 +36,7 @@
                                     }
                                 </ChildContent>
                                 <Feedback>
-                                    <ValidationError>Select one value!</ValidationError>
+                                    <ValidationError>@L["Error:SelectOneValue"]</ValidationError>
                                 </Feedback>
                             </Select>
                         </Field>
@@ -42,7 +44,7 @@
 
                     <Validation Validator="ValidationRule.IsNotEmpty">
                         <Field>
-                            <FieldLabel RequiredIndicator="true">Value</FieldLabel>
+                            <FieldLabel RequiredIndicator="true">@L["JobDataMap:Value"]</FieldLabel>
                             <MemoEdit @bind-Text="Value" Autofocus="true" Rows="3">
                                 <Feedback>
                                     <ValidationError />
@@ -53,8 +55,8 @@
                 </Validations>
             </ModalBody>
             <ModalFooter>
-                <Button Clicked="OnCancel">Cancel</Button>
-                <SubmitButton Color="Color.Primary" Clicked="OnSave">Save</SubmitButton>
+                <Button Clicked="OnCancel">@L["Cancel"]</Button>
+                <SubmitButton Color="Color.Primary" Clicked="OnSave">@L["Save"]</SubmitButton>
             </ModalFooter>
         </Form>
     </ModalContent>

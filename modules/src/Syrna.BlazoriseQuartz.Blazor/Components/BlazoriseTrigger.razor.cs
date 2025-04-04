@@ -1,6 +1,7 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
-using Quartz;
+using Microsoft.Extensions.Localization;
+using Syrna.BlazoriseQuartz.Localization;
 using Syrna.BlazoriseQuartz.Scheduler;
 using System;
 using System.Collections.Generic;
@@ -8,17 +9,19 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Volo.Abp.AspNetCore.Components.Messages;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Components
 {
-    public partial class BlazoriseTrigger : ComponentBase
+    public partial class BlazoriseTrigger 
     {
+        [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
         const string CRON_HELP_TEXT = "Cron expression: seconds minutes hours day-of-month month day-of-week year";
         [Inject] private ISchedulerDefinitionService SchedulerDefSvc { get; set; } = null!;
         [Inject] private ISchedulerAppService SchedulerSvc { get; set; } = null!;
         [Inject] private ITriggerDetailModelValidator Validator { get; set; } = null!;
         [Inject] private IModalService DialogSvc { get; set; } = null!;
-        [Inject] private IMessageService MessageSvc { get; set; } = null!;
+        [Inject] protected IUiMessageService UiMessageService { get; set; } = default!;
 
         [Parameter]
         [EditorRequired]
@@ -30,10 +33,9 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         private ISet<TriggerType> ExcludedTriggerTypeChoices = new HashSet<TriggerType> { TriggerType.Unknown, TriggerType.Calendar };
 
-        private IEnumerable<SelectListItem>? ExistingTriggerGroups;
+        private IEnumerable<SelectListItem> ExistingTriggerGroups;
 
         private string CronDescription = CRON_HELP_TEXT;
-        private Form _form = null!;
         private Validations _validations = null!;
         private bool _isDaysOfWeekValid = true;
         private IReadOnlyCollection<SelectListItem>? _calendars;
@@ -49,6 +51,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             { TriggerType.Simple, TriggerType.Simple.GetTriggerTypeIcon() },
             { TriggerType.Calendar, TriggerType.Calendar.GetTriggerTypeIcon() },
         };
+
+        public BlazoriseTrigger()
+        {
+            LocalizationResource = typeof(BlazoriseQuartzResource);
+        }
 
         protected override void OnInitialized()
         {
@@ -244,7 +251,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             //	p.Add("Save", (Delegate)AddDataMap);
             //}, options);
             var dataMapItem = new DataMapItemModel();
-            await JobDataMapDialogRef.OpenDialog(new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, AddDataMap);
+            await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, AddDataMap);
         }
 
         public async Task UpdateDataMap(DataMapItemModel dataMap)
@@ -276,7 +283,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             //	p.Add("Save", (Delegate)UpdateDataMap);
             //}, options);
             var dataMapItem = new DataMapItemModel(item);
-            await JobDataMapDialogRef.OpenDialog(new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, UpdateDataMap, true);
+            await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, UpdateDataMap, true);
         }
 
         private async Task OnCloneDataMap(KeyValuePair<string, object> item)
@@ -299,19 +306,21 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
                 key = item.Key + index++;
             }
             var clonedItem = new KeyValuePair<string, object>(key, item.Value);
-            await DialogSvc.Show<JobDataMapDialog>("Add Data Map", p =>
-            {
-                p.Add("ExistingDataMap", new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase));
-                p.Add("DataMapItem", new DataMapItemModel(clonedItem));
-                p.Add("Save", (Delegate)UpdateDataMap);
-            }, options);
+            //await DialogSvc.Show<JobDataMapDialog>("Add Data Map", p =>
+            //{
+            //    p.Add("ExistingDataMap", new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase));
+            //    p.Add("DataMapItem", new DataMapItemModel(clonedItem));
+            //    p.Add("Save", (Delegate)UpdateDataMap);
+            //}, options);
+            var dataMapItem = new DataMapItemModel(clonedItem);
+            await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, UpdateDataMap, true);
         }
 
         private async Task OnDeleteDataMap(KeyValuePair<string, object> item)
         {
-            bool? yes = await MessageSvc.Confirm(
-                "Confirm Delete",
+            bool? yes = await UiMessageService.Confirm(
                 $"Do you want to delete '{item.Key}'?",
+                "Confirm Delete",
                 o =>
                 {
                     o.OkButtonText = "Yes";
@@ -324,6 +333,15 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             }
 
             TriggerDetail.TriggerDataMap.Remove(item);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                //
+            }
+            base.Dispose(disposing);
         }
     }
 }

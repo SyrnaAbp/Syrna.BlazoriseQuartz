@@ -9,12 +9,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components;
 
 public partial class ExecutionDetailsDialog
 {
-    [Inject]
-    protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
+    [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
 
     Modal modalRef;
 
-	public ExecutionLogDto ExecutionLog { get; set; } = new();
+    public ExecutionLogDto ExecutionLog { get; set; } = new();
 
     public ExecutionDetailsDialog()
     {

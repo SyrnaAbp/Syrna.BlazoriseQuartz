@@ -1,15 +1,18 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
+using Syrna.BlazoriseQuartz.Localization;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Volo.Abp.AspNetCore.Components.Messages;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Components
 {
-    public partial class DefaultJobUI : ComponentBase
+    public partial class DefaultJobUI
     {
-        [Inject] private IModalService ModalSvc { get; set; } = null!;
-        [Inject] private IMessageService DialogSvc { get; set; } = null!;
+        [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
+        [Inject] protected IUiMessageService UiMessageService { get; set; } = default!;
 
         [Parameter]
         [EditorRequired]
@@ -32,7 +35,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
         private async Task OnAddDataMap()
         {
             var dataMapItem = new DataMapItemModel();
-            await JobDataMapDialogRef.OpenDialog(new Dictionary<string, object>(JobDetail.JobDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, AddDataMap);
+            await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(JobDetail.JobDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, AddDataMap);
         }
 
         public async Task EditDataMap(DataMapItemModel dataMap)
@@ -65,7 +68,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
             //}, options);
             var dataMapItem = new DataMapItemModel(item);
-            await JobDataMapDialogRef.OpenDialog(new Dictionary<string, object>(JobDetail.JobDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, EditDataMap, true);
+            await JobDataMapDialogRef.OpenModalAsync(JobDetail.JobDataMap, dataMapItem, EditDataMap, true);
         }
 
         private async Task OnCloneDataMap(KeyValuePair<string, object> item)
@@ -96,19 +99,13 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             //    p.Add("Save", (Delegate)EditDataMap);
             //}, options);
             var dataMapItem = new DataMapItemModel(clonedItem);
-            await JobDataMapDialogRef.OpenDialog(new Dictionary<string, object>(JobDetail.JobDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, EditDataMap);
+            await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(JobDetail.JobDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, EditDataMap);
         }
 
         private async Task OnDeleteDataMap(KeyValuePair<string, object> item)
         {
-            bool? yes = await DialogSvc.Confirm(
-                "Confirm Delete",
-                $"Do you want to delete '{item.Key}'?",
-                o =>
-                {
-                    o.OkButtonText = "Yes";
-                    o.CancelButtonText = "No";
-                });
+            bool? yes = await UiMessageService.Confirm(
+                $"Do you want to delete '{item.Key}'?");
 
             if (yes == null || !yes.Value)
             {

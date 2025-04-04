@@ -24,7 +24,7 @@ public partial class ScheduleDialog
 
     private bool _jobDetailIsValid;
     private bool _triggerDetailIsValid;
-    private string _nextText = "Next";
+    private string _nextText;
     private string _nextIcon = IconName.AngleRight.ToString();
     private BlazoriseJob _jobPanel = null!;
     private BlazoriseTrigger _triggerPanel = null!;
@@ -37,10 +37,11 @@ public partial class ScheduleDialog
 
     protected override void OnInitialized()
     {
+        _nextText = L["Next"];
         if (SelectedTab == ScheduleDialogTab.Trigger)
         {
             _jobDetailIsValid = true;
-            _nextText = "Save";
+            _nextText = @L["Save"];
             _nextIcon = null;
         }
     }
@@ -63,7 +64,7 @@ public partial class ScheduleDialog
         // update text
         if (SelectedTab == ScheduleDialogTab.Job)
         {
-            _nextText = "Next";
+            _nextText = @L["Next"];
             _nextIcon = IconName.AngleLeft.ToString();
         }
         else if (SelectedTab == ScheduleDialogTab.Trigger)
@@ -78,7 +79,7 @@ public partial class ScheduleDialog
                     TriggerDetail.Name = JobDetail.Name;
             }
 
-            _nextText = "Save";
+            _nextText = @L["Save"];
             _nextIcon = null;
         }
     }
@@ -133,9 +134,10 @@ public partial class ScheduleDialog
         await modalRef.Hide();
     }
 
-    public async Task OpenDialog(JobDetailModel jobDetail, bool isNew = false)
+    public async Task OpenDialog(JobDetailModel jobDetail, TriggerDetailModel triggerDetail, bool isNew = false)
     {
         JobDetail = jobDetail;
+        TriggerDetail = triggerDetail;
         IsNew = isNew;
         await modalRef.Show();
     }

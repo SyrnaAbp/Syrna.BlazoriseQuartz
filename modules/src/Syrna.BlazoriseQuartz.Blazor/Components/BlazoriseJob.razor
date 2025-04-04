@@ -1,18 +1,21 @@
 ﻿@using Blazorise.Components
+@using Syrna.BlazoriseQuartz.Localization
+@inject AbpBlazorMessageLocalizerHelper<BlazoriseQuartzResource> LH
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
 <div class="jobform">
     <Form>
         <Validations @ref="_validations" Mode="ValidationMode.Auto" Model="@JobDetail" StatusChanged="OnSetIsValid">
             <div class="jobform__2col">
                 <Validation AsyncValidator="ValidateJobName">
                     <Field>
-                        <FieldLabel RequiredIndicator="true" For="JobDetail.Name">Job Name</FieldLabel>
+                        <FieldLabel RequiredIndicator="true" For="JobDetail.Name">@L["JobDetail:Name"]</FieldLabel>
                         <FieldBody>
                             <TextEdit @bind-Text="JobDetail.Name"
                                       Immediate="true"
                                       Margin="Margin.Is0"
                                       ReadOnly="IsReadOnly">
                                 <Feedback>
-                                    <ValidationError>Job name already in used. Please choose another name or group.</ValidationError>
+                                    <ValidationError>@L["Error:JobNameAlreadyInUsed"]</ValidationError>
                                 </Feedback>
                             </TextEdit>
                         </FieldBody>
@@ -20,7 +23,7 @@
                 </Validation>
 
                 <Field>
-                    <FieldLabel RequiredIndicator="true">Job Group</FieldLabel>
+                    <FieldLabel RequiredIndicator="true">@L["JobDetail:Group"]</FieldLabel>
                     <FieldBody>
                         <Autocomplete TItem="SelectListItem"
                                       TValue="string"
@@ -29,11 +32,11 @@
                                       TextField="@((item) => item.Text)"
                                       ValueField="@((item) => item.Value)"
                                       ReadData="GetJobGroups"
-                                      Placeholder="Search..."
+                                      Placeholder="@L["SearchPlaceHolder"]"
                                       Filter="AutocompleteFilter.Contains"
                                       FreeTyping
                                       CustomFilter="@(( item, searchValue ) => item.Text.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
-                            <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                            <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
                         </Autocomplete>
                     </FieldBody>
                 </Field>
@@ -41,7 +44,7 @@
 
             <Validation Validator="@ValidationRule.IsSelected">
                 <Field>
-                    <FieldLabel RequiredIndicator="true">Job Class</FieldLabel>
+                    <FieldLabel RequiredIndicator="true">@L["JobDetail:Class"]</FieldLabel>
                     <FieldBody>
                         <Select TValue="string"
                                 ReadOnly="IsReadOnly"
@@ -55,7 +58,7 @@
                                 }
                             </ChildContent>
                             <Feedback>
-                                <ValidationError>Select one value!</ValidationError>
+                                <ValidationError>@L["Error:SelectOneValue"]</ValidationError>
                             </Feedback>
                         </Select>
                     </FieldBody>
@@ -63,7 +66,7 @@
             </Validation>
 
             <Field>
-                <FieldLabel For="JobDetail.Description">Description</FieldLabel>
+                <FieldLabel For="JobDetail.Description">@L["JobDetail:Description"]</FieldLabel>
                 <FieldBody>
                     <MemoEdit @bind-Text="JobDetail.Description"
                               Rows="2"
@@ -78,8 +81,8 @@
                 <DynamicComponent Type="@JobUIType" Parameters="@JobUITypeParameters" @ref="_jobUIComponent" />
             }
 
-            <Tooltip Text="When checked, job will remain in scheduler after trigger ends">
-                <Check TValue="bool" @bind-Checked="JobDetail.IsDurable" ReadOnly="IsReadOnly">Do not remove job after trigger ends</Check>
+            <Tooltip Text="@L["JobDetail:IsDurable:Tooltip"]">
+                <Check TValue="bool" @bind-Checked="JobDetail.IsDurable" ReadOnly="IsReadOnly">@L["JobDetail:IsDurable"]</Check>
             </Tooltip>
         </Validations>
     </Form>
