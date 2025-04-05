@@ -13,10 +13,9 @@
                     <Column ColumnSize="ColumnSize.Is6">
                         <Validation AsyncValidator="(e,c)=> Validator.ValidateTriggerName(e, TriggerDetail, OriginalTriggerKey)">
                             <Field>
-                                <FieldLabel RequiredIndicator="true">Trigger Name</FieldLabel>
+                                <FieldLabel RequiredIndicator="true">@L["TriggerDetail:Name"]</FieldLabel>
                                 <FieldBody>
-                                    <TextEdit @bind-Value="TriggerDetail.Name"
-                                              Immediate="true" />
+                                    <TextEdit @bind-Value="TriggerDetail.Name" Immediate="true" />
                                 </FieldBody>
                             </Field>
                         </Validation>
@@ -24,7 +23,7 @@
 
                     <Column ColumnSize="ColumnSize.Is6">
                         <Field>
-                            <FieldLabel RequiredIndicator="true">Trigger Group</FieldLabel>
+                            <FieldLabel RequiredIndicator="true">@L["TriggerDetail:Group"]</FieldLabel>
                             <FieldBody>
                                 <Autocomplete TItem="SelectListItem"
                                               TValue="string"
@@ -33,7 +32,7 @@
                                               TextField="((item) => item.Text)"
                                               ValueField="((item) => item.Value)"
                                               @bind-SelectedValue="@TriggerDetail.Group"
-                                              Placeholder="Search..."
+                                              Placeholder="@L["SearchPlaceHolder"]"
                                               Filter="AutocompleteFilter.Contains"
                                               FreeTyping>
                                     <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
@@ -50,7 +49,7 @@
                         <Column ColumnSize="ColumnSize.Is6">
                             <Validation Validator="Validator.ValidateCronExpression">
                                 <Field>
-                                    <FieldLabel RequiredIndicator="true">Cron Expression</FieldLabel>
+                                    <FieldLabel RequiredIndicator="true">@L["TriggerDetail:CronExpression"]</FieldLabel>
                                     <FieldBody>
                                         <Addons>
                                             <Addon AddonType="AddonType.Body">
@@ -60,7 +59,7 @@
                                             </Addon>
                                             <Addon AddonType="AddonType.End">
                                                 <Button Clicked="OnShowSampleCron">
-                                                    <Tooltip Text="Select Cron Expression">
+                                                    <Tooltip Text="@L["TriggerDetail:CronExpressionTooltip"]">
                                                         <Icon Name="@IconName.QuestionCircle"></Icon>
                                                     </Tooltip>
                                                 </Button>
@@ -74,7 +73,7 @@
                         </Column>
                         <Column ColumnSize="ColumnSize.Is6">
                             <Field>
-                                <FieldLabel RequiredIndicator="true">Timezone</FieldLabel>
+                                <FieldLabel RequiredIndicator="true">@L["TriggerDetail:InTimeZone"]</FieldLabel>
                                 <FieldBody>
                                     <Autocomplete TItem="TimeZoneInfo"
                                                   TValue="TimeZoneInfo"
@@ -82,7 +81,7 @@
                                                   TextField="((item) => item.DisplayName)"
                                                   ValueField="((item) => item)"
                                                   @bind-SelectedValue="@TriggerDetail.InTimeZone"
-                                                  Placeholder="Search..."
+                                                  Placeholder="@L["SearchPlaceHolder"]"
                                                   Filter="AutocompleteFilter.Contains">
                                         <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
                                         <ItemContent>
@@ -101,23 +100,22 @@
                             <Column ColumnSize="ColumnSize.Is6">
                                 <Validation Validator="ValidationRule.IsEmpty">
                                     <Field>
-                                        <FieldLabel RequiredIndicator="true">Daily Run Time</FieldLabel>
+                                        <FieldLabel RequiredIndicator="true">@L["TriggerDetail:StartDailyTime"]</FieldLabel>
                                         <FieldBody>
-                                            <TimePicker TimeAs24hr="true"
-                                                        Time="TriggerDetail.StartDailyTime" />
+                                            <TimePicker TimeAs24hr="true" Time="TriggerDetail.StartDailyTime" />
                                         </FieldBody>
                                     </Field>
                                 </Validation>
 
                                 <Validation Validator="((e) => Validator.ValidateTime(TriggerDetail.StartDailyTime, e))">
                                     <Field>
-                                        <FieldLabel>Daily Last Run Time</FieldLabel>
+                                        <FieldLabel>@L["TriggerDetail:EndDailyTime"]</FieldLabel>
                                         <FieldBody>
                                             <TimePicker TValue="TimeSpan?" TimeAs24hr="true"
                                                         @ref="_endDailyTimePicker"
                                                         @bind-Time="TriggerDetail.EndDailyTime">
                                                 <Feedback>
-                                                    <ValidationError>End time should be later than start time</ValidationError>
+                                                    <ValidationError>@L["Error:EndTimeGtStartTime"]</ValidationError>
                                                 </Feedback>
                                             </TimePicker>
                                         </FieldBody>
@@ -125,7 +123,7 @@
                                 </Validation>
 
                                 <Field>
-                                    <FieldLabel RequiredIndicator="true">Timezone</FieldLabel>
+                                    <FieldLabel RequiredIndicator="true">@L["TriggerDetail:InTimeZone"]</FieldLabel>
                                     <FieldBody>
                                         <Autocomplete TItem="TimeZoneInfo"
                                                       TValue="TimeZoneInfo"
@@ -133,7 +131,7 @@
                                                       TextField="((item) => item.DisplayName)"
                                                       ValueField="((item) => item)"
                                                       @bind-SelectedValue="@TriggerDetail.InTimeZone"
-                                                      Placeholder="Search..."
+                                                      Placeholder="@L["SearchPlaceHolder"]"
                                                       Filter="AutocompleteFilter.Contains">
                                             <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
                                             <ItemContent>
@@ -156,7 +154,7 @@
                                             <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Saturday]">@L["DayOfWeek:Saturday"]</Check><br />
                                             <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Sunday]">@L["DayOfWeek:Sunday"]</Check><br />
                                         </FieldBody>
-                                        <FieldHelp>Select days to trigger this job</FieldHelp>
+                                        <FieldHelp>@L["SelectDaystoTrigger"]</FieldHelp>
                                     </Field>
                                 </Validation>
                             </Column>
@@ -165,7 +163,7 @@
                         {
                             <Column ColumnSize="ColumnSize.Is6">
                                 <Field>
-                                    <FieldLabel RequiredIndicator="true">Calendar</FieldLabel>
+                                    <FieldLabel RequiredIndicator="true">@L["TriggerDetail:ModifiedByCalendar"]</FieldLabel>
                                     <FieldBody>
                                         <Autocomplete TItem="SelectListItem"
                                                       TValue="string"
@@ -174,7 +172,7 @@
                                                       TextField="((item) => item.Text)"
                                                       ValueField="((item) => item.Value)"
                                                       @bind-SelectedValue="@TriggerDetail.ModifiedByCalendar"
-                                                      Placeholder="Search..."
+                                                      Placeholder="@L["SearchPlaceHolder"]"
                                                       Filter="AutocompleteFilter.Contains"
                                                       FreeTyping>
                                             <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
@@ -190,7 +188,7 @@
                             </Column>
                             <Column ColumnSize="ColumnSize.Is6">
                                 <Field>
-                                    <FieldLabel RequiredIndicator="true">Timezone</FieldLabel>
+                                    <FieldLabel RequiredIndicator="true">@L["TriggerDetail:InTimeZone"]</FieldLabel>
                                     <FieldBody>
                                         <Autocomplete TItem="TimeZoneInfo"
                                                       TValue="TimeZoneInfo"
@@ -198,7 +196,7 @@
                                                       TextField="((item) => item.DisplayName)"
                                                       ValueField="((item) => item)"
                                                       @bind-SelectedValue="@TriggerDetail.InTimeZone"
-                                                      Placeholder="Search..."
+                                                      Placeholder="@L["SearchPlaceHolder"]"
                                                       Filter="AutocompleteFilter.Contains">
                                             <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
                                             <ItemContent>
@@ -213,24 +211,23 @@
                         @* Simple Trigger/Daily Trigger *@
                         <Column ColumnSize="ColumnSize.Is6">
                             <Field>
-                                <FieldLabel RequiredIndicator="@(TriggerDetail.TriggerType == TriggerType.Simple || TriggerDetail.TriggerType == TriggerType.Calendar)">Repeat Interval</FieldLabel>
+                                <FieldLabel RequiredIndicator="@(TriggerDetail.TriggerType == TriggerType.Simple || TriggerDetail.TriggerType == TriggerType.Calendar)">@L["TriggerDetail:TriggerInterval"]</FieldLabel>
                                 <FieldBody>
-                                    <NumericEdit @bind-Value="TriggerDetail.TriggerInterval"
-                                                 Min="1" Step="1">
+                                    <NumericEdit @bind-Value="TriggerDetail.TriggerInterval" Min="1" Step="1">
                                     </NumericEdit>
                                 </FieldBody>
                             </Field>
 
                             <Validation Validator="@ValidationRule.IsSelected">
                                 <Field>
-                                    <FieldLabel RequiredIndicator="@(TriggerDetail.TriggerType == TriggerType.Simple || TriggerDetail.TriggerType == TriggerType.Calendar)">Unit</FieldLabel>
+                                    <FieldLabel RequiredIndicator="@(TriggerDetail.TriggerType == TriggerType.Simple || TriggerDetail.TriggerType == TriggerType.Calendar)">@L["TriggerDetail:TriggerIntervalUnit"]</FieldLabel>
                                     <FieldBody>
                                         <Select TValue="IntervalUnit?"
                                                 @bind-SelectedValue="@TriggerDetail.TriggerIntervalUnit">
                                             <ChildContent>
                                                 @foreach (var unit in SchedulerDefSvc.GetTriggerIntervalUnits(TriggerDetail.TriggerType))
                                                 {
-                                                    <SelectItem TValue="IntervalUnit?" Value="unit">@unit.ToString()</SelectItem>
+                                                    <SelectItem TValue="IntervalUnit?" Value="unit">@L[$"IntervalUnit:{unit.ToString()}"]</SelectItem>
                                                 }
                                             </ChildContent>
                                             <Feedback>
@@ -245,7 +242,7 @@
                         {
                             <Column ColumnSize="ColumnSize.Is6">
                                 <Field>
-                                    <FieldLabel>Repeat Count</FieldLabel>
+                                    <FieldLabel>@L["TriggerDetail:RepeatCount"]</FieldLabel>
                                     <FieldBody>
                                         <NumericEdit @bind-Value="TriggerDetail.RepeatCount"
                                                      Min="0"
@@ -254,20 +251,20 @@
                                         </NumericEdit>
                                     </FieldBody>
                                 </Field>
-                                <Check TValue="bool" @bind-Checked="TriggerDetail.RepeatForever">Repeat Forever</Check>
+                                <Check TValue="bool" @bind-Checked="TriggerDetail.RepeatForever">@L["TriggerDetail:RepeatForever"]</Check>
                             </Column>
                         }
                     }
 
                     <Column ColumnSize="ColumnSize.Is6">
                         <Field>
-                            <FieldLabel>Start Date</FieldLabel>
+                            <FieldLabel>@L["TriggerDetail:StartDate"]</FieldLabel>
                             <FieldBody>
                                 <DatePicker Date="TriggerDetail.StartDate" StaticPicker="false" />
                             </FieldBody>
                         </Field>
                         <Field>
-                            <FieldLabel>Start Time</FieldLabel>
+                            <FieldLabel>@L["TriggerDetail:StartTimeSpan"]</FieldLabel>
                             <FieldBody>
                                 <TimePicker TimeAs24hr="true" Time="TriggerDetail.StartTimeSpan" StaticPicker="false" />
                             </FieldBody>
@@ -277,13 +274,13 @@
                     <Column ColumnSize="ColumnSize.Is6">
                         <Validation Validator="@((e) => Validator.ValidateFirstLastDateTime(TriggerDetail,e))">
                             <Field>
-                                <FieldLabel>End Date</FieldLabel>
+                                <FieldLabel>@L["TriggerDetail:EndDate"]</FieldLabel>
                                 <FieldBody>
                                     <DatePicker TValue="DateTime?" StaticPicker="false"
                                                 @ref="_endDatePicker"
                                                 @bind-Date="TriggerDetail.EndDate">
                                         <Feedback>
-                                            <ValidationError>End date should be later than start date</ValidationError>
+                                            <ValidationError>@L["Error:EndDateGtStartDate"]</ValidationError>
                                         </Feedback>
                                     </DatePicker>
                                 </FieldBody>
@@ -291,12 +288,12 @@
                         </Validation>
                         <Validation Validator="@((e) => Validator.ValidateFirstLastDateTime(TriggerDetail,e))">
                             <Field>
-                                <FieldLabel>End Time</FieldLabel>
+                                <FieldLabel>@L["TriggerDetail:EndTimeSpan"]</FieldLabel>
                                 <FieldBody>
                                     <TimePicker TValue="TimeSpan?" TimeAs24hr="true" StaticPicker="false"
                                                 @bind-Time="TriggerDetail.EndTimeSpan">
                                         <Feedback>
-                                            <ValidationError>End time should be later than start time</ValidationError>
+                                            <ValidationError>@L["Error:EndTimeGtStartTime"]</ValidationError>
                                         </Feedback>
                                     </TimePicker>
                                 </FieldBody>
@@ -309,7 +306,7 @@
                         <Column ColumnSize="ColumnSize.Is6">
                             <Validation Validator="@ValidationRule.IsSelected">
                                 <Field>
-                                    <FieldLabel RequiredIndicator="true">Start & End Time Timezone</FieldLabel>
+                                    <FieldLabel RequiredIndicator="true">@L["TriggerDetail:StartTimezone"]</FieldLabel>
                                     <FieldBody>
                                         <Select TValue="TimeZoneInfo" @bind-SelectedValue="TriggerDetail.StartTimezone">
                                             <ChildContent>
@@ -330,7 +327,7 @@
 
                         <Column ColumnSize="ColumnSize.Is6">
                             <Field>
-                                <FieldLabel>Calendar</FieldLabel>
+                                <FieldLabel>@L["TriggerDetail:ModifiedByCalendar"]</FieldLabel>
                                 <FieldBody>
                                     <Autocomplete TItem="SelectListItem"
                                                   TValue="string"
@@ -339,7 +336,7 @@
                                                   TextField="((item) => item.Text)"
                                                   ValueField="((item) => item.Value)"
                                                   @bind-SelectedValue="@TriggerDetail.ModifiedByCalendar"
-                                                  Placeholder="Search..."
+                                                  Placeholder="@L["SearchPlaceHolder"]"
                                                   Filter="AutocompleteFilter.Contains"
                                                   FreeTyping>
                                         <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
@@ -359,10 +356,10 @@
 
                     <Column ColumnSize="ColumnSize.Is6">
                         <Field>
-                            <FieldLabel>Priority</FieldLabel>
+                            <FieldLabel>@L["TriggerDetail:Priority"]</FieldLabel>
                             <FieldBody>
                                 <NumericEdit TValue="int" @bind-Value="TriggerDetail.Priority"
-                                             Placeholder="Larger value has higher priority"
+                                             Placeholder="@L["TriggerDetail:PriorityPlaceholder"]"
                                              Step="1" />
                             </FieldBody>
                         </Field>
@@ -370,7 +367,7 @@
                     <Column ColumnSize="ColumnSize.Is6">
                         <Validation Validator="@ValidationRule.IsSelected">
                             <Field>
-                                <FieldLabel>Misfire Instruction</FieldLabel>
+                                <FieldLabel>@L["TriggerDetail:MisfireAction"]</FieldLabel>
                                 <FieldBody>
                                     <Select TValue="MisfireAction"
                                             @bind-SelectedValue="@TriggerDetail.MisfireAction">
@@ -381,7 +378,7 @@
                                             }
                                         </ChildContent>
                                         <Feedback>
-                                            <ValidationError />
+                                            <ValidationError>@L["Error:SelectOneValue"]</ValidationError>
                                         </Feedback>
                                     </Select>
                                 </FieldBody>
@@ -390,7 +387,7 @@
                     </Column>
                     <Column ColumnSize="ColumnSize.Is6">
                         <Field>
-                            <FieldLabel>Description</FieldLabel>
+                            <FieldLabel>@L["TriggerDetail:Description"]</FieldLabel>
                             <FieldBody>
                                 <MemoEdit @bind-Text="TriggerDetail.Description"
                                           Rows="2"

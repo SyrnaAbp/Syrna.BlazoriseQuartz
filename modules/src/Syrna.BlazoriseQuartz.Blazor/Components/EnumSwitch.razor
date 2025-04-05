@@ -1,5 +1,8 @@
 ﻿@typeparam T where T : Enum
 
+@using Syrna.BlazoriseQuartz.Localization
+@inject AbpBlazorMessageLocalizerHelper<BlazoriseQuartzResource> LH
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
 <Column ColumnSize="ColumnSize.Is12" Margin="Margin.Is0" Background="Background.Light">
     @foreach (int value in Enum.GetValues(Type))
     {
@@ -8,7 +11,7 @@
         <Button Color="Color.Primary" Size="Size" Shadow="Shadow.None"
                    Outline="@(value == Convert.ToInt32(Value))"
                 Clicked="() => OnSelected(value)">
-            <Icon Name="@GetIcon(value)"/>@Enum.GetName(Type, value)
+            <Icon Name="@GetIcon(value)" />@L[$"TriggerType:{@Enum.GetName(Type, value)}"]
         </Button>
      }
 </Column>

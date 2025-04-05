@@ -38,6 +38,10 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(JobDetail.JobDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, AddDataMap);
         }
 
+        public DefaultJobUI()
+        {
+            LocalizationResource = typeof(BlazoriseQuartzResource);
+        }
         public async Task EditDataMap(DataMapItemModel dataMap)
         {
             if (dataMap is { Key: not null, Value: not null })
@@ -92,6 +96,15 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
             JobDetail.JobDataMap.Remove(item);
             await InvokeAsync(StateHasChanged);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                //modalRef?.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

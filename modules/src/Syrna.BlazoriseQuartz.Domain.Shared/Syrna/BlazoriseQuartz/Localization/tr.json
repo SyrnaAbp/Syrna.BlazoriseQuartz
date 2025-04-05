@@ -66,6 +66,46 @@
     "DayOfWeek:Sunday": "Pazar",
 
     "DeleteConfirmationMessage": "'{0}' silmek istiyor musunuz?",
-    "SchedulesDeleteConfirmationMessage": "Seçilmiş {0} adet çalıştırma planını silmek istiyor musunuz?"
+    "SchedulesDeleteConfirmationMessage": "Seçilmiş {0} adet çalıştırma planını silmek istiyor musunuz?",
+
+    "TriggerDetail:Description": "Açıklama",
+    "TriggerDetail:MisfireAction": "Hatalı İşlem",
+    "TriggerDetail:Priority": "Öncelik",
+    "TriggerDetail:PriorityPlaceholder": "Daha büyük değer daha yüksek önceliğe sahiptir",
+    "TriggerDetail:ModifiedByCalendar": "Takvim",
+    "TriggerDetail:StartTimezone": "Başlangıç ​​ve Bitiş Zamanı Zaman dilimi",
+    "TriggerDetail:EndTimeSpan": "Bitiş zamanı",
+    "TriggerDetail:EndDate": "Bitiş Tarihi",
+    "TriggerDetail:StartDate": "Başlama Tarihi",
+    "TriggerDetail:StartTimeSpan": "Başlama Zamanı",
+    "TriggerDetail:RepeatCount": "Tekrar Sayısı",
+    "TriggerDetail:TriggerIntervalUnit": "Birimi",
+    "TriggerDetail:TriggerInterval": "Tekrar aralığı",
+    "TriggerDetail:RepeatForever": "Sonsuza Kadar Tekrarla",
+    "TriggerDetail:InTimeZone": "Zaman dilimi",
+    "TriggerDetail:EndDailyTime": "Günlük Son Çalışma Zamanı",
+    "TriggerDetail:StartDailyTime": "Günlük çalışma zamanı",
+    "TriggerDetail:CronExpression": "Cron ifadesi",
+    "TriggerDetail:CronExpressionTooltip": "Cron İfadesini Seçin",
+    "TriggerDetail:Group": "Tetik grubu",
+    "TriggerDetail:Name": "Tetik Adı",
+    "Error:EndTimeGtStartTime": "Bitiş zamanı başlangıç ​​zamanından daha geç olmalıdır",
+    "Error:EndDateGtStartDate": "Bitiş tarihi başlangıç ​​tarihinden daha geç olmalıdır",
+    "SelectDaystoTrigger": "Tetiklemek için Günleri Seçin",
+
+    "TriggerType:Cron": "Cron",
+    "TriggerType:Daily": "Günlük",
+    "TriggerType:Simple": "Basit",
+    "TriggerType:Calendar": "Takvim",
+    "TriggerType:Unknown": "Bilinmiyor",
+
+    "IntervalUnit:Millisecond": "Mili saniye",
+    "IntervalUnit:Second": "Saniye",
+    "IntervalUnit:Minute": "Dakika",
+    "IntervalUnit:Hour": "Saat",
+    "IntervalUnit:Day": "Gün",
+    "IntervalUnit:Week": "Hafta",
+    "IntervalUnit:Month": "Ay",
+    "IntervalUnit:Year": "Yıl"
   }
 }

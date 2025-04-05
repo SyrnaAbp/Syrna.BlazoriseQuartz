@@ -66,6 +66,46 @@
     "DayOfWeek:Sunday": "Sunday",
 
     "DeleteConfirmationMessage": "Do you want to delete '{0}'?",
-    "SchedulesDeleteConfirmationMessage": "Do you want to delete selected {0} schedules?"
+    "SchedulesDeleteConfirmationMessage": "Do you want to delete selected {0} schedules?",
+
+    "TriggerDetail:Description": "Description",
+    "TriggerDetail:MisfireAction": "Misfire Action",
+    "TriggerDetail:Priority": "Priority",
+    "TriggerDetail:PriorityPlaceholder": "Larger value has higher priority",
+    "TriggerDetail:ModifiedByCalendar": "Calendar",
+    "TriggerDetail:StartTimezone": "Start & End Time Timezone",
+    "TriggerDetail:EndTimeSpan": "End Time",
+    "TriggerDetail:EndDate": "End Date",
+    "TriggerDetail:StartDate": "Start Date",
+    "TriggerDetail:StartTimeSpan": "Start Time",
+    "TriggerDetail:RepeatCount": "Repeat Count",
+    "TriggerDetail:TriggerIntervalUnit": "Unit",
+    "TriggerDetail:TriggerInterval": "Repeat Interval",
+    "TriggerDetail:RepeatForever": "Repeat Forever",
+    "TriggerDetail:InTimeZone": "TimeZone",
+    "TriggerDetail:EndDailyTime": "Daily Last Run Time",
+    "TriggerDetail:StartDailyTime": "Daily Run Time",
+    "TriggerDetail:CronExpression": "Cron Expression",
+    "TriggerDetail:CronExpressionTooltip": "Select Cron Expression",
+    "TriggerDetail:Group": "Trigger Group",
+    "TriggerDetail:Name": "Trigger Name",
+    "Error:EndTimeGtStartTime": "End time should be later than start time",
+    "Error:EndDateGtStartDate": "End date should be later than start date",
+    "SelectDaystoTrigger": "Select days to trigger",
+
+    "TriggerType:Cron": "Cron",
+    "TriggerType:Daily": "Daily",
+    "TriggerType:Simple": "Simple",
+    "TriggerType:Calendar": "Calendar",
+    "TriggerType:Unknown": "Unknown",
+
+    "IntervalUnit:Millisecond": "Millisecond",
+    "IntervalUnit:Second": "Second",
+    "IntervalUnit:Minute": "Minute",
+    "IntervalUnit:Hour": "Hour",
+    "IntervalUnit:Day": "Day",
+    "IntervalUnit:Week": "Week",
+    "IntervalUnit:Month": "Month",
+    "IntervalUnit:Year": "Year"
   }
 }
