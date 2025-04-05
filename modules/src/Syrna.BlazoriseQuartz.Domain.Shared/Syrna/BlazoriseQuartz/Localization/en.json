@@ -144,6 +144,17 @@
     "Error:CronExpressionRequired": "Cron Expression is Required",
     "Error:TriggerNameRequired": "Trigger name is Required",
     "Error:CheckCronExpression": "Check cron expression",
-    "Error:TriggerNameAlreadyInUsed": "Trigger name and group already defined. Please choose another name."
+    "Error:TriggerNameAlreadyInUsed": "Trigger name and group already defined. Please choose another name.",
+
+    "HttpJobUI:IgnoreSsl": "Allow insecure SSL connection",
+    "HttpJobUI:IgnoreSsl:Tooltip": "When checked, it will ignore SSL certificate validation.",
+    "HttpJobUI:TimeoutInSec": "Number of seconds to wait before HTTP request timeout",
+    "HttpJobUI:TimeoutInSec:Help": "Default is 100 seconds. Use 0 or negative value to indicate no timeout",
+    "HttpJobUI:Parameters": "Params {{$}}",
+    "HttpJobUI:Headers": "Headers {{$}}",
+    "HttpJobUI:SettingsTitle": "Advanced Settings",
+    "HttpJobUI:RequestUrl": "Request URL {{$}}",
+    "HttpJobUI:RequestMethod": "HTTP Request Method",
+    "Error:RequestUrlRequired": "Request URL is Required"
   }
 }

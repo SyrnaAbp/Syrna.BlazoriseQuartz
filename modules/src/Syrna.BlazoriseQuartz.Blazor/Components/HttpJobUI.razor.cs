@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Syrna.BlazoriseQuartz.Jobs;
 using Syrna.BlazoriseQuartz.Jobs.Abstractions;
+using Syrna.BlazoriseQuartz.Localization;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Components
 {
-    public partial class HttpJobUI : ComponentBase, IJobUI
+    public partial class HttpJobUI : IJobUI
     {
-        const string JOB_CLASS = "BlazoriseQuartz.Jobs.HttpJob";
+        [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
+        const string JOB_CLASS = "Syrna.BlazoriseQuartz.Jobs.HttpJob";
 
         public string JobClass => JOB_CLASS;
 
@@ -23,6 +26,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
         private string HttpAction { get; set; }
         private bool IgnoreSsl { get; set; }
         private int? TimeoutInSec { get; set; }
+
+        public HttpJobUI()
+        {
+            LocalizationResource = typeof(BlazoriseQuartzResource);
+        }
 
         protected override void OnInitialized()
         {
@@ -124,6 +132,14 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             JobDataMap.Remove(HttpJob.PropertyIgnoreVerifySsl);
 
             return Task.CompletedTask;
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                //modalRef?.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

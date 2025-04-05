@@ -1,8 +1,11 @@
+@using Syrna.BlazoriseQuartz.Localization
+@inject AbpBlazorMessageLocalizerHelper<BlazoriseQuartzResource> LH
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
 <div class="httpjobform">
     <Validations>
         <Validation Validator="@ValidationRule.IsSelected">
             <Field>
-                <FieldLabel RequiredIndicator>HTTP Request Method</FieldLabel>
+                <FieldLabel RequiredIndicator>@L["HttpJobUI:RequestMethod"]</FieldLabel>
                 <Select TValue="string"
                         ReadOnly="IsReadOnly"
                         @bind-SelectedValue="HttpAction"
@@ -14,7 +17,7 @@
                         <SelectItem TValue="string" Value="@("Delete")">DELETE</SelectItem>
                     </ChildContent>
                     <Feedback>
-                        <ValidationError>Select one value!</ValidationError>
+                        <ValidationError>@L["Error:SelectOneValue"]</ValidationError>
                     </Feedback>
                 </Select>
             </Field>
@@ -22,12 +25,12 @@
 
         <Validation Validator="@ValidationRule.IsNotEmpty">
             <Field>
-                <FieldLabel RequiredIndicator>Request URL {{$}}</FieldLabel>
+                <FieldLabel RequiredIndicator>@L["HttpJobUI:RequestUrl"]</FieldLabel>
                 <FieldBody>
                     <TextEdit @bind-Text="DataMapUrl.Value"
                               ReadOnly="IsReadOnly">
                         <Feedback>
-                            <ValidationError />
+                            <ValidationError>@L["Error:RequestUrlRequired"]</ValidationError>
                         </Feedback>
                     </TextEdit>
                 </FieldBody>
@@ -39,12 +42,12 @@
         <AccordionItem>
             <AccordionHeader>
                 <Heading Size="HeadingSize.Is5">
-                    <AccordionToggle>Advanced Settings</AccordionToggle>
+                    <AccordionToggle>@L["HttpJobUI:SettingsTitle"]</AccordionToggle>
                 </Heading>
             </AccordionHeader>
             <AccordionBody>
                 <Field>
-                    <FieldLabel>Headers {{$}}</FieldLabel>
+                    <FieldLabel>@L["HttpJobUI:Headers"]</FieldLabel>
                     <FieldBody>
                         <MemoEdit @bind-Value="DataMapHeaders.Value"
                                   Rows="3"
@@ -54,7 +57,7 @@
                 </Field>
 
                 <Field>
-                    <FieldLabel>Params {{$}}</FieldLabel>
+                    <FieldLabel>@L["HttpJobUI:Parameters"]</FieldLabel>
                     <FieldBody>
                         <MemoEdit @bind-Text="DataMapParameters.Value"
                                   Rows="3"
@@ -63,7 +66,7 @@
                     </FieldBody>
                 </Field>
                 <Field>
-                    <FieldLabel>Number of seconds to wait before HTTP request timeout</FieldLabel>
+                    <FieldLabel>@L["HttpJobUI:TimeoutInSec"]</FieldLabel>
                     <FieldBody>
                         <NumericEdit @bind-Value="@TimeoutInSec"
                                      ReadOnly="IsReadOnly"
@@ -71,12 +74,11 @@
                                      Step="1"
                                      TValue="int?" />
                     </FieldBody>
-                    <FieldHelp>Default is 100 seconds. Use 0 or negative value to indicate no timeout</FieldHelp>
+                    <FieldHelp>@L["HttpJobUI:TimeoutInSec:Help"]</FieldHelp>
                 </Field>
 
-                <Tooltip Text="When checked, it will ignore SSL certificate validation.">
-                    <Check TValue="bool" @bind-Checked="IgnoreSsl"
-                           ReadOnly="IsReadOnly">Allow insecure SSL connection</Check>
+                <Tooltip Text="@L["HttpJobUI:IgnoreSsl:Tooltip"]">
+                    <Check TValue="bool" @bind-Checked="IgnoreSsl" ReadOnly="IsReadOnly">@L["HttpJobUI:IgnoreSsl"]</Check>
                 </Tooltip>
             </AccordionBody>
         </AccordionItem>

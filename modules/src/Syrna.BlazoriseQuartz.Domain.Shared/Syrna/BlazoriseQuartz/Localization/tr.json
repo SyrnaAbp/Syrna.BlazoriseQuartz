@@ -144,6 +144,17 @@
     "Error:CronExpressionRequired": "Cron ifadesi gereklidir",
     "Error:TriggerNameRequired": "Tetik adı gerekli",
     "Error:CheckCronExpression": "Cron ifadesini kontrol edin",
-    "Error:TriggerNameAlreadyInUsed": "Tetik adı ve grup zaten tanımlanmış. Lütfen başka bir isim seçin."
+    "Error:TriggerNameAlreadyInUsed": "Tetik adı ve grup zaten tanımlanmış. Lütfen başka bir isim seçin.",
+
+    "HttpJobUI:IgnoreSsl": "Güvensiz SSL bağlantısına izin ver",
+    "HttpJobUI:IgnoreSsl:Tooltip": "İşaretlendiğinde, SSL sertifikası doğrulamasını görmezden gelecektir.",
+    "HttpJobUI:TimeoutInSec": "HTTP Talep Zaman Aşımdan Önce Beklenecek Saniye Sayısı",
+    "HttpJobUI:TimeoutInSec:Help": "Varsayılan 100 saniyedir. Zaman aşımını belirtmek için 0 veya negatif değer kullanın",
+    "HttpJobUI:Parameters": "Parametreler {{$}}",
+    "HttpJobUI:Headers": "Bağşlıklar {{$}}",
+    "HttpJobUI:SettingsTitle": "Gelişmiş Ayarlar",
+    "HttpJobUI:RequestUrl": "İstek URL {{$}}",
+    "HttpJobUI:RequestMethod": "HTTP İstek Metodu",
+    "Error:RequestUrlRequired": "Request URL is Required"
   }
 }
