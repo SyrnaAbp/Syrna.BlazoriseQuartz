@@ -106,6 +106,17 @@
     "IntervalUnit:Day": "Gün",
     "IntervalUnit:Week": "Hafta",
     "IntervalUnit:Month": "Ay",
-    "IntervalUnit:Year": "Yıl"
+    "IntervalUnit:Year": "Yıl",
+
+    "DataMapType:Bool": "Doğru/Yanlış",
+    "DataMapType:String": "Metin",
+    "DataMapType:Integer": "Tam Sayı",
+    "DataMapType:Float": "Reel Sayı",
+    "DataMapType:Double": "Büyük Reel Sayı",
+    "DataMapType:Decimal": "Büyük Sayı",
+    "DataMapType:Long": "Büyük Tam Sayı",
+    "DataMapType:Short": "Küçük Tam Sayı",
+    "DataMapType:Char": "Karakter",
+    "DataMapType:Object": "Nesne"
   }
 }

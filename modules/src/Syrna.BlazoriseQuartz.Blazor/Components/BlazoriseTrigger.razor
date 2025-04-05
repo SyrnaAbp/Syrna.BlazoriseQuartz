@@ -436,7 +436,7 @@
                                     <tr>
                                         <td>@row.Key</td>
                                         <td>@row.Value.ToString()</td>
-                                        <td>@row.GetDataMapTypeDescription()</td>
+                                        <td>@GetDataMapTypeDescription(row)</td>
                                         <td class="d-flex">
                                             <Button Size="Size.Small" Clicked="() => OnEditDataMap(row)" title="Edit">
                                                 <Icon Name="@IconName.Edit" />

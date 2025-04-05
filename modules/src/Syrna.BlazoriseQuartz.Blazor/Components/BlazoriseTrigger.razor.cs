@@ -62,6 +62,16 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             Task.Run(GetTimeZones);
         }
 
+        string GetDataMapTypeDescription(KeyValuePair<string, object> kv)
+        {
+            var mapType = kv.GetDataMapType();
+            if (mapType == DataMapType.Object)
+            {
+                return L[$"DataMapType:{mapType}"] + $" ({kv.Value.GetType().FullName})";
+            }
+            return L[$"DataMapType:{mapType}"];
+        }
+
         public static void DailyDayOfWeekValidation(ValidatorEventArgs e)
         {
             if (e.Value != null)

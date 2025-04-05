@@ -38,6 +38,16 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(JobDetail.JobDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, AddDataMap);
         }
 
+        string GetDataMapTypeDescription(KeyValuePair<string, object> kv)
+        {
+            var mapType = kv.GetDataMapType();
+            if (mapType == DataMapType.Object)
+            {
+                return L[$"DataMapType:{mapType}"] + $" ({kv.Value.GetType().FullName})";
+            }
+            return L[$"DataMapType:{mapType}"];
+        }
+
         public DefaultJobUI()
         {
             LocalizationResource = typeof(BlazoriseQuartzResource);

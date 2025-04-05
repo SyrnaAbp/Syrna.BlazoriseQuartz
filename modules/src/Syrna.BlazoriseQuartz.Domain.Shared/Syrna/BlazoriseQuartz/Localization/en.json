@@ -106,6 +106,17 @@
     "IntervalUnit:Day": "Day",
     "IntervalUnit:Week": "Week",
     "IntervalUnit:Month": "Month",
-    "IntervalUnit:Year": "Year"
+    "IntervalUnit:Year": "Year",
+
+    "DataMapType:Bool": "Bool",
+    "DataMapType:String": "String",
+    "DataMapType:Integer": "Integer",
+    "DataMapType:Float": "Float",
+    "DataMapType:Double": "Double",
+    "DataMapType:Decimal": "Decimal",
+    "DataMapType:Long": "Long",
+    "DataMapType:Short": "Short",
+    "DataMapType:Char": "Char",
+    "DataMapType:Object": "Object"
   }
 }
