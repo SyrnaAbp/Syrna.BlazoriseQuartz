@@ -16,6 +16,8 @@
     "JobDataMap:Key": "Key",
     "JobDataMap:Type": "Type",
     "JobDataMap:Value": "Value",
+    "JobDataMap:Add": "Add",
+    "JobDataMap": "Parameters",
 
     "JobDetail": "Job Detail",
     "JobDetail:Name": "Job Name",
@@ -52,6 +54,18 @@
     "ExecutionLog:FireTimeUtc": "Fire Time",
     "ExecutionLog:DateAddedUtc": "Log Time",
 
-    "CronSamplesDialog": "Cron Samples"
+    "CronSamplesDialog": "Cron Samples",
+
+    "DayOfWeek": "Day of Week",
+    "DayOfWeek:Monday": "Monday",
+    "DayOfWeek:Tuesday": "Tuesday",
+    "DayOfWeek:Wednesday": "Wednesday",
+    "DayOfWeek:Thursday": "Thursday",
+    "DayOfWeek:Friday": "Friday",
+    "DayOfWeek:Saturday": "Saturday",
+    "DayOfWeek:Sunday": "Sunday",
+
+    "DeleteConfirmationMessage": "Do you want to delete '{0}'?",
+    "SchedulesDeleteConfirmationMessage": "Do you want to delete selected {0} schedules?"
   }
 }

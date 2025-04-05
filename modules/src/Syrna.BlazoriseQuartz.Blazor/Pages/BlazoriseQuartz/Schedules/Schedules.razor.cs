@@ -465,6 +465,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             await SchedulerSvc.PauseTrigger(model.TriggerName, model.TriggerGroup);
         }
 
+        private string DeleteConfirnationMessage(ScheduleModel item) => string.Format(L["DeleteConfirmationMessage"], item.JobName);
         private async Task OnDeleteScheduleJob(ScheduleModel model)
         {
             if (model.JobStatus == JobStatus.NoSchedule)
@@ -474,14 +475,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             else
             {
                 // confirm delete
-                bool? yes = await UiMessageService.Confirm(
-                    "Confirm Delete",
-                    $"Do you want to delete this schedule?",
-                    o =>
-                    {
-                        o.OkButtonText = "Yes";
-                        o.CancelButtonText = "No";
-                    });
+                bool? yes = await UiMessageService.Confirm(DeleteConfirnationMessage(model));
                 if (yes == null || !yes.Value)
                 {
                     return;
@@ -495,7 +489,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 }
                 else
                 {
-                    await Notify.Info("Deleted schedule");
+                    await Notify.Info(L["DeletedSuccessfully"]);
                 }
             }
         }
@@ -528,16 +522,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 
             currentJobDetail.Name = string.Empty;
 
-            //var options = new ModalInstanceOptions
-            //{
-            //    Size = ModalSize.Large
-            //};
-            //await DialogSvc.Show<ScheduleDialog>("Create Schedule Job", p =>
-            //{
-            //    p.Add("JobDetail", currentJobDetail);
-            //    p.Add("TriggerDetail", currentTriggerModel ?? new());
-            //    p.Add("IsNew", true);
-            //}, options);
             await ScheduleDialogRef.OpenDialog(currentJobDetail, currentTriggerModel ?? new(), true);
         }
         HistoryDialog HistoryDialogRef;
@@ -596,6 +580,8 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             await ScheduleDialogRef.OpenDialog(currentJobDetail, triggerDetail);
         }
 
+        private string DeleteConfirnationMessage(List<ScheduleModel> items) => string.Format(L["SchedulesDeleteConfirmationMessage"], items.Count);
+       
         private async Task OnDeleteSelectedScheduleJobs()
         {
             if (_scheduleDataGrid is null)
@@ -607,14 +593,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 return;
 
             // confirm delete
-            bool? yes = await UiMessageService.Confirm(
-                "Confirm Delete",
-                $"Do you want to delete selected {selectedItems.Count} schedules?",
-                o =>
-                {
-                    o.OkButtonText = "Yes";
-                    o.CancelButtonText = "No";
-                });
+            bool? yes = await UiMessageService.Confirm(DeleteConfirnationMessage(selectedItems));
             if (yes == null || !yes.Value)
             {
                 return;

@@ -16,6 +16,8 @@
     "JobDataMap:Key": "Adı",
     "JobDataMap:Type": "Tipi",
     "JobDataMap:Value": "Değeri",
+    "JobDataMap:Add": "Ekle",
+    "JobDataMap": "Parametreler",
 
     "JobDetail": "İş Detayları",
     "JobDetail:Name": "İş Adı",
@@ -52,6 +54,18 @@
     "ExecutionLog:FireTimeUtc": "İşlem Zamanı",
     "ExecutionLog:DateAddedUtc": "Log Zamanı",
 
-    "CronSamplesDialog": "Cron Örnekleri"
+    "CronSamplesDialog": "Cron Örnekleri",
+
+    "DayOfWeek": "Haftanın Günü",
+    "DayOfWeek:Monday": "Pazartesi",
+    "DayOfWeek:Tuesday": "Salı",
+    "DayOfWeek:Wednesday": "Çarşamba",
+    "DayOfWeek:Thursday": "Perşembe",
+    "DayOfWeek:Friday": "Cuma",
+    "DayOfWeek:Saturday": "Cumartesi",
+    "DayOfWeek:Sunday": "Pazar",
+
+    "DeleteConfirmationMessage": "'{0}' silmek istiyor musunuz?",
+    "SchedulesDeleteConfirmationMessage": "Seçilmiş {0} adet çalıştırma planını silmek istiyor musunuz?"
   }
 }

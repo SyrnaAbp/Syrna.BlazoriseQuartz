@@ -8,10 +8,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp.AspNetCore.Components.Messages;
-using Volo.Abp.Localization;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Components
 {
@@ -59,7 +57,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         protected override void OnInitialized()
         {
-            CronDescription = L["CronHelpText"];
+            Task.Run(() => OnCronExpressionInputElapsed(TriggerDetail.CronExpression));
             OriginalTriggerKey = new(TriggerDetail.Name, TriggerDetail.Group);
             Task.Run(GetTimeZones);
         }
@@ -85,9 +83,17 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         private async Task OnCronExpressionInputElapsed(string cronExpression)
         {
+            TriggerDetail.CronExpression = cronExpression;
             try
             {
-                CronDescription = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cronExpression, new CronExpressionDescriptor.Options() { Locale = CultureInfo.CurrentCulture.Name });
+                var options = new CronExpressionDescriptor.Options()
+                {
+                    ThrowExceptionOnParseError = false,
+                    Verbose = false,
+                    DayOfWeekStartIndexZero = true,
+                    Locale = CultureInfo.DefaultThreadCurrentCulture?.ToString()
+                };
+                CronDescription = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cronExpression, options);
             }
             catch
             {
@@ -99,8 +105,8 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         private async Task SetCronExpression(string cronExpression)
         {
-            TriggerDetail.CronExpression = cronExpression;
-
+            await OnCronExpressionInputElapsed(cronExpression);
+            await InvokeAsync(StateHasChanged);
             await Task.CompletedTask;
         }
 
@@ -111,15 +117,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         private async Task OnShowSampleCron()
         {
-            //var options = new ModalInstanceOptions
-            //{
-            //    Size = ModalSize.Default
-            //};
-
-            //await DialogSvc.Show<CronSamplesDialog>("Sample Cron Expressions", p =>
-            //{
-            //    p.Add("Save", (Delegate)SetCronExpression);
-            //}, options);
             await CronSamplesDialogRef.OpenModalAync(SetCronExpression);
         }
 
@@ -198,16 +195,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
         JobDataMapDialog JobDataMapDialogRef;
         private async Task OnAddDataMap()
         {
-            //var options = new ModalInstanceOptions
-            //{
-            //	Size = ModalSize.Small
-            //};
-
-            //await DialogSvc.Show<JobDataMapDialog>("Add Data Map", p =>
-            //{
-            //	p.Add("JobDataMap", new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase));
-            //	p.Add("Save", (Delegate)AddDataMap);
-            //}, options);
             var dataMapItem = new DataMapItemModel();
             await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, AddDataMap);
         }
@@ -228,18 +215,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         private async Task OnEditDataMap(KeyValuePair<string, object> item)
         {
-            //var options = new ModalInstanceOptions
-            //{
-            //	Size = ModalSize.Small
-            //};
-
-            //await DialogSvc.Show<JobDataMapDialog>("Edit Data Map", p =>
-            //{
-            //	p.Add("ExistingDataMap", TriggerDetail.TriggerDataMap);
-            //	p.Add("DataMapItem", new DataMapItemModel(item));
-            //	p.Add("IsEditMode", true);
-            //	p.Add("Save", (Delegate)UpdateDataMap);
-            //}, options);
             var dataMapItem = new DataMapItemModel(item);
             await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, UpdateDataMap, true);
         }
@@ -264,19 +239,16 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
                 key = item.Key + index++;
             }
             var clonedItem = new KeyValuePair<string, object>(key, item.Value);
-            //await DialogSvc.Show<JobDataMapDialog>("Add Data Map", p =>
-            //{
-            //    p.Add("ExistingDataMap", new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase));
-            //    p.Add("DataMapItem", new DataMapItemModel(clonedItem));
-            //    p.Add("Save", (Delegate)UpdateDataMap);
-            //}, options);
             var dataMapItem = new DataMapItemModel(clonedItem);
-            await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, UpdateDataMap, true);
+            await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, UpdateDataMap);
         }
+        
+        private string DeleteConfirnationMessage(KeyValuePair<string, object> item) => string.Format(L["DeleteConfirmationMessage"], item.Key);
+
         CronSamplesDialog CronSamplesDialogRef;
         private async Task OnDeleteDataMap(KeyValuePair<string, object> item)
         {
-            bool? yes = await UiMessageService.Confirm($"Do you want to delete '{item.Key}'?");
+            bool? yes = await UiMessageService.Confirm(DeleteConfirnationMessage(item));
 
             if (yes == null || !yes.Value)
             {

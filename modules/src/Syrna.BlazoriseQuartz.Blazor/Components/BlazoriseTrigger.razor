@@ -36,7 +36,10 @@
                                               Placeholder="Search..."
                                               Filter="AutocompleteFilter.Contains"
                                               FreeTyping>
-                                    <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                                    <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
+                                    <ItemContent>
+                                        <Paragraph Margin="Margin.Is2.FromBottom">@context.Text</Paragraph>
+                                    </ItemContent>
                                 </Autocomplete>
                             </FieldBody>
                         </Field>
@@ -51,13 +54,8 @@
                                     <FieldBody>
                                         <Addons>
                                             <Addon AddonType="AddonType.Body">
-                                                <TextEdit DebounceInterval="500"
-                                                          TextChanged="OnCronExpressionInputElapsed"
+                                                <TextEdit TextChanged="OnCronExpressionInputElapsed"
                                                           Text="@TriggerDetail.CronExpression">
-                                                    <Feedback>
-                                                        <ValidationSuccess>@CronDescription</ValidationSuccess>
-                                                        <ValidationError />
-                                                    </Feedback>
                                                 </TextEdit>
                                             </Addon>
                                             <Addon AddonType="AddonType.End">
@@ -67,7 +65,9 @@
                                                     </Tooltip>
                                                 </Button>
                                             </Addon>
+                                            <ValidationError />
                                         </Addons>
+                                        <FieldHelp>@CronDescription</FieldHelp>
                                     </FieldBody>
                                 </Field>
                             </Validation>
@@ -83,9 +83,8 @@
                                                   ValueField="((item) => item)"
                                                   @bind-SelectedValue="@TriggerDetail.InTimeZone"
                                                   Placeholder="Search..."
-                                                  Filter="AutocompleteFilter.Contains"
-                                                  >
-                                        <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                                                  Filter="AutocompleteFilter.Contains">
+                                        <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
                                         <ItemContent>
                                             <Paragraph Margin="Margin.Is2.FromBottom">@context.Text</Paragraph>
                                         </ItemContent>
@@ -135,9 +134,8 @@
                                                       ValueField="((item) => item)"
                                                       @bind-SelectedValue="@TriggerDetail.InTimeZone"
                                                       Placeholder="Search..."
-                                                      Filter="AutocompleteFilter.Contains"
-                                                      >
-                                            <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                                                      Filter="AutocompleteFilter.Contains">
+                                            <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
                                             <ItemContent>
                                                 <Paragraph Margin="Margin.Is2.FromBottom">@context.Text</Paragraph>
                                             </ItemContent>
@@ -148,15 +146,15 @@
                             <Column ColumnSize="ColumnSize.Is6">
                                 <Validation Validator="DailyDayOfWeekValidation">
                                     <Field>
-                                        <FieldLabel RequiredIndicator="true">Day of Week</FieldLabel>
+                                        <FieldLabel RequiredIndicator="true">@L["DayOfWeek"]</FieldLabel>
                                         <FieldBody>
-                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Monday]">@(DayOfWeek.Monday.ToString())</Check><br />
-                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Tuesday]">@(DayOfWeek.Tuesday.ToString())</Check><br />
-                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Wednesday]">@(DayOfWeek.Wednesday.ToString())</Check><br />
-                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Thursday]">@(DayOfWeek.Thursday.ToString())</Check><br />
-                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Friday]">@(DayOfWeek.Friday.ToString())</Check><br />
-                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Saturday]">@(DayOfWeek.Saturday.ToString())</Check><br />
-                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Sunday]">@(DayOfWeek.Sunday.ToString())</Check><br />
+                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Monday]">@L["DayOfWeek:Monday"]</Check><br />
+                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Tuesday]">@L["DayOfWeek:Tuesday"]</Check><br />
+                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Wednesday]">@L["DayOfWeek:Wednesday"]</Check><br />
+                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Thursday]">@L["DayOfWeek:Thursday"]</Check><br />
+                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Friday]">@L["DayOfWeek:Friday"]</Check><br />
+                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Saturday]">@L["DayOfWeek:Saturday"]</Check><br />
+                                            <Check TValue="bool" @bind-Checked="TriggerDetail.DailyDayOfWeek[(int)DayOfWeek.Sunday]">@L["DayOfWeek:Sunday"]</Check><br />
                                         </FieldBody>
                                         <FieldHelp>Select days to trigger this job</FieldHelp>
                                     </Field>
@@ -179,7 +177,10 @@
                                                       Placeholder="Search..."
                                                       Filter="AutocompleteFilter.Contains"
                                                       FreeTyping>
-                                            <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                                            <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
+                                            <ItemContent>
+                                                <Paragraph Margin="Margin.Is2.FromBottom">@context.Text</Paragraph>
+                                            </ItemContent>
                                         </Autocomplete>
                                     </FieldBody>
                                 </Field>
@@ -198,9 +199,8 @@
                                                       ValueField="((item) => item)"
                                                       @bind-SelectedValue="@TriggerDetail.InTimeZone"
                                                       Placeholder="Search..."
-                                                      Filter="AutocompleteFilter.Contains"
-                                                      >
-                                            <NotFoundContent>@string.Format(L["NotFoundContent"],context)</NotFoundContent>
+                                                      Filter="AutocompleteFilter.Contains">
+                                            <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
                                             <ItemContent>
                                                 <Paragraph Margin="Margin.Is2.FromBottom">@context.Text</Paragraph>
                                             </ItemContent>
@@ -342,7 +342,10 @@
                                                   Placeholder="Search..."
                                                   Filter="AutocompleteFilter.Contains"
                                                   FreeTyping>
-                                        <NotFoundContent> Sorry... @context was not found! :( </NotFoundContent>
+                                        <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
+                                        <ItemContent>
+                                            <Paragraph Margin="Margin.Is2.FromBottom">@context.Text</Paragraph>
+                                        </ItemContent>
                                     </Autocomplete>
                                 </FieldBody>
                             </Field>
@@ -400,14 +403,14 @@
             <CardFooter>
                 <Bar Breakpoint="Breakpoint.Desktop" Background="Background.Light" Shadow="Shadow.Remove" ThemeContrast="ThemeContrast.Light">
                     <BarBrand>
-                        <Heading Size="HeadingSize.Is6">Job Data Map</Heading>
+                        <Heading Size="HeadingSize.Is6">@L["JobDataMap"]</Heading>
                     </BarBrand>
                     <BarStart>
                     </BarStart>
                     <BarEnd>
                         <Button Color="Color.Primary"
                                 Clicked="@OnAddDataMap">
-                            <Icon Name="@IconName.Add" />Add
+                            <Icon Name="@IconName.Add" />@L["JobDataMap:Add"]
                         </Button>
                     </BarEnd>
                 </Bar>
@@ -420,13 +423,13 @@
                                 <col />
                                 <col />
                                 <col style="width: 200px;" />
-                                <col style="width: 60px;" />
+                                <col style="width: 120px;" />
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th>Key</th>
-                                    <th>Value</th>
-                                    <th>Type</th>
+                                    <th>@L["JobDataMap:Key"]</th>
+                                    <th>@L["JobDataMap:Value"]</th>
+                                    <th>@L["JobDataMap:Type"]</th>
                                     <th></th>
                                 </tr>
                             </thead>

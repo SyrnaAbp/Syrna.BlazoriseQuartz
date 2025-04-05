@@ -79,9 +79,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(JobDetail.JobDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, EditDataMap);
         }
 
+        private string DeleteConfirnationMessage(KeyValuePair<string, object> item) => string.Format(L["DeleteConfirmationMessage"], item.Key);
+
         private async Task OnDeleteDataMap(KeyValuePair<string, object> item)
         {
-            bool? yes = await UiMessageService.Confirm($"Do you want to delete '{item.Key}'?");
+            bool? yes = await UiMessageService.Confirm(DeleteConfirnationMessage(item));
 
             if (yes == null || !yes.Value)
             {

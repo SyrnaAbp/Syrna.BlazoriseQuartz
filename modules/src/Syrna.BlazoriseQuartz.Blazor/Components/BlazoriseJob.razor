@@ -34,9 +34,11 @@
                                       ReadData="GetJobGroups"
                                       Placeholder="@L["SearchPlaceHolder"]"
                                       Filter="AutocompleteFilter.Contains"
-                                      FreeTyping
-                                      CustomFilter="@(( item, searchValue ) => item.Text.IndexOf( searchValue, 0, StringComparison.CurrentCultureIgnoreCase ) >= 0 )">
+                                      FreeTyping>
                             <NotFoundContent>@string.Format(L["NotFoundContent"], context)</NotFoundContent>
+                            <ItemContent>
+                                <Paragraph Margin="Margin.Is2.FromBottom">@context.Text</Paragraph>
+                            </ItemContent>
                         </Autocomplete>
                     </FieldBody>
                 </Field>

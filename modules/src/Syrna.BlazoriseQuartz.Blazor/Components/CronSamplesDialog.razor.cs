@@ -4,6 +4,7 @@ using Microsoft.Extensions.Localization;
 using Syrna.BlazoriseQuartz.Localization;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Components;
@@ -11,7 +12,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components;
 public partial class CronSamplesDialog
 {
     [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
-   
+
     Modal modalRef;
 
     public Func<string, Task> Save { get; set; }
@@ -31,9 +32,16 @@ public partial class CronSamplesDialog
         LocalizationResource = typeof(BlazoriseQuartzResource);
     }
 
-    private string GetCronDescription(string cron)
+    private static string GetCronDescription(string cron)
     {
-        return $"{cron} ({CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cron)})";
+        var options = new CronExpressionDescriptor.Options()
+        {
+            ThrowExceptionOnParseError = false,
+            Verbose = false,
+            DayOfWeekStartIndexZero = true,
+            Locale = CultureInfo.DefaultThreadCurrentCulture?.ToString()
+        };
+        return $"{cron} ({CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cron, options)})";
     }
 
     private async Task OnSelectExpression(string cronExpression)
