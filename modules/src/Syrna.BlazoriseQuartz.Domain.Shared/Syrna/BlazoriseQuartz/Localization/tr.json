@@ -117,6 +117,33 @@
     "DataMapType:Long": "Büyük Tam Sayı",
     "DataMapType:Short": "Küçük Tam Sayı",
     "DataMapType:Char": "Karakter",
-    "DataMapType:Object": "Nesne"
+    "DataMapType:Object": "Nesne",
+
+    "MisfireAction:IgnoreMisfirePolicy": "Hatalı İşlem Politikasını Yok Sayın",
+    "MisfireAction:InstructionNotSet": "Talimat ayarlanmadı",
+    "MisfireAction:SmartPolicy": "Akıllı politika",
+    "MisfireAction:FireNow": "Hemen İşleme Al",
+    "MisfireAction:RescheduleNextWithExistingCount": "Mevcut sayı ile daha sonra yeniden planlayın",
+    "MisfireAction:RescheduleNextWithRemainingCount": "Kalan sayı ile yeniden planlayın",
+    "MisfireAction:RescheduleNowWithExistingRepeatCount": "Mevcut tekrar sayısı ile şimdi yeniden planlayın",
+    "MisfireAction:RescheduleNowWithRemainingRepeatCount": "Kalan tekrar sayımı ile şimdi yeniden planlayın",
+    "MisfireAction:DoNothing": "Hiçbir şey yapma",
+    "MisfireAction:FireOnceNow": "Hemen Bir Kez İşleme Al",
+
+    "MisfireAction:IgnoreMisfirePolicy:Description": "Ischeduler'a ITRigger'ın asla yanlış bir durum için değerlendirilmeyeceğini ve zamanlayıcıdan mümkün olan en kısa sürede ateşlemeye çalışacağını ve daha sonra tetiği uygun zamanda ateş etmiş gibi güncelleyeceğini söyler.",
+    "MisfireAction:InstructionNotSet:Description": "Talimat ayarlanmadı (henüz).",
+    "MisfireAction:SmartPolicy:Description": "Akıllı Politika Kullanın.",
+    "MisfireAction:FireNow:Description": "Şimdi ischeduler tarafından kovuldu. Not: Bu talimat tipik olarak yalnızca 'tek atış' (tekrarlama olmayan) tetikleyiciler için kullanılmalıdır. Tekrar sayımı> 0 ile bir tetikleyicide kullanılırsa, şimdi tekrar sayımı ile Talimat Yeniden Planına eşdeğerdir.",
+    "MisfireAction:RescheduleNextWithExistingCount:Description": "İlişkili herhangi bir icalendar dikkate alınarak ve tekrar sayımı değişmeden kaldıktan sonra 'şimdi' sonrası bir sonraki planlanan saate yeniden planlandı.",
+    "MisfireAction:RescheduleNextWithRemainingCount:Description": "Herhangi bir ilişkili icalendar'ı dikkate alarak ve herhangi bir ateşlemeyi kaçırmamış olsaydı, tekrar sayımı ne olacağına ayarlanan bir sonraki planlanan zamana yeniden planlandı.",
+    "MisfireAction:RescheduleNowWithExistingRepeatCount:Description": "'Şimdi' (ilişkili icalendar 'şimdi' hariç tutsa bile) tekrar planlandı. Bu, son zamana uyuyor, bu nedenle 'şimdi' bitiş zamanından sonra ise ITRigger tekrar ateş etmeyecek.",
+    "MisfireAction:RescheduleNowWithRemainingRepeatCount:Description": "'Şimdi' (ilişkili icalendar 'şimdi' hariç tutsa bile) tekrar planlandı, tekrar sayımı ne olacağına göre, herhangi bir ateşlemeyi kaçırmamış olsaydı. Bu, son zamana uyuyor, bu nedenle 'şimdi' bitiş zamanından sonra ise ITRigger tekrar ateş etmeyecek. Not: Bu talimatın kullanılması, tetikleyicinin başlangıçta kurulduğu başlangıç ​​zamanını ve tekrar sayımı 'unutmasına' neden olur. Bunun yerine, tetikleyici üzerindeki tekrar sayımı, geri kalan tekrar sayısı ne olursa olsun değiştirilecektir (bu sadece bir nedenden dolayı orijinal değerlerin daha sonraki bir zamanda ne olduğunu söylemek istiyorsanız bir sorundur). Not: Bu talimat, kaçırdığı yerde tüm tekrar ateşi zamanları varsa, ITRigger'ın 'şimdi' ateş ettikten sonra 'tam' durumuna gitmesine neden olabilir.",
+    "MisfireAction:DoNothing:Description": "Mevcut saatten sonra (ilişkili herhangi bir icalendar dikkate alınarak) bir dahaki sefere programda bir sonraki zamana güncellenmesini söyleyin, ancak şimdi kovulmak istemiyor.",
+    "MisfireAction:FireOnceNow:Description": "Hemen bir kez daha işleme alınmasını sağlar",
+
+    "Error:CronExpressionRequired": "Cron ifadesi gereklidir",
+    "Error:TriggerNameRequired": "Tetik adı gerekli",
+    "Error:CheckCronExpression": "Cron ifadesini kontrol edin",
+    "Error:TriggerNameAlreadyInUsed": "Tetik adı ve grup zaten tanımlanmış. Lütfen başka bir isim seçin."
   }
 }

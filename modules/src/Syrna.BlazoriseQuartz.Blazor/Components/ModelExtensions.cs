@@ -10,15 +10,15 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 			switch (triggerType)
 			{
 				case TriggerType.Cron:
-					return IconName.Clock.ToString();
+					return "fa-clock";
 				case TriggerType.Daily:
-					return IconName.CalendarDay.ToString();
+					return "fa-calendar-day";
 				case TriggerType.Simple:
 					return "fa-repeat";
 				case TriggerType.Calendar:
-					return IconName.Calendar.ToString();
+					return "fa-calendar";
 				default:
-					return IconName.Settings.ToString();
+					return "fa-gear";
 			}
 		}
 

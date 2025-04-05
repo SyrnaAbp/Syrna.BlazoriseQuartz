@@ -8,10 +8,9 @@
     {
         if (ExcludedValues.Contains((T)Enum.ToObject(Type, value)))
             continue;
-        <Button Color="Color.Primary" Size="Size" Shadow="Shadow.None"
-                   Outline="@(value == Convert.ToInt32(Value))"
+        <Button Color="@(value == Convert.ToInt32(Value)?Color.Secondary:Color.Default)" Size="Size" Shadow="Shadow.None"                   
                 Clicked="() => OnSelected(value)">
-            <Icon Name="@GetIcon(value)" />@L[$"TriggerType:{@Enum.GetName(Type, value)}"]
+            <Icon Margin="Margin.Is1" Name="@GetIcon(value)" />@L[$"TriggerType:{@Enum.GetName(Type, value)}"]
         </Button>
      }
 </Column>

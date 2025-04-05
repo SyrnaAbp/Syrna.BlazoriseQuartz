@@ -172,24 +172,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             }
         }
 
-        //async Task OnStartDailyTimeChanged(TimeSpan? time)
-        //{
-        //    TriggerDetail.StartDailyTime = time;
-        //    await _endDailyTimePicker.Validate();
-        //}
-
-        //async Task OnStartTimeChanged(TimeSpan? time)
-        //{
-        //    TriggerDetail.StartTimeSpan = time;
-        //    await _endDatePicker.Validate();
-        //}
-
-        //async Task OnStartDateChanged(DateTime? time)
-        //{
-        //    TriggerDetail.StartDate = time;
-        //    await _endDatePicker.Validate();
-        //}
-
         public async Task AddDataMap(DataMapItemModel dataMap)
         {
             if (dataMap is { Key: not null, Value: not null })
@@ -231,10 +213,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         private async Task OnCloneDataMap(KeyValuePair<string, object> item)
         {
-            var options = new ModalInstanceOptions
-            {
-                Size = ModalSize.Small
-            };
             var index = 1;
             var key = item.Key + index++;
 

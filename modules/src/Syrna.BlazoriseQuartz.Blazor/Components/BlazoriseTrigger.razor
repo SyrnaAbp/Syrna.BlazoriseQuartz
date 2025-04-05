@@ -15,7 +15,11 @@
                             <Field>
                                 <FieldLabel RequiredIndicator="true">@L["TriggerDetail:Name"]</FieldLabel>
                                 <FieldBody>
-                                    <TextEdit @bind-Value="TriggerDetail.Name" Immediate="true" />
+                                    <TextEdit @bind-Text="TriggerDetail.Name" Immediate="true">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
                                 </FieldBody>
                             </Field>
                         </Validation>
@@ -231,7 +235,7 @@
                                                 }
                                             </ChildContent>
                                             <Feedback>
-                                                <ValidationError />
+                                                <ValidationError>@L["Error:SelectOneValue"]</ValidationError>
                                             </Feedback>
                                         </Select>
                                     </FieldBody>
@@ -317,7 +321,7 @@
                                                 }
                                             </ChildContent>
                                             <Feedback>
-                                                <ValidationError />
+                                                <ValidationError>@L["Error:SelectOneValue"]</ValidationError>
                                             </Feedback>
                                         </Select>
                                     </FieldBody>
@@ -374,7 +378,7 @@
                                         <ChildContent>
                                             @foreach (var action in SchedulerDefSvc.GetMisfireActions(TriggerDetail.TriggerType))
                                             {
-                                                <SelectItem TValue="MisfireAction" Value="action">@action.ToString()</SelectItem>
+                                                <SelectItem TValue="MisfireAction" Value="action">@L[$"MisfireAction:{@action.ToString()}"]</SelectItem>
                                             }
                                         </ChildContent>
                                         <Feedback>
@@ -382,6 +386,7 @@
                                         </Feedback>
                                     </Select>
                                 </FieldBody>
+                                <FieldHelp>@L[$"MisfireAction:{TriggerDetail.MisfireAction.ToString()}:Description"]</FieldHelp>
                             </Field>
                         </Validation>
                     </Column>
