@@ -28,6 +28,7 @@
     "Error:JobNameAlreadyInUsed": "Job name already in used. Please choose another name or group.",
     "Error:SelectOneValue": "Select one value!",
     "NotFoundContent": "Sorry... {0} was not found! :(",
+    "CronHelpText": "Cron expression: seconds minutes hours day-of-month month day-of-week year",
 
     "TriggerDetail": "Trigger Detail",
 
@@ -49,6 +50,8 @@
     "ExecutionLog:ErrorMessage": "Error message",
     "ExecutionLog:ErrorStackTrace": "Stack Trace",
     "ExecutionLog:FireTimeUtc": "Fire Time",
-    "ExecutionLog:DateAddedUtc": "Log Time"
+    "ExecutionLog:DateAddedUtc": "Log Time",
+
+    "CronSamplesDialog": "Cron Samples"
   }
 }

@@ -3,6 +3,10 @@
 @inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
 <Modal @ref="modalRef">
     <ModalContent>
+        <ModalHeader>
+            <ModalTitle>@L["CronSamplesDialog"]</ModalTitle>
+            <CloseButton Clicked="Close" />
+        </ModalHeader>
         <ModalBody>
             <Div>
                 @foreach (var cron in _cronSamples)
@@ -11,8 +15,7 @@
                         <Addon AddonType="AddonType.Body">
                             <TextEdit Text="@GetCronDescription(cron)"
                                       ReadOnly="true"
-                                      Margin="Margin.Is1"
-                                      Placeholder="Use cron expression" />
+                                      Margin="Margin.Is1" />
                         </Addon>
                         <Addon AddonType="AddonType.End">
                             <Button Clicked="@(() => OnSelectExpression(cron))">
@@ -24,7 +27,7 @@
             </Div>
         </ModalBody>
         <ModalFooter>
-            <Button Clicked="Close">Close</Button>
+            <Button Color="Color.Primary" Clicked="Close">@L["Close"]</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>

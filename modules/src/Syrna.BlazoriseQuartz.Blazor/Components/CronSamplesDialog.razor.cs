@@ -14,17 +14,17 @@ public partial class CronSamplesDialog
    
     Modal modalRef;
 
-    [Parameter] public Func<string, Task> Save { get; set; }
+    public Func<string, Task> Save { get; set; }
 
-    private readonly List<string> _cronSamples = new()
-    {
+    private readonly List<string> _cronSamples =
+    [
         "0 15 10 ? * *",
         "0 * 14 * * ?",
         "0 0/5 10 ? * MON-FRI",
         "0 15 10 ? * 6L",
         "0 15 10 ? * 6#3",
         "0 15 10 L-2 * ?"
-    };
+    ];
 
     public CronSamplesDialog()
     {
@@ -40,6 +40,12 @@ public partial class CronSamplesDialog
     {
         await Save!.Invoke(cronExpression);
         await modalRef.Hide();
+    }
+
+    public async Task OpenModalAync(Func<string, Task> save)
+    {
+        Save = save;
+        await modalRef.Show();
     }
 
     protected async Task Close()

@@ -54,19 +54,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         private async Task OnEditDataMap(KeyValuePair<string, object> item)
         {
-            //var options = new ModalInstanceOptions
-            //{
-            //    Size = ModalSize.Small
-            //};
-
-            //var dialog = await ModalSvc.Show<JobDataMapDialog>("Edit Data Map", p =>
-            //{
-            //    p.Add("JobDataMap", JobDetail.JobDataMap);
-            //    p.Add("DataMapItem", new DataMapItemModel(item));
-            //    p.Add("IsEditMode", true);
-            //    p.Add("Save", (Delegate)EditDataMap);
-
-            //}, options);
             var dataMapItem = new DataMapItemModel(item);
             await JobDataMapDialogRef.OpenModalAsync(JobDetail.JobDataMap, dataMapItem, EditDataMap, true);
         }
@@ -88,24 +75,13 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             }
             var clonedItem = new KeyValuePair<string, object>(key, item.Value);
 
-            //var options = new ModalInstanceOptions
-            //{
-            //    Size = ModalSize.Small
-            //};
-            //await ModalSvc.Show<JobDataMapDialog>("Add Data Map", p =>
-            //{
-            //    p.Add("JobDataMap", new Dictionary<string, object>(JobDetail.JobDataMap, StringComparer.OrdinalIgnoreCase));
-            //    p.Add("DataMapItem", new DataMapItemModel(clonedItem));
-            //    p.Add("Save", (Delegate)EditDataMap);
-            //}, options);
             var dataMapItem = new DataMapItemModel(clonedItem);
             await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(JobDetail.JobDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, EditDataMap);
         }
 
         private async Task OnDeleteDataMap(KeyValuePair<string, object> item)
         {
-            bool? yes = await UiMessageService.Confirm(
-                $"Do you want to delete '{item.Key}'?");
+            bool? yes = await UiMessageService.Confirm($"Do you want to delete '{item.Key}'?");
 
             if (yes == null || !yes.Value)
             {

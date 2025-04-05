@@ -6,21 +6,21 @@ using Syrna.BlazoriseQuartz.Scheduler;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp.AspNetCore.Components.Messages;
+using Volo.Abp.Localization;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Components
 {
-    public partial class BlazoriseTrigger 
+    public partial class BlazoriseTrigger
     {
         [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
-        const string CRON_HELP_TEXT = "Cron expression: seconds minutes hours day-of-month month day-of-week year";
         [Inject] private ISchedulerDefinitionService SchedulerDefSvc { get; set; } = null!;
         [Inject] private ISchedulerAppService SchedulerSvc { get; set; } = null!;
         [Inject] private ITriggerDetailModelValidator Validator { get; set; } = null!;
-        [Inject] private IModalService DialogSvc { get; set; } = null!;
         [Inject] protected IUiMessageService UiMessageService { get; set; } = default!;
 
         [Parameter]
@@ -35,11 +35,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         private IEnumerable<SelectListItem> ExistingTriggerGroups;
 
-        private string CronDescription = CRON_HELP_TEXT;
+        private string CronDescription;
         private Validations _validations = null!;
         private bool _isDaysOfWeekValid = true;
-        private IReadOnlyCollection<SelectListItem>? _calendars;
-        private IReadOnlyCollection<TimeZoneInfo>? _timeZones;
+        private IReadOnlyCollection<SelectListItem> _calendars;
+        private IReadOnlyCollection<TimeZoneInfo> _timeZones;
         private TimePicker<TimeSpan?> _endDailyTimePicker = null!;
         private DatePicker<DateTime?> _endDatePicker = null!;
         private Key OriginalTriggerKey { get; set; }
@@ -59,6 +59,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         protected override void OnInitialized()
         {
+            CronDescription = L["CronHelpText"];
             OriginalTriggerKey = new(TriggerDetail.Name, TriggerDetail.Group);
             Task.Run(GetTimeZones);
         }
@@ -86,11 +87,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
         {
             try
             {
-                CronDescription = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cronExpression);
+                CronDescription = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cronExpression, new CronExpressionDescriptor.Options() { Locale = CultureInfo.CurrentCulture.Name });
             }
             catch
             {
-                CronDescription = CRON_HELP_TEXT;
+                CronDescription = L["CronHelpText"];
             }
 
             await Task.CompletedTask;
@@ -108,37 +109,18 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             ExistingTriggerGroups ??= (await SchedulerSvc.GetTriggerGroups()).Select(s => new SelectListItem(s, s));
         }
 
-        //private async Task<IEnumerable<string>> SearchTriggerGroup(string value, CancellationToken cancellationToken)
-        //{
-        //    if (ExistingTriggerGroups == null)
-        //    {
-        //        ExistingTriggerGroups = await SchedulerSvc.GetTriggerGroups();
-        //    }
-
-        //    if (string.IsNullOrEmpty(value))
-        //        return ExistingTriggerGroups;
-
-        //    var matches = ExistingTriggerGroups
-        //        .Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))
-        //        .ToList();
-
-        //    if (matches.All(x => x != value))
-        //        matches.Add(value);
-
-        //    return matches;
-        //}
-
         private async Task OnShowSampleCron()
         {
-            var options = new ModalInstanceOptions
-            {
-                Size = ModalSize.Default
-            };
+            //var options = new ModalInstanceOptions
+            //{
+            //    Size = ModalSize.Default
+            //};
 
-            await DialogSvc.Show<CronSamplesDialog>("Sample Cron Expressions", p =>
-            {
-                p.Add("Save", (Delegate)SetCronExpression);
-            }, options);
+            //await DialogSvc.Show<CronSamplesDialog>("Sample Cron Expressions", p =>
+            //{
+            //    p.Add("Save", (Delegate)SetCronExpression);
+            //}, options);
+            await CronSamplesDialogRef.OpenModalAync(SetCronExpression);
         }
 
         private async Task GetTimeZones()
@@ -146,34 +128,10 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             _timeZones ??= await Task.Run(TimeZoneInfo.GetSystemTimeZones);
         }
 
-        async Task<IEnumerable<TimeZoneInfo>> SearchTimeZoneInfo(string value, CancellationToken cancellationToken)
-        {
-            await Task.CompletedTask;
-
-            var tzList = TimeZoneInfo.GetSystemTimeZones();
-
-            if (string.IsNullOrEmpty(value))
-            {
-                return tzList;
-            }
-
-            return tzList.Where(x => x.DisplayName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-        }
-
         private async Task GetCalendars()
         {
             _calendars ??= (await SchedulerSvc.GetCalendarNames()).Select(s => new SelectListItem(s, s)).ToImmutableList();
         }
-
-        //async Task<IEnumerable<string>> SearchCalendars(string value, CancellationToken cancellationToken)
-        //{
-        //    if (_calendars == null)
-        //    {
-        //        _calendars = await SchedulerSvc.GetCalendarNames();
-        //    }
-
-        //    return _calendars.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-        //}
 
         private void OnSetValidationStatusChanged(ValidationsStatusChangedEventArgs eventArgs)
         {
@@ -315,17 +273,10 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
             var dataMapItem = new DataMapItemModel(clonedItem);
             await JobDataMapDialogRef.OpenModalAsync(new Dictionary<string, object>(TriggerDetail.TriggerDataMap, StringComparer.OrdinalIgnoreCase), dataMapItem, UpdateDataMap, true);
         }
-
+        CronSamplesDialog CronSamplesDialogRef;
         private async Task OnDeleteDataMap(KeyValuePair<string, object> item)
         {
-            bool? yes = await UiMessageService.Confirm(
-                $"Do you want to delete '{item.Key}'?",
-                "Confirm Delete",
-                o =>
-                {
-                    o.OkButtonText = "Yes";
-                    o.CancelButtonText = "No";
-                });
+            bool? yes = await UiMessageService.Confirm($"Do you want to delete '{item.Key}'?");
 
             if (yes == null || !yes.Value)
             {

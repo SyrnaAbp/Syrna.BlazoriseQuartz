@@ -111,7 +111,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 			if (detail != null)
 			{
 				e.Status = ValidationStatus.Error;
-				e.ErrorText = "Job name already in used. Please choose another name or group.";
+				e.ErrorText = @L["Error:JobNameAlreadyInUsed"];
 				return;
 			}
 

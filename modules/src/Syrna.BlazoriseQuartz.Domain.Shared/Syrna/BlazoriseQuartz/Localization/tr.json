@@ -28,6 +28,7 @@
     "Error:JobNameAlreadyInUsed": "Zaten kullanılmış iş adı. Lütfen başka bir isim veya grup seçin.",
     "Error:SelectOneValue": "Bir değer seçin!",
     "NotFoundContent": "Üzgünüz... {0} için değer bulamadık! :(",
+    "CronHelpText": "Cron İfadesi: Dakikalar Saat Aylık Ayın Günü Hafta Günü",
 
     "TriggerDetail": "Tetikleyici Detayları",
 
@@ -49,6 +50,8 @@
     "ExecutionLog:ErrorMessage": "Hata Mesajı",
     "ExecutionLog:ErrorStackTrace": "Yığın İzleme",
     "ExecutionLog:FireTimeUtc": "İşlem Zamanı",
-    "ExecutionLog:DateAddedUtc": "Log Zamanı"
+    "ExecutionLog:DateAddedUtc": "Log Zamanı",
+
+    "CronSamplesDialog": "Cron Örnekleri"
   }
 }
