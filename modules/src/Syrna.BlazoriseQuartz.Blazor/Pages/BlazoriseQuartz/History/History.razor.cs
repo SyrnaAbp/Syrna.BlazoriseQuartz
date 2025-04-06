@@ -1,10 +1,11 @@
 ﻿using Blazorise;
 using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
-using Syrna.BlazoriseQuartz;
+using Microsoft.Extensions.Localization;
 using Syrna.BlazoriseQuartz.Blazor.Components;
 using Syrna.BlazoriseQuartz.ExecutionLog;
 using Syrna.BlazoriseQuartz.ExecutionLog.Dtos;
+using Syrna.BlazoriseQuartz.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
 {
     public partial class History 
     {
+        [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
         [Inject] IExecutionLogAppService LogSvc { get; set; } = null!;
 
         private PagedList<ExecutionLogDto> pagedData;
@@ -98,6 +100,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
             await ExecutionDetailsDialogRef.OpenModalAsync(log);
         }
 
+        public History()
+        {
+            LocalizationResource = typeof(BlazoriseQuartzResource);
+        }
+                
         #region Filters
         private async Task OnFilterClicked()
         {
@@ -190,6 +197,15 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
         //private Task OnPageChanged(DataGridPageChangedEventArgs args)
         //{
         //}
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                //modalRef?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }
 

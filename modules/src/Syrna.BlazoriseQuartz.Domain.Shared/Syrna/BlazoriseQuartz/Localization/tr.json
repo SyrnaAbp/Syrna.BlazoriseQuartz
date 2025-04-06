@@ -45,6 +45,10 @@
     "Menu:History": "Çalıştırma Geçmişi",
     "Menu:Overview": "Gözlem",
 
+    "Title:Schedules": "Çalıştırma Planı",
+    "Title:History": "Çalıştırma Geçmişi",
+    "Title:Overview": "Gözlem",
+
     "ExecutionDetailsDialog": "İşlem Detayları",
     "ExecutionLog:ReturnCode": "İşlem Kodu",
     "ExecutionLog:Result": "Sonuç",
@@ -53,6 +57,22 @@
     "ExecutionLog:ErrorStackTrace": "Yığın İzleme",
     "ExecutionLog:FireTimeUtc": "İşlem Zamanı",
     "ExecutionLog:DateAddedUtc": "Log Zamanı",
+    "ExecutionLog:JobName": "İş adı",
+    "ExecutionLog:JobGroup": "İş grubu",
+    "ExecutionLog:TriggerName": "Tetik Adı",
+    "ExecutionLog:ScheduleFireTimeUtc": "Planlanan Zaman",
+    "ExecutionLog:JobRunTime": "Süre",
+    "ExecutionLog:ErrorDetails": "Hata Ayrıntıları",
+
+    "Filter:IncludeSystemJobs": "BlazoriseQuarz işlerini göster",
+    "Filter:ErrorOnly": "Yalnızca Hatayı Göster",
+    "Filter:LogTypes": "Log türü",
+    "Filter:TriggerName": "Tetik Adı",
+    "Filter:TriggerGroup": "Tetik grubu",
+    "Filter:JobName": "İş adı",
+    "Filter:JobGroup": "İş grubu",
+    "Filter:FilterLogs": "Log Filtre",
+    "EmptySelectItem": "(Boşluk)",
 
     "CronSamplesDialog": "Cron Örnekleri",
 

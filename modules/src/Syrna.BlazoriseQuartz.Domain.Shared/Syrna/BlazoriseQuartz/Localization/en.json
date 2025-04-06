@@ -45,6 +45,10 @@
     "Menu:History": "History",
     "Menu:Overview": "Overview",
 
+    "Title:Schedules": "Schedules",
+    "Title:History": "History",
+    "Title:Overview": "Overview",
+
     "ExecutionDetailsDialog": "Execution Details",
     "ExecutionLog:ReturnCode": "Return Code",
     "ExecutionLog:Result": "Result",
@@ -53,6 +57,22 @@
     "ExecutionLog:ErrorStackTrace": "Stack Trace",
     "ExecutionLog:FireTimeUtc": "Fire Time",
     "ExecutionLog:DateAddedUtc": "Log Time",
+    "ExecutionLog:JobName": "Job Name",
+    "ExecutionLog:JobGroup": "Job Group",
+    "ExecutionLog:TriggerName": "Trigger Name",
+    "ExecutionLog:ScheduleFireTimeUtc": "Scheduled Time",
+    "ExecutionLog:JobRunTime": "Duration",
+    "ExecutionLog:ErrorDetails": "Error Details",
+
+    "Filter:IncludeSystemJobs": "Show BlazoriseQuartz jobs",
+    "Filter:ErrorOnly": "Show error only",
+    "Filter:LogTypes": "Log Type",
+    "Filter:TriggerName": "Trigger Name",
+    "Filter:TriggerGroup": "Trigger Group",
+    "Filter:JobName": "Job Name",
+    "Filter:JobGroup": "Job Group",
+    "Filter:FilterLogs": "Filter Logs",
+    "EmptySelectItem": "(Blank)",
 
     "CronSamplesDialog": "Cron Samples",
 

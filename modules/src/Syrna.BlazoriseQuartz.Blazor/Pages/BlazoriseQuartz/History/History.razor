@@ -7,16 +7,16 @@
 
 @inject AbpBlazorMessageLocalizerHelper<BlazoriseQuartzResource> LH
 @inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
-<PageTitle>History</PageTitle>
+<PageTitle>@L["Title:History"]</PageTitle>
 
 <Offcanvas @bind-Visible="@_openFilter" Placement="Placement.End">
     <OffcanvasHeader>
-        <Heading Size="HeadingSize.Is6">Filter Logs</Heading>
+        <Heading Size="HeadingSize.Is6">@L["Filter:FilterLogs"]</Heading>
     </OffcanvasHeader>
     <OffcanvasBody>
-        <div class="d-flex flex-column px-4 gap-2">
+        <Column>
             <Field>
-                <FieldLabel>Job Group</FieldLabel>
+                <FieldLabel>@L["Filter:JobGroup"]</FieldLabel>
                 <FieldBody>
                     <Select TValue="string"
                             SelectedValue="@_filter.JobGroup"
@@ -25,17 +25,17 @@
                         {
                             if (string.IsNullOrEmpty(group))
                             {
-                                <SelectItem Value="@(string.Empty)">(Blank)</SelectItem>
+                                <SelectItem TValue="string" Value="@(string.Empty)">@L["EmptySelectItem"]</SelectItem>
                                 continue;
                             }
-                            <SelectItem Value="@group" />
+                            <SelectItem TValue="string" Value="@group">@group</SelectItem>
                         }
                     </Select>
                 </FieldBody>
             </Field>
 
             <Field>
-                <FieldLabel>Job Name</FieldLabel>
+                <FieldLabel>@L["Filter:JobName"]</FieldLabel>
                 <FieldBody>
                     <Select TValue="string"
                             SelectedValue="@_filter.JobName"
@@ -44,17 +44,17 @@
                         {
                             if (string.IsNullOrEmpty(name))
                             {
-                                <SelectItem Value="@(string.Empty)">(Blank)</SelectItem>
+                                <SelectItem TValue="string" Value="@(string.Empty)">@L["EmptySelectItem"]</SelectItem>
                                 continue;
                             }
-                            <SelectItem Value="@name" />
+                            <SelectItem TValue="string" Value="@name">@name</SelectItem>
                         }
                     </Select>
                 </FieldBody>
             </Field>
 
             <Field>
-                <FieldLabel>Trigger Group</FieldLabel>
+                <FieldLabel>@L["Filter:TriggerGroup"]</FieldLabel>
                 <FieldBody>
                     <Select TValue="string"
                             SelectedValue="@_filter.TriggerGroup"
@@ -63,17 +63,17 @@
                         {
                             if (string.IsNullOrEmpty(group))
                             {
-                                <SelectItem Value="@(string.Empty)">(Blank)</SelectItem>
+                                <SelectItem TValue="string" Value="@(string.Empty)">@L["EmptySelectItem"]</SelectItem>
                                 continue;
                             }
-                            <SelectItem Value="@group" />
+                            <SelectItem TValue="string" Value="@group">@group</SelectItem>
                         }
                     </Select>
                 </FieldBody>
             </Field>
 
             <Field>
-                <FieldLabel>Trigger Name</FieldLabel>
+                <FieldLabel>@L["Filter:TriggerName"]</FieldLabel>
                 <FieldBody>
                     <Select TValue="string"
                             SelectedValue="@_filter.TriggerName"
@@ -82,14 +82,14 @@
                         {
                             if (string.IsNullOrEmpty(name))
                                 continue;
-                            <SelectItem Value="@name" />
+                            <SelectItem TValue="string" Value="@name">@name</SelectItem>
                         }
                     </Select>
                 </FieldBody>
             </Field>
 
             <Field>
-                <FieldLabel>Log type</FieldLabel>
+                <FieldLabel>@L["Filter:LogTypes"]</FieldLabel>
                 <FieldBody>
                     <Select TValue="LogType?"
                             SelectedValue="_selectedLogType"
@@ -103,44 +103,44 @@
 
             <Check Checked="@_filter.ErrorOnly"
                    TValue="bool"
-                   CheckedChanged="OnErrorOnlyChanged">Show error only</Check>
+                   CheckedChanged="OnErrorOnlyChanged">@L["Filter:ErrorOnly"]</Check>
 
             <Field>
                 <FieldLabel></FieldLabel>
                 <FieldBody>
                     <Check Checked="@_filter.IncludeSystemJobs"
                            TValue="bool"
-                           CheckedChanged="OnIncludeSystemJobsChanged">Show BlazoriseQuartz jobs</Check>
+                           CheckedChanged="OnIncludeSystemJobsChanged">@L["Filter:IncludeSystemJobs"]</Check>
                 </FieldBody>
             </Field>
-        </div>
-        <div class="d-flex pa-4 justify-space-between gap-2">
-            <Button Clicked="OnCancelFilter">Cancel</Button>
+        </Column>
+        <Column>
+            <Button Clicked="OnCancelFilter">@L["Cancel"]</Button>
             <div class="d-flex gap-2">
-                <Button Color="Color.Secondary" Clicked="OnClearFilter">Clear</Button>
-                <Button Color="Color.Primary" Clicked="OnSaveFilter">Save</Button>
+                <Button Color="Color.Secondary" Clicked="OnClearFilter">@L["Clear"]</Button>
+                <Button Color="Color.Primary" Clicked="OnSaveFilter">@L["Save"]</Button>
             </div>
-        </div>
+        </Column>
     </OffcanvasBody>
 </Offcanvas>
 
 <Bar Breakpoint="Breakpoint.Desktop" Background="Background.Light" Shadow="Shadow.Remove" ThemeContrast="ThemeContrast.Light">
     <BarBrand>
-        <Heading Size="HeadingSize.Is4">History</Heading>
+        <Heading Size="HeadingSize.Is4">@L["Title:History"]</Heading>
     </BarBrand>
     <BarStart>
     </BarStart>
     <BarEnd>
         <Addons>
             <Addon AddonType="AddonType.Start">
-                <Icon IconSize="IconSize.Default" Name="@IconName.Search"></Icon>
+                <Icon IconSize="IconSize.Default" Name="@IconName.Search" Margin="Margin.Is2"></Icon>
             </Addon>
             <Addon AddonType="AddonType.Body">
                 <TextEdit TextChanged="@OnSearch" Placeholder="Search"></TextEdit>
             </Addon>
             <Addon AddonType="AddonType.End">
-                <Icon Name="@IconName.Sync" Clicked="RefreshLogs"></Icon>
-                <Icon Name="@IconName.SearchPlus" Clicked="OnFilterClicked"></Icon>
+                <Icon IconSize="IconSize.Default" Name="@IconName.Sync" Clicked="RefreshLogs" Margin="Margin.Is2"></Icon>
+                <Icon IconSize="IconSize.Default" Name="@IconName.SearchPlus" Clicked="OnFilterClicked" Margin="Margin.Is2"></Icon>
             </Addon>
         </Addons>
     </BarEnd>
@@ -172,7 +172,7 @@
         </Row>
     </EmptyTemplate>
     <DataGridColumns>
-        <DataGridColumn Field="@nameof(ExecutionLogDto.DateAddedUtc)" Caption="Date Added" Width="30px">
+        <DataGridColumn Width="30px">
             <DisplayTemplate>
                 @{
                     var iconAndColor = GetLogIconAndColor(context);
@@ -180,15 +180,15 @@
                 <Icon Name="@iconAndColor.Item1" TextColor="@iconAndColor.Item2" title="@iconAndColor.Item3" IconSize="IconSize.Default" />
             </DisplayTemplate>
         </DataGridColumn>
-        <DataGridDateColumn Field="@nameof(ExecutionLogDto.DateAddedUtc)" Caption="Date Added" Width="160px">
+        <DataGridDateColumn Field="@nameof(ExecutionLogDto.DateAddedUtc)" Caption="@L["ExecutionLog:DateAddedUtc"]" Width="160px">
             <DisplayTemplate>
                 @context.DateAddedUtc.ToLocalTime().ToString("G")
             </DisplayTemplate>
         </DataGridDateColumn>
-        <DataGridColumn Field="@nameof(ExecutionLogDto.JobName)" Caption="Job Name"></DataGridColumn>
-        <DataGridColumn Field="@nameof(ExecutionLogDto.JobGroup)" Caption="Job Group"></DataGridColumn>
-        <DataGridColumn Field="@nameof(ExecutionLogDto.TriggerName)" Caption="Trigger"></DataGridColumn>
-        <DataGridColumn Field="@nameof(ExecutionLogDto.ErrorMessage)" Caption="Message" Width="30vw">
+        <DataGridColumn Field="@nameof(ExecutionLogDto.JobName)" Caption="@L["ExecutionLog:JobName"]"></DataGridColumn>
+        <DataGridColumn Field="@nameof(ExecutionLogDto.JobGroup)" Caption="@L["ExecutionLog:JobGroup"]"></DataGridColumn>
+        <DataGridColumn Field="@nameof(ExecutionLogDto.TriggerName)" Caption="@L["ExecutionLog:TriggerName"]"></DataGridColumn>
+        <DataGridColumn Field="@nameof(ExecutionLogDto.ErrorMessage)" Caption="@L["ExecutionLog:ErrorMessage"]" Width="30vw">
             <DisplayTemplate>
                 <div>
                     <Text TextColor="TextColor.Dark">
@@ -208,7 +208,7 @@
                         <Button Size="Size.Default"
                                 Clicked="@(async () => await OnMoreDetails(context, "Error Details"))"
                                 Color="Color.Link">
-                            Error Details
+                            @L["ExecutionLog:ErrorDetails"]
                         </Button>
                     }
                     else if (context.ShowExecutionDetailButton())
@@ -216,15 +216,15 @@
                         <Button Size="Size.Default"
                                 Clicked="@(async () => await OnMoreDetails(context, "Execution Details"))"
                                 Color="Color.Link">
-                            Execution Details
+                            @L["ExecutionLog:ExecutionDetails"]
                         </Button>
                     }
                 </div>
             </DisplayTemplate>
         </DataGridColumn>
-        <DataGridDateColumn Field="@nameof(ExecutionLogDto.ScheduleFireTimeUtc)" Caption="Scheduled Time" Width="160px"></DataGridDateColumn>
-        <DataGridDateColumn Field="@nameof(ExecutionLogDto.FireTimeUtc)" Caption="Run Time" Width="160px"></DataGridDateColumn>
-        <DataGridColumn Field="@nameof(ExecutionLogDto.JobRunTime)" Caption="Duration" Width="120px">
+        <DataGridDateColumn Field="@nameof(ExecutionLogDto.ScheduleFireTimeUtc)" Caption="@L["ExecutionLog:ScheduleFireTimeUtc"]" Width="160px"></DataGridDateColumn>
+        <DataGridDateColumn Field="@nameof(ExecutionLogDto.FireTimeUtc)" Caption="@L["ExecutionLog:FireTimeUtc"]" Width="160px"></DataGridDateColumn>
+        <DataGridColumn Field="@nameof(ExecutionLogDto.JobRunTime)" Caption="@L["ExecutionLog:JobRunTime"]" Width="120px">
             <DisplayTemplate>@context.JobRunTime?.ToHumanTimeString()</DisplayTemplate>
         </DataGridColumn>
     </DataGridColumns>
