@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
 {
-    public partial class History 
+    public partial class History
     {
         [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
         [Inject] IExecutionLogAppService LogSvc { get; set; } = null!;
@@ -45,7 +45,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
             }
             else
             {
-                pageMeta = pagedData.PageMetadata! with { Page = state.CurrentPage-1, PageSize = state.PageSize };
+                pageMeta = pagedData.PageMetadata! with { Page = state.CurrentPage - 1, PageSize = state.PageSize };
             }
 
             pagedData = await LogSvc.GetExecutionLogs(_filter, pageMeta, _firstLogId);
@@ -85,8 +85,8 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
                         return (IconName.InfoCircle, TextColor.Warning, "Vetoed");
 
                     return log.IsSuccess is null ?
-	                    // still running
-	                    (IconName.Palette, TextColor.Secondary, "Executing") : (IconName.Check, TextColor.Info, "Success");
+                        // still running
+                        (IconName.Palette, TextColor.Secondary, "Executing") : (IconName.Check, TextColor.Info, "Success");
                 case LogType.Trigger:
                     return (IconName.Alert, TextColor.Warning, "Trigger");
                 default:
@@ -95,16 +95,16 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
         }
 
         ExecutionDetailsDialog ExecutionDetailsDialogRef;
-        private async Task OnMoreDetails(ExecutionLogDto log, string title)
+        private async Task OnMoreDetails(ExecutionLogDto log, string titleSuffix)
         {
-            await ExecutionDetailsDialogRef.OpenModalAsync(log);
+            await ExecutionDetailsDialogRef.OpenModalAsync(log, titleSuffix);
         }
 
         public History()
         {
             LocalizationResource = typeof(BlazoriseQuartzResource);
         }
-                
+
         #region Filters
         private async Task OnFilterClicked()
         {

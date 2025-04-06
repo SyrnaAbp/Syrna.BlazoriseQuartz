@@ -206,7 +206,7 @@
                     @if (context.IsException ?? false)
                     {
                         <Button Size="Size.Default"
-                                Clicked="@(async () => await OnMoreDetails(context, "Error Details"))"
+                                Clicked="@(async () => await OnMoreDetails(context, "ErrorDetails"))"
                                 Color="Color.Link">
                             @L["ExecutionLog:ErrorDetails"]
                         </Button>
@@ -214,7 +214,7 @@
                     else if (context.ShowExecutionDetailButton())
                     {
                         <Button Size="Size.Default"
-                                Clicked="@(async () => await OnMoreDetails(context, "Execution Details"))"
+                                Clicked="@(async () => await OnMoreDetails(context, "ExecutionDetails"))"
                                 Color="Color.Link">
                             @L["ExecutionLog:ExecutionDetails"]
                         </Button>

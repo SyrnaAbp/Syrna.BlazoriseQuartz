@@ -6,6 +6,7 @@
     "Next": "İleri",
     "Save": "Kaydet",
     "Close": "Kapat",
+    "LoadMore": "Daha fazla",
     "SearchPlaceHolder": "Ara...",
 
     "ScheduleDialogNew": "Yeni Çalıştırma Planı",
@@ -49,7 +50,6 @@
     "Title:History": "Çalıştırma Geçmişi",
     "Title:Overview": "Gözlem",
 
-    "ExecutionDetailsDialog": "İşlem Detayları",
     "ExecutionLog:ReturnCode": "İşlem Kodu",
     "ExecutionLog:Result": "Sonuç",
     "ExecutionLog:ExecutionDetails": "İşlem Detayları",
@@ -63,6 +63,7 @@
     "ExecutionLog:ScheduleFireTimeUtc": "Planlanan Zaman",
     "ExecutionLog:JobRunTime": "Süre",
     "ExecutionLog:ErrorDetails": "Hata Ayrıntıları",
+    "ExecutionLog:ExecutionHistory": "İşlem geçmişi",
 
     "Filter:IncludeSystemJobs": "BlazoriseQuarz işlerini göster",
     "Filter:ErrorOnly": "Yalnızca Hatayı Göster",

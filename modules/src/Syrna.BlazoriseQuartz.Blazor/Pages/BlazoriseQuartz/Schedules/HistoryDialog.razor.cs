@@ -1,9 +1,11 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Syrna.BlazoriseQuartz;
 using Syrna.BlazoriseQuartz.Blazor.Components;
 using Syrna.BlazoriseQuartz.ExecutionLog;
 using Syrna.BlazoriseQuartz.ExecutionLog.Dtos;
+using Syrna.BlazoriseQuartz.Localization;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -11,8 +13,9 @@ using System.Threading.Tasks;
 
 namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules;
 
-public partial class HistoryDialog 
+public partial class HistoryDialog
 {
+    [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
     [Inject] private IExecutionLogAppService LogSvc { get; set; } = null!;
 
     [EditorRequired]
@@ -27,6 +30,11 @@ public partial class HistoryDialog
     private PageMetadata _lastPageMeta;
     private long _firstLogId;
     Modal modalRef;
+
+    public HistoryDialog()
+    {
+        LocalizationResource = typeof(BlazoriseQuartzResource);
+    }
 
     public async Task OpenModalAsync(Key jobKey, Key triggerKey)
     {
@@ -80,15 +88,9 @@ public partial class HistoryDialog
     }
 
     ExecutionDetailsDialog ExecutionDetailsDialogRef;
-    private async Task OnMoreDetails(ExecutionLogDto log, string title)
+    private async Task OnMoreDetails(ExecutionLogDto log, string titleSuffix)
     {
-        //var options = new ModalInstanceOptions
-        //{
-        //    Size = ModalSize.Default
-        //};
-
-        //await DialogSvc.Show<ExecutionDetailsDialog>(title, p => p.Add("ExecutionLog", log), options);
-        await ExecutionDetailsDialogRef.OpenModalAsync(log);
+        await ExecutionDetailsDialogRef.OpenModalAsync(log, titleSuffix);
     }
 
     private static string GetExecutionTime(ExecutionLogDto log)
@@ -129,6 +131,15 @@ public partial class HistoryDialog
             LogType.ScheduleJob => log.IsException ?? false ? Color.Danger : Color.Success,
             _ => Color.Default
         };
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            modalRef?.Dispose();
+        }
+        base.Dispose(disposing);
     }
 }
 

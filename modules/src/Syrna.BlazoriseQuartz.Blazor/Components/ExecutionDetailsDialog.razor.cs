@@ -14,15 +14,17 @@ public partial class ExecutionDetailsDialog
     Modal modalRef;
 
     public ExecutionLogDto ExecutionLog { get; set; } = new();
+    public string TitleSuffix { get; set; } = "ExecutionDetails";
 
     public ExecutionDetailsDialog()
     {
         LocalizationResource = typeof(BlazoriseQuartzResource);
     }
 
-    public async Task OpenModalAsync(ExecutionLogDto executionLog)
+    public async Task OpenModalAsync(ExecutionLogDto executionLog, string titleSuffix)
     {
         ExecutionLog = executionLog;
+        TitleSuffix = titleSuffix;
         await modalRef.Show();
     }
 

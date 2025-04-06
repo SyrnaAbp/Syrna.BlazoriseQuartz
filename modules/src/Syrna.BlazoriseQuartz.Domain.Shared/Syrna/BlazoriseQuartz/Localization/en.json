@@ -6,6 +6,7 @@
     "Next": "Next",
     "Save": "Save",
     "Close": "Close",
+    "LoadMore": "Load More",
     "SearchPlaceHolder": "Search...",
 
     "ScheduleDialogNew": "New Schedule",
@@ -49,7 +50,6 @@
     "Title:History": "History",
     "Title:Overview": "Overview",
 
-    "ExecutionDetailsDialog": "Execution Details",
     "ExecutionLog:ReturnCode": "Return Code",
     "ExecutionLog:Result": "Result",
     "ExecutionLog:ExecutionDetails": "Execution Details",
@@ -63,6 +63,7 @@
     "ExecutionLog:ScheduleFireTimeUtc": "Scheduled Time",
     "ExecutionLog:JobRunTime": "Duration",
     "ExecutionLog:ErrorDetails": "Error Details",
+    "ExecutionLog:ExecutionHistory": "Execution History",
 
     "Filter:IncludeSystemJobs": "Show BlazoriseQuartz jobs",
     "Filter:ErrorOnly": "Show error only",
