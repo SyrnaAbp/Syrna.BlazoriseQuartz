@@ -115,11 +115,15 @@
             </Field>
         </Column>
         <Column>
-            <Button Clicked="OnCancelFilter">@L["Cancel"]</Button>
-            <div class="d-flex gap-2">
+            <Grid>
+                <Column ColumnSize="ColumnSize.Is2" TextAlignment="TextAlignment.Start">
+                    <Button Clicked="OnCancelFilter">@L["Cancel"]</Button>
+                </Column>
+            </Grid>
+            <Column ColumnSize="ColumnSize.Is10" TextAlignment="TextAlignment.End">
                 <Button Color="Color.Secondary" Clicked="OnClearFilter">@L["Clear"]</Button>
                 <Button Color="Color.Primary" Clicked="OnSaveFilter">@L["Save"]</Button>
-            </div>
+            </Column>
         </Column>
     </OffcanvasBody>
 </Offcanvas>

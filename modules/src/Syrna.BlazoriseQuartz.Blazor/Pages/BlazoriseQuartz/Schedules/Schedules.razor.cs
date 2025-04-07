@@ -379,7 +379,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             //}, options);
             JobDetailModel jobDetail = new JobDetailModel();
             TriggerDetailModel triggerDetail = new TriggerDetailModel();
-            await ScheduleDialogRef.OpenDialog(jobDetail, triggerDetail, true);
+            await ScheduleDialogRef.OpenModalAsync(jobDetail, triggerDetail, true);
         }
 
         private async Task UpdateSchedule(JobDetailModel JobDetail, TriggerDetailModel TriggerDetail, Key JobKey, Key TriggerKey)
@@ -440,7 +440,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             //    p.Add("TriggerKey", origTriggerKey);
             //    p.Add("IsNew", false);
             //}, options);
-            await ScheduleDialogRef.OpenDialog(currentJobDetail, currentTriggerModel ?? new TriggerDetailModel(), false);
+            await ScheduleDialogRef.OpenModalAsync(currentJobDetail, currentTriggerModel ?? new TriggerDetailModel(), false);
         }
 
         private async Task OnResumeScheduleJob(ScheduleModel model)
@@ -522,7 +522,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 
             currentJobDetail.Name = string.Empty;
 
-            await ScheduleDialogRef.OpenDialog(currentJobDetail, currentTriggerModel ?? new(), true);
+            await ScheduleDialogRef.OpenModalAsync(currentJobDetail, currentTriggerModel ?? new(), true);
         }
         HistoryDialog HistoryDialogRef;
         private async Task OnJobHistory(ScheduleModel model)
@@ -577,7 +577,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             //    p.Add("SelectedTab", ScheduleDialogTab.Trigger);
             //}, options);
             TriggerDetailModel triggerDetail = new TriggerDetailModel();
-            await ScheduleDialogRef.OpenDialog(currentJobDetail, triggerDetail);
+            await ScheduleDialogRef.OpenModalAsync(currentJobDetail, triggerDetail);
         }
 
         private string DeleteConfirnationMessage(List<ScheduleModel> items) => string.Format(L["SchedulesDeleteConfirmationMessage"], items.Count);

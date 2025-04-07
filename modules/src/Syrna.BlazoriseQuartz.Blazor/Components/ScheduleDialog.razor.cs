@@ -134,7 +134,7 @@ public partial class ScheduleDialog
         await modalRef.Hide();
     }
 
-    public async Task OpenDialog(JobDetailModel jobDetail, TriggerDetailModel triggerDetail, bool isNew = false)
+    public async Task OpenModalAsync(JobDetailModel jobDetail, TriggerDetailModel triggerDetail, bool isNew = false)
     {
         JobDetail = jobDetail;
         TriggerDetail = triggerDetail;

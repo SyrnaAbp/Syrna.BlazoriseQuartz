@@ -30,10 +30,10 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
         private ExecutionLogFilter _filter = new();
         private ExecutionLogFilter _origFilter = new();
         private LogType? _selectedLogType;
-        private IEnumerable<string> _jobNames = Enumerable.Empty<string>();
-        private IEnumerable<string> _jobGroups = Enumerable.Empty<string>();
-        private IEnumerable<string> _triggerNames = Enumerable.Empty<string>();
-        private IEnumerable<string> _triggerGroups = Enumerable.Empty<string>();
+        private IEnumerable<string> _jobNames = [];
+        private IEnumerable<string> _jobGroups = [];
+        private IEnumerable<string> _triggerNames = [];
+        private IEnumerable<string> _triggerGroups = [];
 
         async Task OnReadData()
         {
@@ -125,17 +125,17 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
             _openFilter = false;
         }
 
-        private void OnClearFilter()
+        private async Task OnClearFilter()
         {
             _filter = new();
-            RefreshLogs();
+            await RefreshLogs();
             _openFilter = false;
         }
 
-        private void OnCancelFilter()
+        private async Task OnCancelFilter()
         {
             _filter = _origFilter;
-            RefreshLogs();
+            await RefreshLogs();
             _openFilter = false;
         }
 
@@ -147,31 +147,31 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
             _triggerGroups = await LogSvc.GetTriggerGroups();
         }
 
-        private void OnFilterJobGroupChanged(string value)
+        private async Task OnFilterJobGroupChanged(string value)
         {
             _filter.JobGroup = value;
-            RefreshLogs();
+            await RefreshLogs();
         }
 
-        private void OnFilterJobNameChanged(string value)
+        private async Task OnFilterJobNameChanged(string value)
         {
             _filter.JobName = value;
-            RefreshLogs();
+            await RefreshLogs();
         }
 
-        private void OnFilterTriggerGroupChanged(string value)
+        private async Task OnFilterTriggerGroupChanged(string value)
         {
             _filter.TriggerGroup = value;
-            RefreshLogs();
+            await RefreshLogs();
         }
 
-        private void OnFilterTriggerNameChanged(string value)
+        private async Task OnFilterTriggerNameChanged(string value)
         {
             _filter.TriggerName = value;
-            RefreshLogs();
+            await RefreshLogs();
         }
 
-        private void OnSelectedLogTypesChanged(LogType? logTypes)
+        private async Task OnSelectedLogTypesChanged(LogType? logTypes)
         {
             _selectedLogType = logTypes;
             if (logTypes == null)
@@ -179,19 +179,19 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.History
             else
                 _filter.LogTypes = new HashSet<LogType> { logTypes.Value };
 
-            RefreshLogs();
+            await RefreshLogs();
         }
 
-        private void OnErrorOnlyChanged(bool errorOnly)
+        private async Task OnErrorOnlyChanged(bool errorOnly)
         {
             _filter.ErrorOnly = errorOnly;
-            RefreshLogs();
+            await RefreshLogs();
         }
 
-        private void OnIncludeSystemJobsChanged(bool flag)
+        private async Task OnIncludeSystemJobsChanged(bool flag)
         {
             _filter.IncludeSystemJobs = flag;
-            RefreshLogs();
+            await RefreshLogs();
         }
         #endregion Filters
         //private Task OnPageChanged(DataGridPageChangedEventArgs args)
