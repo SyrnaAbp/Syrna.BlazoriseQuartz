@@ -223,6 +223,24 @@
     "SchedulerStarted": "Zamanlayıcı başladı",
     "Success": "Başarılı",
     "Failed": "Başarısız",
-    "Working": "Çalışıyor"
+    "Working": "Çalışıyor",
+
+    "ScheduleModel:JobGroup": "İş grubu",
+    "ScheduleModel:JobStatus": "Durum",
+    "ScheduleModel:JobName": "İş adı",
+    "ScheduleModel:TriggerName": "Tetikleyici",
+    "ScheduleModel:TriggerType": "Zamanlayıcı",
+    "ScheduleModel:JobType": "İş türü",
+    "ScheduleModel:NextTriggerTime": "Sonraki Çalışma",
+    "ScheduleModel:PreviousTriggerTime": "Son Çalışma",
+
+    "ScheduleMenu:TriggerNow": "Şimdi Tetikle",
+    "ScheduleMenu:AddTrigger": "Tetikleyici ekle",
+    "ScheduleMenu:CloneSchedule": "Kopya Oluştur",
+    "ScheduleMenu:History": "Geçmiş",
+    "ScheduleMenu:DeleteSchedule": "Zamanlayıcıyı Sil",
+    "ScheduleMenu:PauseTrigger": "Tetikleyiciyi Duraklat",
+    "ScheduleMenu:ResumeTrigger": "Tetikleyiciyi Yeniden Başlat",
+    "ScheduleMenu:Edit": "Düzenle"
   }
 }

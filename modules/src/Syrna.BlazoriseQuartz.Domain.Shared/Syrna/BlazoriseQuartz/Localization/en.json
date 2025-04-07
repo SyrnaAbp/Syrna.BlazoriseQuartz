@@ -223,6 +223,24 @@
     "SchedulerStarted": "Scheduler started",
     "Success": "Success",
     "Failed": "Failed",
-    "Working": "Working"
+    "Working": "Working",
+
+    "ScheduleModel:JobGroup": "Job Group",
+    "ScheduleModel:JobStatus": "Status",
+    "ScheduleModel:JobName": "Job Name",
+    "ScheduleModel:TriggerName": "Trigger",
+    "ScheduleModel:TriggerType": "Schedule",
+    "ScheduleModel:JobType": "Job Type",
+    "ScheduleModel:NextTriggerTime": "Next Run",
+    "ScheduleModel:PreviousTriggerTime": "Last Run",
+
+    "ScheduleMenu:TriggerNow": "Trigger Now",
+    "ScheduleMenu:AddTrigger": "Add Trigger",
+    "ScheduleMenu:CloneSchedule": "Clone Schedule",
+    "ScheduleMenu:History": "History",
+    "ScheduleMenu:DeleteSchedule": "Delete Schedule",
+    "ScheduleMenu:PauseTrigger": "Pause Trigger",
+    "ScheduleMenu:ResumeTrigger": "Resume Trigger",
+    "ScheduleMenu:Edit": "Edit"
   }
 }

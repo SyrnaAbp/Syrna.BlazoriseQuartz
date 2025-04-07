@@ -1,5 +1,6 @@
 ﻿using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using Syrna.BlazoriseQuartz.Blazor.Components;
@@ -7,6 +8,7 @@ using Syrna.BlazoriseQuartz.Blazor.Services;
 using Syrna.BlazoriseQuartz.Events;
 using Syrna.BlazoriseQuartz.ExecutionLog;
 using Syrna.BlazoriseQuartz.Jobs.Abstractions;
+using Syrna.BlazoriseQuartz.Localization;
 using Syrna.BlazoriseQuartz.Scheduler;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,12 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 {
     public partial class Schedules : IDisposable
     {
+        public Schedules()
+        {
+            LocalizationResource = typeof(BlazoriseQuartzResource);
+        }
+
+        [Inject] protected new IStringLocalizer<BlazoriseQuartzResource> L { get; set; }
         [Inject] private ISchedulerAppService SchedulerSvc { get; set; } = null!;
         [Inject] private ISchedulerListenerService SchedulerListenerSvc { get; set; } = null!;
         [Inject] private IExecutionLogAppService ExecutionLogSvc { get; set; } = null!;
@@ -60,14 +68,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         internal bool IsHistoryActionDisabled(ScheduleModel model) => model.JobStatus == JobStatus.NoSchedule;
 
         internal bool IsDeleteActionDisabled(ScheduleModel model) => model.JobStatus == JobStatus.Running;
-
-        // private TableGroupDefinition<ScheduleModel> _groupDefinition = new()
-        // {
-        //     GroupName = string.Empty,
-        //     Indentation = false,
-        //     Expandable = true,
-        //     Selector = (e) => e.JobGroup
-        // };
 
         readonly Func<ScheduleModel, object> _groupDefinition = x => x.JobGroup;
 
@@ -581,7 +581,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         }
 
         private string DeleteConfirnationMessage(List<ScheduleModel> items) => string.Format(L["SchedulesDeleteConfirmationMessage"], items.Count);
-       
+
         private async Task OnDeleteSelectedScheduleJobs()
         {
             if (_scheduleDataGrid is null)
@@ -661,11 +661,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             }
         }
 
-        public void Dispose()
-        {
-            UnRegisterEventListeners();
-        }
-
         #region Filter
         private void OnFilterClicked()
         {
@@ -700,6 +695,15 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             await RefreshJobs();
         }
         #endregion Filter
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                //modalRef?.Dispose();
+                UnRegisterEventListeners();
+            }
+            base.Dispose(disposing);
+        }
     }
 }
 

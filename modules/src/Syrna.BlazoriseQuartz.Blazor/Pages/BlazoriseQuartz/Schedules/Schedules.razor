@@ -5,7 +5,7 @@
 
 @inject AbpBlazorMessageLocalizerHelper<BlazoriseQuartzResource> LH
 @inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
-<PageTitle>Schedules</PageTitle>
+<PageTitle>@L["Title:Schedules"]</PageTitle>
 
 <Offcanvas @bind-Visible="@_openFilter" Placement="Placement.End">
     <OffcanvasHeader>
@@ -35,18 +35,18 @@
 
 <Bar Breakpoint="Breakpoint.Desktop" Background="Background.Light" Shadow="Shadow.Remove" ThemeContrast="ThemeContrast.Light">
     <BarBrand>
-        <Heading Size="HeadingSize.Is4">Schedules</Heading>
+        <Heading Size="HeadingSize.Is4">@L["Title:Schedules"]</Heading>
     </BarBrand>
     <BarStart>
         <Button Color="Color.Primary" Margin="Margin.Is1"
                 Clicked="OnNewSchedule">
             <Icon Name="@IconName.Add"></Icon>
-            New
+            @L["AddNew"]
         </Button>
         <Button Color="Color.Danger" Margin="Margin.Is1"
                 Clicked="OnDeleteSelectedScheduleJobs">
             <Icon Name="@IconName.Delete"></Icon>
-            Delete
+            @L["Delete"]
         </Button>
     </BarStart>
     <BarEnd>
@@ -92,7 +92,7 @@
     </EmptyTemplate>
     <DataGridColumns>
         <DataGridMultiSelectColumn Width="30px"></DataGridMultiSelectColumn>
-        <DataGridColumn Field="@nameof(ScheduleModel.JobGroup)" Caption="Job Group" Groupable="true" Grouping="true" GroupBy="@_groupDefinition">
+        <DataGridColumn Field="@nameof(ScheduleModel.JobGroup)" Caption="@L["ScheduleModel:JobGroup"]" Groupable="true" Grouping="true" GroupBy="@_groupDefinition">
             <GroupTemplate>
                 <span style="font-weight:bold">
                     Job Group: @context.Key
@@ -101,7 +101,7 @@
             </GroupTemplate>
         </DataGridColumn>
 
-        <DataGridColumn Field="@nameof(ScheduleModel.JobStatus)" Caption="Status" Filterable="false" Groupable="false" Sortable="false" Width="40px">
+        <DataGridColumn Field="@nameof(ScheduleModel.JobStatus)" Caption="@L["ScheduleModel:JobStatus"]" Filterable="false" Groupable="false" Sortable="false" Width="40px">
             <DisplayTemplate>
                 @switch (context.JobStatus)
                 {
@@ -144,7 +144,7 @@
             </DisplayTemplate>
         </DataGridColumn>
 
-        <DataGridColumn Field="@nameof(ScheduleModel.JobName)" Caption="Job Name" Width="20%">
+        <DataGridColumn Field="@nameof(ScheduleModel.JobName)" Caption="@L["ScheduleModel:JobName"]" Width="20%">
             <DisplayTemplate>
                 <Tooltip FadeDuration="1000" Text="@context.JobDescription">
                     @context.JobName
@@ -152,7 +152,7 @@
             </DisplayTemplate>
         </DataGridColumn>
 
-        <DataGridColumn Field="@nameof(ScheduleModel.TriggerName)" Caption="Trigger" Width="20%">
+        <DataGridColumn Field="@nameof(ScheduleModel.TriggerName)" Caption="@L["ScheduleModel:TriggerName"]" Width="20%">
             <DisplayTemplate>
                 @if (context.JobStatus == JobStatus.NoTrigger)
                 {
@@ -167,7 +167,7 @@
             </DisplayTemplate>
         </DataGridColumn>
 
-        <DataGridColumn Field="@nameof(ScheduleModel.TriggerType)" Caption="Schedule" Width="160px">
+        <DataGridColumn Field="@nameof(ScheduleModel.TriggerType)" Caption="@L["ScheduleModel:TriggerType"]" Width="160px">
             <DisplayTemplate>
                 @if (context.JobStatus == JobStatus.NoTrigger)
                 {
@@ -203,7 +203,7 @@
             </DisplayTemplate>
         </DataGridColumn>
 
-        <DataGridColumn Field="@nameof(ScheduleModel.JobType)" Caption="Job Type" Width="15%">
+        <DataGridColumn Field="@nameof(ScheduleModel.JobType)" Caption="@L["ScheduleModel:JobType"]" Width="15%">
             <DisplayTemplate>
                 <Tooltip FadeDuration="1000" Text="@context.JobType">
                     @context.GetJobTypeShortName()
@@ -211,7 +211,7 @@
             </DisplayTemplate>
         </DataGridColumn>
 
-        <DataGridColumn Field="@nameof(ScheduleModel.NextTriggerTime)" Caption="Next Run" Width="160px">
+        <DataGridColumn Field="@nameof(ScheduleModel.NextTriggerTime)" Caption="@L["ScheduleModel:NextTriggerTime"]" Width="160px">
             <DisplayTemplate>
                 @if (context.JobStatus == JobStatus.NoTrigger)
                 {
@@ -224,7 +224,7 @@
             </DisplayTemplate>
         </DataGridColumn>
 
-        <DataGridColumn Field="@nameof(ScheduleModel.PreviousTriggerTime)" Caption="Last Run" Width="160px">
+        <DataGridColumn Field="@nameof(ScheduleModel.PreviousTriggerTime)" Caption="@L["ScheduleModel:PreviousTriggerTime"]" Width="160px">
             <DisplayTemplate>
                 <div class="d-flex gap-1">
                     @if (!string.IsNullOrEmpty(context.ExceptionMessage)
@@ -248,67 +248,67 @@
 
         <DataGridColumn Caption="Commands" Width="140px">
             <DisplayTemplate>
-                <Tooltip FadeDuration="1000" Text="Edit">
+                <Tooltip FadeDuration="1000" Text="@L["ScheduleMenu:Edit"]">
                     <Button Disabled="@IsEditActionDisabled(context)"
                             Clicked="@(async () => await OnEditScheduleJob(context))"
-                            aria-label="Edit">
+                            aria-label="@L["ScheduleMenu:Edit"]">
                         <Icon Name="@IconName.Edit" IconSize="IconSize.Small"></Icon>
                     </Button>
                 </Tooltip>
 
                 @if (@context.JobStatus is JobStatus.Paused or JobStatus.NoTrigger)
                 {
-                    <Tooltip FadeDuration="1000" Text="Resume Trigger">
+                    <Tooltip FadeDuration="1000" Text="@L["ScheduleMenu:ResumeTrigger"]">
                         <Button Disabled="@IsRunActionDisabled(context)"
                                 Clicked="@(async () => await OnResumeScheduleJob(context))"
-                                aria-label="Run">
+                                aria-label="@L["ScheduleMenu:ResumeTrigger"]">
                             <Icon Name="@IconName.Play" IconSize="IconSize.Small"></Icon>
                         </Button>
                     </Tooltip>
                 }
                 else
                 {
-                    <Tooltip FadeDuration="1000" Text="Pause Trigger">
+                    <Tooltip FadeDuration="1000" Text="@L["ScheduleMenu:PauseTrigger"]">
                         <Button Disabled="@IsPauseActionDisabled(context)"
                                 Clicked="@(async () => await OnPauseScheduleJob(context))"
-                                aria-label="Run">
+                                aria-label="@L["ScheduleMenu:PauseTrigger"]">
                             <Icon Name="@IconName.Pause" IconSize="IconSize.Small"></Icon>
                         </Button>
                     </Tooltip>
                 }
                 <Dropdown>
-                    <Button Color="Color.Primary"><Icon Name="@IconName.MoreVertical" IconSize="IconSize.Small"></Icon></Button>
-                    <DropdownToggle Color="Color.Primary" Split />
+                    @* <Button Color="Color.Primary"><Icon Name="@IconName.MoreVertical" IconSize="IconSize.Small"></Icon></Button> *@
+                    <DropdownToggle Color="Color.Primary" />
                     <DropdownMenu>
                         <DropdownItem Disabled="@IsTriggerNowActionDisabled(context)"
                                       Clicked="@(async () => await OnTriggerNow(context))">
-                                <Icon Name="@IconName.PlayCircle" aria-label="Trigger Now"
+                            <Icon Name="@IconName.PlayCircle" aria-label="@L["ScheduleMenu:TriggerNow"]"
                                       IconSize="IconSize.Small" />
-                                Trigger Now
+                            @L["ScheduleMenu:TriggerNow"]
                         </DropdownItem>
                         <DropdownItem Disabled="@IsAddTriggerActionDisabled(context)"
                                       Clicked="@(async () => await OnAddTrigger(context))">
-                                <Icon Name="@IconName.Add" aria-label="Add Trigger"
+                            <Icon Name="@IconName.Add" aria-label="@L["ScheduleMenu:AddTrigger"]"
                                       IconSize="IconSize.Small" />
-                                Add Trigger
+                            @L["ScheduleMenu:AddTrigger"]
                         </DropdownItem>
                         <DropdownItem Disabled="@IsCopyActionDisabled(context)"
                                       Clicked="@(async () => await OnDuplicateScheduleJob(context))">
-                                <Icon Name="@IconName.Paste" aria-label="Clone Schedule"
+                            <Icon Name="@IconName.Paste" aria-label="@L["ScheduleMenu:CloneSchedule"]"
                                       IconSize="IconSize.Small" />
-                                Clone Schedule
+                            @L["ScheduleMenu:CloneSchedule"]
                         </DropdownItem>
                         <DropdownItem Disabled="@IsHistoryActionDisabled(context)"
                                       Clicked="@(async () => await OnJobHistory(context))">
-                                <Icon Name="@IconName.List" aria-label="History"
+                            <Icon Name="@IconName.List" aria-label="@L["ScheduleMenu:History"]"
                                       IconSize="IconSize.Small" />
-                                History
+                            @L["ScheduleMenu:History"]
                         </DropdownItem>
                         <DropdownItem Clicked="@(async () => await OnDeleteScheduleJob(context))"
                                       Disabled="@IsDeleteActionDisabled(context)">
-                                <Icon Name="@IconName.Delete" aria-label="Delete Schedule"
+                            <Icon Name="@IconName.Delete" aria-label="@L["ScheduleMenu:DeleteSchedule"]"
                                       IconSize="IconSize.Small" />
-                                Delete Schedule
+                            @L["ScheduleMenu:DeleteSchedule"]
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
