@@ -1,7 +1,6 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-using Syrna.BlazoriseQuartz;
 using Syrna.BlazoriseQuartz.Blazor.Components;
 using Syrna.BlazoriseQuartz.ExecutionLog;
 using Syrna.BlazoriseQuartz.ExecutionLog.Dtos;

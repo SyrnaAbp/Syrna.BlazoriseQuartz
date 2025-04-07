@@ -40,7 +40,7 @@
                                             @GetExecutionTime(log)
                                             @if (log.JobRunTime.HasValue)
                                             {
-                                                <Span TextColor="TextColor.Secondary" Margin="Margin.Is1">@log.JobRunTime.Value.ToHumanTimeString(4)</Span>
+                                                <Span TextColor="TextColor.Warning" Margin="Margin.Is1">@log.JobRunTime.Value.ToHumanTimeString(4)</Span>
                                             }
                                         </Text>
                                         <Text TextSize="TextSize.Small" TextColor="TextColor.Body">@log.GetShortExceptionMessage()</Text>
@@ -64,7 +64,7 @@
                                             @GetExecutionTime(log)
                                             @if (log.JobRunTime.HasValue)
                                             {
-                                                <Span TextColor="TextColor.Secondary" Margin="Margin.Is1">@log.JobRunTime.Value.ToHumanTimeString(4)</Span>
+                                                <Span TextColor="TextColor.Warning" Margin="Margin.Is1">@log.JobRunTime.Value.ToHumanTimeString(4)</Span>
                                             }
                                         </Text>
                                         <Text TextColor="TextColor.Body">
@@ -93,7 +93,7 @@
                                             @GetExecutionTime(log)
                                             @if (log.JobRunTime.HasValue)
                                             {
-                                                <Span TextColor="TextColor.Secondary" Margin="Margin.Is1">@log.JobRunTime.Value.ToHumanTimeString(4)</Span>
+                                                <Span TextColor="TextColor.Warning" Margin="Margin.Is1">@log.JobRunTime.Value.ToHumanTimeString(4)</Span>
                                             }
                                         </Text>
                                         <Text TextColor="TextColor.Body">

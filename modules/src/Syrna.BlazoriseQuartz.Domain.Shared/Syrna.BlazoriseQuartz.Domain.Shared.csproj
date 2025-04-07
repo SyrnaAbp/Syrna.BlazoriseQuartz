@@ -23,6 +23,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Include="..\..\..\docs\images\error_details.png" Link="error_details.png" />
+	  <Content Include="..\..\..\docs\images\execution_history.png" Link="execution_history.png" />
+	  <Content Include="..\..\..\docs\images\history.png" Link="history.png" />
+	  <Content Include="..\..\..\docs\images\new_schedule_jobdetail.png" Link="new_schedule_jobdetail.png" />
+	  <Content Include="..\..\..\docs\images\new_schedule_triggerdetail_cron.png" Link="new_schedule_triggerdetail_cron.png" />
+	  <Content Include="..\..\..\docs\images\new_schedule_triggerdetail_daily.png" Link="new_schedule_triggerdetail_daily.png" />
+	  <Content Include="..\..\..\docs\images\new_schedule_triggerdetail_simple.png" Link="new_schedule_triggerdetail_simple.png" />
+	  <Content Include="..\..\..\docs\images\overview.png" Link="overview.png" />
+	  <Content Include="..\..\..\docs\images\schedules.png" Link="schedules.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" />
 	</ItemGroup>
 

@@ -30,8 +30,73 @@ An abp application module that allows manage quartz scheduling.
 
 1. Add EF Core migrations and update your database. See: [ABP document](https://docs.abp.io/en/abp/latest/Tutorials/Part-1?UI=MVC&DB=EF#add-database-migration).
 
-## Usage
+## Requirements
+* .NET 9
+* ABP 9.1.1
+* Quartz 3.13.0+
 
+## Features
+* Add, modify jobs and triggers
+* Support Cron, Daily, Simple trigger
+* Pause, resume, clone scheduled jobs
+* Create custom UI to configure job
+* Dynamic variables support
+* Monitor currently executing jobs
+* Load custom job DLLs through configuration
+* Display job execution logs, state, return message and error message
+* Filter execution logs
+* Store execution logs into any database
+  * Build-in support for SQLite, MSSQL and PostgreSQL
+* Auto cleanup of old execution logs
+  * Configurable logs retention days
+* Build-in Jobs
+  * HTTP API client job
+
+
+## Usage
+> 1. You must create quartz database. You can find sql mssql script https://github.com/SyrnaAbp/Syrna.BlazoriseQuartz/blob/dev/demos/MainDemo/src/Syrna.BlazoriseQuartz.MainDemo.DbMigrator/sqlserver.sql 
+> 2. If you will change database, get your sql script from https://github.com/quartznet/quartznet/tree/main/database/tables
+> 3. modify your appsettings.json
+> 4. More details can be found at [BlazoriseQuartz](https://github.com/Dolunay/BlazoriseQuartz)
+
+PostgreSql
+   ```
+   "ConnectionStrings": {
+     "Default": "Host=<db_host>;Port=5432;Database=<db_name>;Username=<db_user>;Password=<db_password>"
+   },
+   "Quartz": {
+     ...
+     "quartz.jobStore.driverDelegateType": "Quartz.Impl.AdoJobStore.PostgreSQLDelegate, Quartz",
+     ...
+     "quartz.dataSource.myDS.provider": "Npgsql"
+   },
+   "BlazoriseQuartz": {
+     "DataStoreProvider": "PostgreSQL",
+   ```
+   MsSql
+   ```
+   "ConnectionStrings": {
+    "Default": "Server=(LocalDb)\\MSSQLLocalDB;Database=SyrnaBlazoriseQuartz;Trusted_Connection=True"
+   },
+   "Quartz": {
+     ...
+    "quartz.jobStore.driverDelegateType": "Quartz.Impl.AdoJobStore.StdAdoDelegate, Quartz",
+     ...
+     "quartz.dataSource.myDS.provider": "SqlServer"
+   },
+   "BlazoriseQuartz": {
+     "DataStoreProvider": "SqlServer",
+   ```
+
+![Overview](docs/images/overview.png)
+![History](docs/images/history.png)
+![Error Details](docs/images/error_details.png)
+![Schedules](docs/images/schedules.png)
+![Execution History](docs/images/execution_history.png)
+![New Schedule Jobdetail](docs/images/new_schedule_jobdetail.png)
+![New Schedule Triggerdetail Cron](docs/images/new_schedule_triggerdetail_cron.png)
+![New Schedule Triggerdetail Daily](docs/images/new_schedule_triggerdetail_daily.png)
+![New Schedule Triggerdetail Simple](docs/images/new_schedule_triggerdetail_simple.png)
 
 ## Reference
 
@@ -42,4 +107,7 @@ An abp application module that allows manage quartz scheduling.
 1. Demo project created for OpenIddict
 2. Demo project extended modules added
 3. Blazor modules added
+4. Abp Localization system integrated
+5. Turkish localization
+6. English localization
 
