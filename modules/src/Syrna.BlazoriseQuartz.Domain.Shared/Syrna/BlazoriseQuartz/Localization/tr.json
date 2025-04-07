@@ -9,8 +9,8 @@
     "LoadMore": "Daha fazla",
     "SearchPlaceHolder": "Ara...",
 
-    "ScheduleDialogNew": "Yeni Çalıştırma Planı",
-    "ScheduleDialogEdit": "Çalıştırma Planını Düzenle",
+    "ScheduleDialogNew": "Yeni Zamanlayıcı",
+    "ScheduleDialogEdit": "Zamanlayıcını Düzenle",
 
     "JobDataMapDialogNew": "Yeni Parametre",
     "JobDataMapDialogEdit": "Parametreyi Düzenle",
@@ -36,17 +36,17 @@
     "TriggerDetail": "Tetikleyici Detayları",
 
     "Menu:BlazoriseQuartz": "Blazorise Quartz",
-    "Permission:Schedules": "Çalıştırma Planı",
+    "Permission:Schedules": "Zamanlayıcı",
     "Permission:History": "Çalıştırma Geçmişi",
     "Permission:Overview": "Gözlem",
     "Permission:Schedules.Create": "Yeni",
     "Permission:Schedules.Update": "Güncelle",
     "Permission:Schedules.Delete": "Sil",
-    "Menu:Schedules": "Çalıştırma Planı",
+    "Menu:Schedules": "Zamanlayıcı",
     "Menu:History": "Çalıştırma Geçmişi",
     "Menu:Overview": "Gözlem",
 
-    "Title:Schedules": "Çalıştırma Planı",
+    "Title:Schedules": "Zamanlayıcı",
     "Title:History": "Çalıştırma Geçmişi",
     "Title:Overview": "Gözlem",
 
@@ -73,6 +73,7 @@
     "Filter:JobName": "İş adı",
     "Filter:JobGroup": "İş grubu",
     "Filter:FilterLogs": "Log Filtre",
+    "Filter:FilterSchedules": "Zamanlayıcı Filtre",
     "EmptySelectItem": "(Boşluk)",
 
     "CronSamplesDialog": "Cron Örnekleri",
@@ -241,6 +242,22 @@
     "ScheduleMenu:DeleteSchedule": "Zamanlayıcıyı Sil",
     "ScheduleMenu:PauseTrigger": "Tetikleyiciyi Duraklat",
     "ScheduleMenu:ResumeTrigger": "Tetikleyiciyi Yeniden Başlat",
-    "ScheduleMenu:Edit": "Düzenle"
+    "ScheduleMenu:Edit": "Düzenle",
+
+    "Error:CantAddTriggerJobExists": "Tetikleyici eklenemiyor. İşin hala var olup olmadığını kontrol edin.",
+    "Error:CantCloneScheduleJobExists": "Zamanlayıcı kopyalanamıyor. İşin hala var olup olmadığını kontrol edin.",
+    "Error:FailedDeleteSchedule": "'{0}' zamalayıcısını silemedi",
+    "Error:CannotPauseSchedule": "Zamanlayıcı duraklatılamıyor. Tetikleyici adı boş.",
+    "Error:CannotResumeSchedule": "Zamanlayıcı yeniden başlatılamıyor. Tetikleyici adı boş.",
+    "Error:CantEditScheduleJobExists": "Zamanlayıcı düzenlenemiyor. İşin hala var olup olmadığını kontrol edin.",
+    "Error:CannotUpdateTriggerStatus": "Tetikleyici durumu güncellenemiyor. {0} Tetikleyicisi için birden fazla zamanlayıcı mevcut",
+
+    "JobStatus:NoSchedule": "Zamanlayıcı tamamlandı ve iş silindi",
+    "JobStatus:Paused": "Duraklatıldı",
+    "JobStatus:Idle": "Boşta",
+    "JobStatus:NoTrigger": "Tetikleyici yok",
+
+    "Error:FailedUpdateSchedule": "Zamanlayıcı güncellenemedi. {0}",
+    "Error:FailedCreateSchedule": "Yeni zamanlayıcı oluşturulamadı. {0}"
   }
 }

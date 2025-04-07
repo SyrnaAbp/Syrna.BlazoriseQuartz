@@ -95,8 +95,7 @@ namespace BlazoriseQuartz.Core.Services
 
         public Task JobToBeExecuted(IJobExecutionContext context, CancellationToken cancellationToken = default)
         {
-            OnJobToBeExecuted?.Invoke(this, new EventArgs<IJobExecutionContext>(context, cancellationToken));
-            return Task.CompletedTask;
+            return Task.Run(() => OnJobToBeExecuted?.Invoke(this, new EventArgs<IJobExecutionContext>(context, cancellationToken)), cancellationToken);
         }
 
         public Task JobUnscheduled(TriggerKey triggerKey, CancellationToken cancellationToken = default)
@@ -107,11 +106,10 @@ namespace BlazoriseQuartz.Core.Services
 
         public Task JobWasExecuted(IJobExecutionContext context, JobExecutionException? jobException, CancellationToken cancellationToken = default)
         {
-            OnJobWasExecuted?.Invoke(this, new JobWasExecutedEventArgs(context, jobException, cancellationToken)
+            return Task.Run(() => OnJobWasExecuted?.Invoke(this, new JobWasExecutedEventArgs(context, jobException, cancellationToken)
             {
                 JobException = jobException
-            });
-            return Task.CompletedTask;
+            }), cancellationToken);
         }
 
         public Task SchedulerError(string msg, SchedulerException cause, CancellationToken cancellationToken = default)

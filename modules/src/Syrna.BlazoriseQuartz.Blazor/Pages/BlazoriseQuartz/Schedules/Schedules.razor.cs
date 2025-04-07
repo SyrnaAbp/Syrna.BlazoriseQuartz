@@ -71,27 +71,25 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 
         readonly Func<ScheduleModel, object> _groupDefinition = x => x.JobGroup;
 
-        static string GetTooltipText(ScheduleModel context)
-        {
-            var str = "<div style='max-width: 220px; overflow-wrap: break-word;'>";
-            if (!string.IsNullOrEmpty(context.ExceptionMessage))
-                str += "Job has error." + context.ExceptionMessage;
-            else
-                str += "Job has error.";
-            str += "</div>";
-            return str;
-        }
+        static string GetTooltipText(ScheduleModel context) => $"<div style='max-width: 220px; overflow-wrap: break-word;'>{(!string.IsNullOrEmpty(context.ExceptionMessage) ? "Job has error." + context.ExceptionMessage : "Job has error.")}</div>";
 
         static string ExceptionMessageToolTipText(ScheduleModel context) =>
             $"<div style='max-width: 220px; overflow-wrap: break-word;'>{context.ExceptionMessage}</div>";
 
-        static string TriggerDetailToolTipText(ScheduleModel context) =>
-            $"<div style='max-width: 220px; overflow-wrap: break-word;'>{context.TriggerDetail?.ToSummaryString()}</div>";
+        string TriggerDetailToolTipText(ScheduleModel context) =>
+            $"<div style='max-width: 220px; overflow-wrap: break-word;'>{context.TriggerDetail?.ToSummaryString(L)}</div>";
 
         protected override async Task OnInitializedAsync()
         {
-            RegisterEventListeners();
-            await RefreshJobs();
+            await Task.Run(RegisterEventListeners);
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await RefreshJobs();
+            }
         }
 
         private void UnRegisterEventListeners()
@@ -186,7 +184,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 }
                 catch (Exception ex)
                 {
-                    await Notify.Warn($"Cannot update trigger status. Found more than one schedule with trigger {triggerKey}");
+                    await Notify.Warn(string.Format(L["CannotUpdateTriggerStatus"], triggerKey));
                     Logger.LogWarning(ex, "Cannot update trigger status. Found more than one schedule with trigger {triggerKey}", triggerKey);
                     return;
                 }
@@ -231,29 +229,38 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             });
         }
 
-        private async void SchedulerListenerSvc_OnJobWasExecuted(object sender, JobWasExecutedEventArgs e)
+        #region JobWasExecuted
+        private async Task JobWasExecuted(JobWasExecutedEventArgs e)
         {
             var jobKey = e.JobExecutionContext.JobDetail.Key;
             var triggerKey = e.JobExecutionContext.Trigger.Key;
 
-            await InvokeAsync(() =>
+            var model = FindScheduleModel(jobKey, triggerKey).SingleOrDefault();
+            if (model is not null)
             {
-                var model = FindScheduleModel(jobKey, triggerKey).SingleOrDefault();
-                if (model is not null)
-                {
-                    model.PreviousTriggerTime = e.JobExecutionContext.FireTimeUtc;
-                    model.NextTriggerTime = e.JobExecutionContext.NextFireTimeUtc;
-                    model.JobStatus = JobStatus.Idle;
-                    var isSuccess = e.JobExecutionContext.GetIsSuccess();
-                    if (e.JobException != null)
-                        model.ExceptionMessage = e.JobException.Message;
-                    else if (isSuccess.HasValue && !isSuccess.Value)
-                        model.ExceptionMessage = e.JobExecutionContext.GetReturnCodeAndResult();
+                model.PreviousTriggerTime = e.JobExecutionContext.FireTimeUtc;
+                model.NextTriggerTime = e.JobExecutionContext.NextFireTimeUtc;
+                model.JobStatus = JobStatus.Idle;
+                var isSuccess = e.JobExecutionContext.GetIsSuccess();
+                if (e.JobException != null)
+                    model.ExceptionMessage = e.JobException.Message;
+                else if (isSuccess.HasValue && !isSuccess.Value)
+                    model.ExceptionMessage = e.JobExecutionContext.GetReturnCodeAndResult();
 
-                    StateHasChanged();
-                }
-            });
+                await InvokeAsync(StateHasChanged);
+            }
+
+            await Task.CompletedTask;
         }
+
+        private async void SchedulerListenerSvc_OnJobWasExecuted(object sender, JobWasExecutedEventArgs e)
+        {
+            var jobKey = e.JobExecutionContext.JobDetail.Key;
+            var triggerKey = e.JobExecutionContext.Trigger.Key;
+            Logger.LogInformation("Job {jobKey} Trigger {triggerKey} JobWasExecuted", jobKey, triggerKey);
+            await InvokeAsync(() => JobWasExecuted(e));
+        }
+        #endregion
 
         private async void SchedulerListenerSvc_OnJobScheduled(object sender, EventArgs<ITrigger> e)
         {
@@ -271,22 +278,25 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
             });
         }
 
-        private async void SchedulerListenerSvc_OnJobToBeExecuted(object sender, EventArgs<IJobExecutionContext> e)
+        #region JobToBeExecuted
+        private async Task JobToBeExecuted(EventArgs<IJobExecutionContext> e)
         {
             var jobKey = e.Args.JobDetail.Key;
             var triggerKey = e.Args.Trigger.Key;
-
-            await InvokeAsync(() =>
+            var model = FindScheduleModel(jobKey, triggerKey).SingleOrDefault();
+            if (model is not null)
             {
-                var model = FindScheduleModel(jobKey, triggerKey).SingleOrDefault();
-                if (model is not null)
-                {
-                    model.JobStatus = JobStatus.Running;
+                model.JobStatus = JobStatus.Running;
 
-                    StateHasChanged();
-                }
-            });
+                await InvokeAsync(StateHasChanged);
+            }
+            await Task.CompletedTask;
         }
+        private async void SchedulerListenerSvc_OnJobToBeExecuted(object sender, EventArgs<IJobExecutionContext> e)
+        {
+            await InvokeAsync(() => JobToBeExecuted(e));
+        }
+        #endregion
 
         private IEnumerable<ScheduleModel> FindScheduleModelByTrigger(TriggerKey triggerKey)
         {
@@ -365,18 +375,10 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 // TODO show schedule dialog again?
             }
         }
+
         ScheduleDialog ScheduleDialogRef;
         private async Task OnNewSchedule()
         {
-            //         var options = new ModalInstanceOptions
-            //         {
-            //             Size = ModalSize.Large
-            //         };
-            //         await DialogSvc.Show<ScheduleDialog>("Create Schedule Job", p =>
-            //         {
-            //             p.Add("IsNew", true);
-            //	//p.Add("Save", (Delegate)NewSchedule);
-            //}, options);
             JobDetailModel jobDetail = new JobDetailModel();
             TriggerDetailModel triggerDetail = new TriggerDetailModel();
             await ScheduleDialogRef.OpenModalAsync(jobDetail, triggerDetail, true);
@@ -400,14 +402,14 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         {
             if (model.JobName == null)
             {
-                await Notify.Error("Cannot edit schedule. Check if job still exists.");
+                await Notify.Error(L["CantEditScheduleJobExists"]);
                 return;
             }
             var currentJobDetail = await SchedulerSvc.GetJobDetail(model.JobName, model.JobGroup);
 
             if (currentJobDetail == null)
             {
-                await Notify.Error("Cannot edit schedule. Check if job still exists.");
+                await Notify.Error(L["CantEditScheduleJobExists"]);
                 return;
             }
             var origJobKey = new Key(currentJobDetail.Name, currentJobDetail.Group);
@@ -427,27 +429,14 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 }
             }
 
-            //var options = new ModalInstanceOptions
-            //{
-            //    Size = ModalSize.Large
-            //};
-
-            //await DialogSvc.Show<ScheduleDialog>("Edit Schedule Job", p =>
-            //{
-            //    p.Add("JobDetail", currentJobDetail);
-            //    p.Add("TriggerDetail", currentTriggerModel ?? new TriggerDetailModel());
-            //    p.Add("JobKey", origJobKey);
-            //    p.Add("TriggerKey", origTriggerKey);
-            //    p.Add("IsNew", false);
-            //}, options);
-            await ScheduleDialogRef.OpenModalAsync(currentJobDetail, currentTriggerModel ?? new TriggerDetailModel(), false);
+            await ScheduleDialogRef.OpenModalAsync(currentJobDetail, currentTriggerModel ?? new TriggerDetailModel(), false, ScheduleDialogTab.Job, false, origJobKey, origTriggerKey);
         }
 
         private async Task OnResumeScheduleJob(ScheduleModel model)
         {
             if (model.TriggerName == null)
             {
-                await Notify.Error("Cannot resume schedule. Trigger name is null.");
+                await Notify.Error(L["CannotResumeSchedule"]);
                 return;
             }
 
@@ -458,7 +447,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         {
             if (model.TriggerName == null)
             {
-                await Notify.Error("Cannot pause schedule. Trigger name is null.");
+                await Notify.Error(L["CannotPauseSchedule"]);
                 return;
             }
 
@@ -466,6 +455,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         }
 
         private string DeleteConfirnationMessage(ScheduleModel item) => string.Format(L["DeleteConfirmationMessage"], item.JobName);
+
         private async Task OnDeleteScheduleJob(ScheduleModel model)
         {
             if (model.JobStatus == JobStatus.NoSchedule)
@@ -485,7 +475,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 
                 if (!success)
                 {
-                    await Notify.Error($"Failed to delete schedule '{model.JobName}'");
+                    await Notify.Error(string.Format(L["FailedDeleteSchedule"], model.JobName));
                 }
                 else
                 {
@@ -493,18 +483,19 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 }
             }
         }
+
         private async Task OnDuplicateScheduleJob(ScheduleModel model)
         {
             if (model.JobName == null)
             {
-                await Notify.Error("Cannot clone schedule. Check if job still exists.");
+                await Notify.Error(L["Error:CantCloneScheduleJobExists"]);
                 return;
             }
             var currentJobDetail = await SchedulerSvc.GetJobDetail(model.JobName, model.JobGroup);
 
             if (currentJobDetail == null)
             {
-                await Notify.Error("Cannot clone schedule. Check if job still exists.");
+                await Notify.Error(L["Error:CantCloneScheduleJobExists"]);
                 return;
             }
 
@@ -524,6 +515,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
 
             await ScheduleDialogRef.OpenModalAsync(currentJobDetail, currentTriggerModel ?? new(), true);
         }
+
         HistoryDialog HistoryDialogRef;
         private async Task OnJobHistory(ScheduleModel model)
         {
@@ -532,17 +524,6 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
                 // not possible?
                 return;
             }
-            //var options = new ModalInstanceOptions
-            //{
-            //    Size = ModalSize.Default
-            //};
-
-            //await DialogSvc.Show<HistoryDialog>("Execution History", p =>
-            //{
-            //    p.Add("JobKey", new Key(model.JobName, model.JobGroup));
-            //    p.Add("TriggerKey", model.TriggerName != null ?
-            //        new Key(model.TriggerName, model.TriggerGroup ?? Constants.DEFAULT_GROUP) : null);
-            //}, options);
             await HistoryDialogRef.OpenModalAsync(new Key(model.JobName, model.JobGroup), model.TriggerName != null ? new Key(model.TriggerName, model.TriggerGroup ?? Constants.DEFAULT_GROUP) : null);
         }
 
@@ -550,7 +531,7 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         {
             if (model.JobName == null)
             {
-                await Notify.Error("Cannot add trigger. Check if job still exists.");
+                await Notify.Error(L["Error:CantAddTriggerJobExists"]);
                 return;
             }
 
@@ -561,23 +542,13 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         {
             if (model.JobName == null)
             {
-                await Notify.Error("Cannot add trigger. Check if job still exists.");
+                await Notify.Error(L["Error:CantAddTriggerJobExists"]);
                 return;
             }
             var currentJobDetail = await SchedulerSvc.GetJobDetail(model.JobName, model.JobGroup);
 
-            //var options = new ModalInstanceOptions
-            //{
-            //    Size = ModalSize.Default
-            //};
-            //await DialogSvc.Show<ScheduleDialog>("Add New Trigger", p =>
-            //{
-            //    p.Add("JobDetail", currentJobDetail);
-            //    p.Add("IsReadOnlyJobDetail", true);
-            //    p.Add("SelectedTab", ScheduleDialogTab.Trigger);
-            //}, options);
             TriggerDetailModel triggerDetail = new TriggerDetailModel();
-            await ScheduleDialogRef.OpenModalAsync(currentJobDetail, triggerDetail);
+            await ScheduleDialogRef.OpenModalAsync(currentJobDetail, triggerDetail, false, ScheduleDialogTab.Trigger, true);
         }
 
         private string DeleteConfirnationMessage(List<ScheduleModel> items) => string.Format(L["SchedulesDeleteConfirmationMessage"], items.Count);
@@ -699,7 +670,8 @@ namespace Syrna.BlazoriseQuartz.Blazor.Pages.BlazoriseQuartz.Schedules
         {
             if (disposing)
             {
-                //modalRef?.Dispose();
+                //HistoryDialogRef.Dispose(disposing);
+                //ScheduleDialogRef.Dispose(disposing);
                 UnRegisterEventListeners();
             }
             base.Dispose(disposing);

@@ -112,7 +112,7 @@ public partial class ScheduleDialog
             }
             catch (Exception ex)
             {
-                await Notify.Error($"Failed to create new schedule. {ex.Message}");
+                await Notify.Error(L["Error:FailedCreateSchedule"], ex.Message);
                 Logger.LogError(ex, "Failed to create new schedule.");
                 // TODO show schedule dialog again?
             }
@@ -125,7 +125,7 @@ public partial class ScheduleDialog
             }
             catch (Exception ex)
             {
-                await Notify.Error($"Failed to update schedule. {ex.Message}");
+                await Notify.Error(string.Format(L["Error:FailedUpdateSchedule"],ex.Message));
                 Logger.LogError(ex, "Failed to update schedule.");
                 // TODO display the dialog again?
             }
@@ -134,10 +134,12 @@ public partial class ScheduleDialog
         await modalRef.Hide();
     }
 
-    public async Task OpenModalAsync(JobDetailModel jobDetail, TriggerDetailModel triggerDetail, bool isNew = false)
+    public async Task OpenModalAsync(JobDetailModel jobDetail, TriggerDetailModel triggerDetail, bool isNew = false, ScheduleDialogTab selectedTab = ScheduleDialogTab.Job, bool isReadOnlyJobDetail = false, Key jobKey=null,Key triggerKey=null)
     {
         JobDetail = jobDetail;
         TriggerDetail = triggerDetail;
+        SelectedTab = selectedTab;
+        IsReadOnlyJobDetail = isReadOnlyJobDetail;
         IsNew = isNew;
         await modalRef.Show();
     }

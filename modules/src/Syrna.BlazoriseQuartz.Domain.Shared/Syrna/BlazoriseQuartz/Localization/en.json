@@ -73,6 +73,7 @@
     "Filter:JobName": "Job Name",
     "Filter:JobGroup": "Job Group",
     "Filter:FilterLogs": "Filter Logs",
+    "Filter:FilterSchedules": "Filter Schedules",
     "EmptySelectItem": "(Blank)",
 
     "CronSamplesDialog": "Cron Samples",
@@ -241,6 +242,22 @@
     "ScheduleMenu:DeleteSchedule": "Delete Schedule",
     "ScheduleMenu:PauseTrigger": "Pause Trigger",
     "ScheduleMenu:ResumeTrigger": "Resume Trigger",
-    "ScheduleMenu:Edit": "Edit"
+    "ScheduleMenu:Edit": "Edit",
+
+    "Error:CantAddTriggerJobExists": "Cannot add trigger. Check if job still exists.",
+    "Error:CantCloneScheduleJobExists": "Cannot clone schedule. Check if job still exists.",
+    "Error:FailedDeleteSchedule": "Failed to delete schedule '{0}'",
+    "Error:CannotPauseSchedule": "Cannot pause schedule. Trigger name is null.",
+    "Error:CannotResumeSchedule": "Cannot resume schedule. Trigger name is null.",
+    "Error:CantEditScheduleJobExists": "Cannot edit schedule. Check if job still exists.",
+    "Error:CannotUpdateTriggerStatus": "Cannot update trigger status. Found more than one schedule with trigger {0}",
+
+    "JobStatus:NoSchedule": "Schedule completed and job got deleted",
+    "JobStatus:Paused": "Paused",
+    "JobStatus:Idle": "Idle",
+    "JobStatus:NoTrigger": "No Trigger",
+
+    "Error:FailedUpdateSchedule": "Failed to update schedule. {0}",
+    "Error:FailedCreateSchedule": "Failed to create new schedule. {0}"
   }
 }

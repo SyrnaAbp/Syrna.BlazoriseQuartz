@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.Localization;
+using Syrna.BlazoriseQuartz.Localization;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -71,7 +74,7 @@ namespace Syrna.BlazoriseQuartz
                 }
             }
         }
-        
+
         public string ModifiedByCalendar { get; set; }
         /// <summary>
         /// Timezone of start time
@@ -111,7 +114,63 @@ namespace Syrna.BlazoriseQuartz
             return list;
         }
 
-        public string ToSummaryString()
+        public string ToSummaryString(IStringLocalizer<BlazoriseQuartzResource> L)
+        {
+            var culture = CultureInfo.CurrentUICulture.Name;
+            culture = culture.ToLowerInvariant();
+            if (culture == "en" || culture == "en-us")
+            {
+                return ToSummaryStringEn(L);
+            }
+            else if (culture == "tr" || culture == "tr-tr")
+            {
+                return ToSummaryStringTr(L);
+            }
+            else
+            {
+                return ToSummaryStringEn(L);
+            }
+        }
+
+        public string ToSummaryStringTr(IStringLocalizer<BlazoriseQuartzResource> L)
+        {
+            var bldr = new StringBuilder();
+            switch (TriggerType)
+            {
+                case TriggerType.Cron:
+                    bldr.AppendLine(CronExpressionDescriptor.ExpressionDescriptor.GetDescription(CronExpression));
+                    break;
+                case TriggerType.Daily:
+                    bldr.AppendJoin(", ", DailyDayOfWeek.Where(f => f).Select((f, i) => (DayOfWeek)i));
+                    if (EndDailyTime.HasValue)
+                    {
+                        bldr.AppendLine($" {StartDailyTime.ToString()} den {EndDailyTime.ToString()} kadar {InTimeZone.DisplayName}");
+                    }
+                    else
+                    {
+                        bldr.AppendLine($" at {StartDailyTime.ToString()} {InTimeZone.DisplayName}");
+                    }
+                    break;
+                case TriggerType.Simple:
+                    bldr.Append($"Her {TriggerInterval} {ls(L,TriggerIntervalUnit?.ToString())} için");
+                    if (RepeatForever)
+                    {
+                        bldr.AppendLine(" Sonsuza kadar.");
+                    }
+                    else if (RepeatCount > 0)
+                    {
+                        bldr.AppendLine($" {RepeatCount} kere tekrarla.");
+                    }
+                    break;
+                case TriggerType.Calendar:
+                    bldr.Append($"{ModifiedByCalendar} takvim. {StartDate} {StartTimeSpan} {InTimeZone} başlayarak her {TriggerInterval} {ls(L, TriggerIntervalUnit?.ToString())} için");
+                    break;
+            }
+
+            return bldr.ToString();
+        }
+        string ls(IStringLocalizer<BlazoriseQuartzResource> L,string tiu) => L[$"IntervalUnit:{tiu}"];
+        public string ToSummaryStringEn(IStringLocalizer<BlazoriseQuartzResource> L)
         {
             var bldr = new StringBuilder();
             switch (TriggerType)
