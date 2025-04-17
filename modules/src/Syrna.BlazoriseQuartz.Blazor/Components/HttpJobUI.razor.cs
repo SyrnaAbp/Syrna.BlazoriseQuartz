@@ -34,32 +34,32 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         protected override void OnInitialized()
         {
-            if (JobDataMap.ContainsKey(HttpJob.PropertyRequestAction))
+            if (JobDataMap.ContainsKey(HttpJobKeys.PropertyRequestAction))
             {
-                HttpAction = Convert.ToString(JobDataMap[HttpJob.PropertyRequestAction], CultureInfo.InvariantCulture);
+                HttpAction = Convert.ToString(JobDataMap[HttpJobKeys.PropertyRequestAction], CultureInfo.InvariantCulture);
             }
-            if (JobDataMap.ContainsKey(HttpJob.PropertyRequestUrl))
+            if (JobDataMap.ContainsKey(HttpJobKeys.PropertyRequestUrl))
             {
-                DataMapUrl = DataMapValue.Create(JobDataMap[HttpJob.PropertyRequestUrl],
+                DataMapUrl = DataMapValue.Create(JobDataMap[HttpJobKeys.PropertyRequestUrl],
                     DataMapValueType.InterpolatedString, 1);
             }
-            if (JobDataMap.ContainsKey(HttpJob.PropertyRequestHeaders))
+            if (JobDataMap.ContainsKey(HttpJobKeys.PropertyRequestHeaders))
             {
-                DataMapHeaders = DataMapValue.Create(JobDataMap[HttpJob.PropertyRequestHeaders],
+                DataMapHeaders = DataMapValue.Create(JobDataMap[HttpJobKeys.PropertyRequestHeaders],
                     DataMapValueType.InterpolatedString, 1);
             }
-            if (JobDataMap.ContainsKey(HttpJob.PropertyRequestParameters))
+            if (JobDataMap.ContainsKey(HttpJobKeys.PropertyRequestParameters))
             {
-                DataMapParameters = DataMapValue.Create(JobDataMap[HttpJob.PropertyRequestParameters],
+                DataMapParameters = DataMapValue.Create(JobDataMap[HttpJobKeys.PropertyRequestParameters],
                     DataMapValueType.InterpolatedString, 1);
             }
-            if (JobDataMap.ContainsKey(HttpJob.PropertyIgnoreVerifySsl))
+            if (JobDataMap.ContainsKey(HttpJobKeys.PropertyIgnoreVerifySsl))
             {
-                IgnoreSsl = Convert.ToBoolean(JobDataMap[HttpJob.PropertyIgnoreVerifySsl]);
+                IgnoreSsl = Convert.ToBoolean(JobDataMap[HttpJobKeys.PropertyIgnoreVerifySsl]);
             }
-            if (JobDataMap.ContainsKey(HttpJob.PropertyRequestTimeoutInSec))
+            if (JobDataMap.ContainsKey(HttpJobKeys.PropertyRequestTimeoutInSec))
             {
-                TimeoutInSec = Convert.ToInt32(JobDataMap[HttpJob.PropertyRequestTimeoutInSec]);
+                TimeoutInSec = Convert.ToInt32(JobDataMap[HttpJobKeys.PropertyRequestTimeoutInSec]);
             }
 
         }
@@ -68,56 +68,56 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
         {
             if (HttpAction == null)
             {
-                JobDataMap.Remove(HttpJob.PropertyRequestAction);
+                JobDataMap.Remove(HttpJobKeys.PropertyRequestAction);
             }
             else
             {
-                JobDataMap[HttpJob.PropertyRequestAction] = HttpAction;
+                JobDataMap[HttpJobKeys.PropertyRequestAction] = HttpAction;
             }
 
             if (DataMapUrl.Value == null)
             {
-                JobDataMap.Remove(HttpJob.PropertyRequestUrl);
+                JobDataMap.Remove(HttpJobKeys.PropertyRequestUrl);
             }
             else
             {
-                JobDataMap[HttpJob.PropertyRequestUrl] = DataMapUrl.ToString();
+                JobDataMap[HttpJobKeys.PropertyRequestUrl] = DataMapUrl.ToString();
             }
 
             if (DataMapHeaders.Value == null)
             {
-                JobDataMap.Remove(HttpJob.PropertyRequestHeaders);
+                JobDataMap.Remove(HttpJobKeys.PropertyRequestHeaders);
             }
             else
             {
-                JobDataMap[HttpJob.PropertyRequestHeaders] = DataMapHeaders.ToString();
+                JobDataMap[HttpJobKeys.PropertyRequestHeaders] = DataMapHeaders.ToString();
             }
 
             if (DataMapParameters.Value == null)
             {
-                JobDataMap.Remove(HttpJob.PropertyRequestParameters);
+                JobDataMap.Remove(HttpJobKeys.PropertyRequestParameters);
             }
             else
             {
-                JobDataMap[HttpJob.PropertyRequestParameters] = DataMapParameters.ToString();
+                JobDataMap[HttpJobKeys.PropertyRequestParameters] = DataMapParameters.ToString();
             }
 
             if (!IgnoreSsl)
             {
-                JobDataMap.Remove(HttpJob.PropertyIgnoreVerifySsl);
+                JobDataMap.Remove(HttpJobKeys.PropertyIgnoreVerifySsl);
             }
             else
             {
-                JobDataMap[HttpJob.PropertyIgnoreVerifySsl] = IgnoreSsl.ToString();
+                JobDataMap[HttpJobKeys.PropertyIgnoreVerifySsl] = IgnoreSsl.ToString();
             }
 
             if (!TimeoutInSec.HasValue)
             {
-                JobDataMap.Remove(HttpJob.PropertyRequestTimeoutInSec);
+                JobDataMap.Remove(HttpJobKeys.PropertyRequestTimeoutInSec);
             }
             else
             {
-                JobDataMap[HttpJob.PropertyRequestTimeoutInSec] = TimeoutInSec.Value.ToString();
+                JobDataMap[HttpJobKeys.PropertyRequestTimeoutInSec] = TimeoutInSec.Value.ToString();
             }
 
             return Task.FromResult<bool>(true);
@@ -125,11 +125,11 @@ namespace Syrna.BlazoriseQuartz.Blazor.Components
 
         public Task ClearChanges()
         {
-            JobDataMap.Remove(HttpJob.PropertyRequestAction);
-            JobDataMap.Remove(HttpJob.PropertyRequestUrl);
-            JobDataMap.Remove(HttpJob.PropertyRequestHeaders);
-            JobDataMap.Remove(HttpJob.PropertyRequestParameters);
-            JobDataMap.Remove(HttpJob.PropertyIgnoreVerifySsl);
+            JobDataMap.Remove(HttpJobKeys.PropertyRequestAction);
+            JobDataMap.Remove(HttpJobKeys.PropertyRequestUrl);
+            JobDataMap.Remove(HttpJobKeys.PropertyRequestHeaders);
+            JobDataMap.Remove(HttpJobKeys.PropertyRequestParameters);
+            JobDataMap.Remove(HttpJobKeys.PropertyIgnoreVerifySsl);
 
             return Task.CompletedTask;
         }

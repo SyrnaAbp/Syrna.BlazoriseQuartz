@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Syrna.BlazoriseQuartz
+namespace Syrna.BlazoriseQuartz.Scheduler
 {
     public class ScheduleJobFilter : ICloneable
     {
